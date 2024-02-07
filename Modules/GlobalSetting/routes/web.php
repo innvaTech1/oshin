@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Modules\GlobalSetting\app\Http\Controllers\EmailSettingController;
+use Modules\GlobalSetting\app\Http\Controllers\GlobalSettingController;
+
+Route::group( ['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+
+    Route::controller( GlobalSettingController::class )->group( function () {
+
+        Route::get( 'general-setting', 'general_setting' )->name( 'general-setting' );
+        Route::put( 'update-general-setting', 'update_general_setting' )->name( 'update-general-setting' );
+
+        Route::get( 'seo-setting', 'seo_setting' )->name( 'seo-setting' );
+        Route::put( 'update-seo-setting/{id}', 'update_seo_setting' )->name( 'update-seo-setting' );
+
+        Route::put( 'update-logo-favicon', 'update_logo_favicon' )->name( 'update-logo-favicon' );
+        Route::put( 'update-cookie-consent', 'update_cookie_consent' )->name( 'update-cookie-consent' );
+        Route::put( 'update-custom-pagination', 'update_custom_pagination' )->name( 'update-custom-pagination' );
+        Route::put( 'update-default-avatar', 'update_default_avatar' )->name( 'update-default-avatar' );
+        Route::put( 'update-breadcrumb', 'update_breadcrumb' )->name( 'update-breadcrumb' );
+
+        Route::get( 'crediential-setting', 'crediential_setting' )->name( 'crediential-setting' );
+        Route::put( 'update-google-captcha', 'update_google_captcha' )->name( 'update-google-captcha' );
+        Route::put( 'update-tawk-chat', 'update_tawk_chat' )->name( 'update-tawk-chat' );
+        Route::put( 'update-google-analytic', 'update_google_analytic' )->name( 'update-google-analytic' );
+        Route::put( 'update-facebook-pixel', 'update_facebook_pixel' )->name( 'update-facebook-pixel' );
+        Route::put( 'update-social-login', 'update_social_login' )->name( 'update-social-login' );
+
+        Route::get( 'cache-clear', 'cache_clear' )->name( 'cache-clear' );
+        Route::get( 'database-clear', 'database_clear' )->name( 'database-clear' );
+        Route::delete( 'database-clear-success', 'database_clear_success' )->name( 'database-clear-success' );
+        Route::get( 'custom-code', 'customCode' )->name( 'custom-code' );
+        Route::post( 'update-custom-code', 'customCodeUpdate' )->name( 'update-custom-code' );
+
+    } );
+
+    Route::controller( EmailSettingController::class )->group( function () {
+
+        Route::get( 'email-configuration', 'email_config' )->name( 'email-configuration' );
+        Route::put( 'update-email-configuration', 'update_email_config' )->name( 'update-email-configuration' );
+
+        Route::get( 'edit-email-template/{id}', 'edit_email_template' )->name( 'edit-email-template' );
+        Route::put( 'update-email-template/{id}', 'update_email_template' )->name( 'update-email-template' );
+
+    } );
+
+} );
