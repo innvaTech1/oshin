@@ -393,7 +393,7 @@ img.mr-3.ml-3.rounded-circle {
     }
 }
 
-.wsus__show_product {
+.ecommerce__show_product {
     width: 450px;
     background: #378fff21;
     padding: 10px;
@@ -404,7 +404,7 @@ img.mr-3.ml-3.rounded-circle {
     margin-bottom: 20px;
 }
 
-.wsus__show_product .img {
+.ecommerce__show_product .img {
     width: 60px;
     height: 60px;
     border-radius: 3px;
@@ -414,7 +414,7 @@ img.mr-3.ml-3.rounded-circle {
     background: var(--colorWhite);
 }
 
-.chat-left .wsus__show_product a {
+.chat-left .ecommerce__show_product a {
     font-size: 16px;
     font-weight: 600;
     font-family: var(--headingFont);
@@ -431,7 +431,7 @@ img.mr-3.ml-3.rounded-circle {
     -o-transition: all linear .3s;
 }
 
-.wsus__show_product a:hover {
+.ecommerce__show_product a:hover {
     color: #6777ef !important;
 }
 

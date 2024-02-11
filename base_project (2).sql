@@ -68,10 +68,10 @@ CREATE TABLE `banned_histories` (
 INSERT INTO `banned_histories` (`id`, `user_id`, `subject`, `reasone`, `description`, `created_at`, `updated_at`) VALUES
 (1, 9, 'Lawyer Login Information', 'for_banned', 'test descr', '2023-11-19 00:55:52', '2023-11-19 00:55:52'),
 (2, 9, 'Subscribe Verification', 'for_banned', 'Banned request confirmation\r\nit will be last chance', '2023-11-19 01:00:36', '2023-11-19 01:00:36'),
-(3, 9, 'Remove to banned from websolutionus', 'for_unbanned', 'Hello Technology\r\n\r\nWe are happy to announce that you are enable to access our site from today. thank for valuable time\r\n\r\nThanks', '2023-11-19 01:06:02', '2023-11-19 01:06:02'),
+(3, 9, 'Remove to banned from ecommerceus', 'for_unbanned', 'Hello Technology\r\n\r\nWe are happy to announce that you are enable to access our site from today. thank for valuable time\r\n\r\nThanks', '2023-11-19 01:06:02', '2023-11-19 01:06:02'),
 (4, 9, 'Subscribe Verification', 'for_unbanned', 'Banned request confirmation', '2023-11-19 01:16:58', '2023-11-19 01:16:58'),
 (5, 9, 'Subscribe Verification', 'for_unbanned', 'Banned request confirmation', '2023-11-19 01:17:26', '2023-11-19 01:17:26'),
-(6, 9, 'Won\'t be able to access websolutionus', 'for_unbanned', 'Hello Technology\r\n\r\nWe are happy to announce that you are enable to access our site from today. thank for valuable time\r\n\r\nThanks', '2023-11-19 01:18:17', '2023-11-19 01:18:17'),
+(6, 9, 'Won\'t be able to access ecommerceus', 'for_unbanned', 'Hello Technology\r\n\r\nWe are happy to announce that you are enable to access our site from today. thank for valuable time\r\n\r\nThanks', '2023-11-19 01:18:17', '2023-11-19 01:18:17'),
 (7, 9, 'Lawyer Login Information', 'for_unbanned', 'test', '2023-11-19 01:20:01', '2023-11-19 01:20:01'),
 (8, 9, 'Subscribe Verification', 'for_banned', 'test', '2023-11-19 01:20:35', '2023-11-19 01:20:35'),
 (9, 10, 'Lawyer Login Information', 'for_unbanned', 'anned request confirmation', '2023-11-20 01:27:36', '2023-11-20 01:27:36'),
@@ -325,7 +325,7 @@ CREATE TABLE `languages` (
 
 INSERT INTO `languages` (`id`, `name`, `code`, `icon`, `direction`, `status`, `is_default`, `created_at`, `updated_at`) VALUES
 (1, 'English', 'en', NULL, 'ltr', '1', '1', '2023-11-13 04:45:15', '2023-11-13 22:19:27'),
-(3, 'Bangla', 'bn', 'uploads/website-images/wsus-img-2023-11-14-04-21-20-8065.png', 'ltr', '1', '0', '2023-11-13 22:21:20', '2023-11-13 22:21:20');
+(3, 'Bangla', 'bn', 'uploads/website-images/ecommerce-img-2023-11-14-04-21-20-8065.png', 'ltr', '1', '0', '2023-11-13 22:21:20', '2023-11-13 22:21:20');
 
 -- --------------------------------------------------------
 
@@ -498,7 +498,7 @@ CREATE TABLE `payment_gateways` (
 INSERT INTO `payment_gateways` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (1, 'razorpay_key', 'rzp_test_K7CipNQYyyMPiS', NULL, '2023-11-09 00:30:28'),
 (2, 'razorpay_secret', 'zSBmNMorJrirOrnDrbOd1ALO', NULL, '2023-11-09 00:30:28'),
-(3, 'razorpay_name', 'WebSolutionUs', NULL, '2023-11-09 00:30:28'),
+(3, 'razorpay_name', 'ecommerceUs', NULL, '2023-11-09 00:30:28'),
 (4, 'razorpay_description', 'This is test payment window', NULL, '2023-11-09 00:30:28'),
 (5, 'razorpay_charge', '5.00', NULL, '2023-11-09 00:30:28'),
 (6, 'razorpay_theme_color', '#6d0ce4', NULL, '2023-11-09 00:30:28'),
@@ -507,7 +507,7 @@ INSERT INTO `payment_gateways` (`id`, `key`, `value`, `created_at`, `updated_at`
 (9, 'razorpay_image', 'uploads/website-images/file-2023-11-09-04-10-24-5782.jpg', NULL, '2023-11-08 22:10:24'),
 (10, 'flutterwave_public_key', 'FLWPUBK_TEST-5760e3ff9888aa1ab5e5cd1ec3f99cb1-X', NULL, '2023-11-09 04:20:49'),
 (11, 'flutterwave_secret_key', 'FLWSECK_TEST-81cb5da016d0a51f7329d4a8057e766d-X', NULL, '2023-11-09 04:20:50'),
-(12, 'flutterwave_app_name', 'WebSolutionUs', NULL, '2023-11-09 04:20:50'),
+(12, 'flutterwave_app_name', 'ecommerceUs', NULL, '2023-11-09 04:20:50'),
 (13, 'flutterwave_charge', '1', NULL, '2023-11-09 04:20:49'),
 (14, 'flutterwave_currency_id', '3', NULL, '2023-11-09 04:20:49'),
 (15, 'flutterwave_status', 'active', NULL, '2023-11-09 04:20:50'),
@@ -592,7 +592,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'app_name', 'WebSolutionUs', NULL, '2023-11-06 02:50:59'),
+(1, 'app_name', 'ecommerceUs', NULL, '2023-11-06 02:50:59'),
 (2, 'logo', 'uploads/website-images/avatar-2023-11-06-05-56-36-9968.png', NULL, '2023-11-05 23:56:36'),
 (5, 'timezone', 'Asia/Dhaka', NULL, '2023-11-06 02:50:59'),
 (6, 'favicon', 'uploads/website-images/avatar-2023-11-06-05-57-37-1791.png', NULL, '2023-11-05 23:57:37'),
@@ -632,7 +632,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (40, 'mail_password', '5830ed09a2aa28', NULL, '2023-11-15 22:52:10'),
 (41, 'mail_port', '587', NULL, '2023-11-15 22:52:10'),
 (42, 'mail_encryption', 'ssl', NULL, '2023-11-15 22:52:10'),
-(43, 'mail_sender_name', 'WebSolutionUs', NULL, '2023-11-15 22:52:09');
+(43, 'mail_sender_name', 'ecommerceUs', NULL, '2023-11-15 22:52:09');
 
 -- --------------------------------------------------------
 
