@@ -210,16 +210,16 @@
         var type = "{{ Session::get('alert-type', 'info') }}"
         switch (type) {
             case 'info':
-                toastr.info("{{ $value }}");
+                toastr.info("{{ Session::get('message') }}");
                 break;
             case 'success':
-                toastr.success("{{ $value }}");
+                toastr.success("{{ Session::get('message') }}");
                 break;
             case 'warning':
-                toastr.warning("{{ $value }}");
+                toastr.warning("{{ Session::get('message') }}");
                 break;
             case 'error':
-                toastr.error("{{ $value }}");
+                toastr.error("{{ Session::get('message') }}");
                 break;
         }
         @endsession
