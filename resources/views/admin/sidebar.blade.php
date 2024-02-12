@@ -17,6 +17,28 @@
                 </li>
             @endadminCan
 
+            <li class="nav-item dropdown {{ Route::is('admin.products.*') ? 'active' : '' }}">
+                <a href="javascript:void()" class="nav-link has-dropdown"><i
+                        class="fas fa-newspaper"></i><span>{{ __('Manage Products') }}</span></a>
+
+                <ul class="dropdown-menu">
+                    <li class="{{ Route::is('admin.category*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.category.index') }}">
+                            {{ __('Category') }}
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('admin.blogs.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.blogs.index') }}">
+                            {{ __('Post List') }}
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('admin.blog-comment.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.blog-comment.index') }}">
+                            {{ __('Post Comments') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
             @if (Module::isEnabled('Blog') && checkAdminHasPermission('blog.view'))
                 @include('blog::sidebar')
             @endif

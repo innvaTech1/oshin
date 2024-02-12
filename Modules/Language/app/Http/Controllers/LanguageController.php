@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\File;
 use Modules\Language\app\Enums\AllCountriesDetailsEnum;
 use Modules\Language\app\Http\Requests\LanguageRequest;
 use Modules\Language\app\Models\Language;
-use Modules\Language\App\Traits\LanguageTrait;
-use Modules\Language\App\Traits\SyncModelsTrait;
+use Modules\Language\app\Traits\LanguageTrait;
+use Modules\Language\app\Traits\SyncModelsTrait;
 
 class LanguageController extends Controller {
     use RedirectHelperTrait, LanguageTrait, SyncModelsTrait;

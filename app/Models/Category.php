@@ -10,6 +10,19 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'image',
+        'parent_id',
+        'depth_level',
+        'icon',
+        'searchable',
+        'status',
+        'total_sale',
+        'avg_rating',
+        'commission_rate',
+    ];
     public static function boot()
     {
         parent::boot();
@@ -26,13 +39,16 @@ class Category extends Model
             Cache::forget('HeaderSection');
         });
     }
-    public function parentCategory(){
+    public function parentCategory()
+    {
         return $this->belongsTo(Category::class, 'parent_id', 'id');
     }
-    public function brands(){
+    public function brands()
+    {
         // return $this->belongsToMany(Brand::class);
     }
-    public function products(){
+    public function products()
+    {
         // return $this->belongsToMany(Product::class)->withPivot('category_id', 'product_id');
     }
 }

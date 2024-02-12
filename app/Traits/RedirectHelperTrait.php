@@ -6,7 +6,6 @@ use App\Enums\MessageType;
 use App\Enums\RedirectMessage;
 use App\Enums\RedirectType;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 trait RedirectHelperTrait
 {
@@ -15,14 +14,14 @@ trait RedirectHelperTrait
         $actionStatus = $model->wasRecentlyCreated;
         [$messageType, $message] = $this->getMessages($successMessage, $failedMessage, $actionStatus);
         return $actionStatus
-            ? redirect()->route($routeName)->with([
-                'alert-type' => $messageType,
-                'messege' => $message,
-            ])
-            : redirect()->back()->with([
-                'alert-type' => $messageType,
-                'messege' => $message,
-            ]);
+        ? redirect()->route($routeName)->with([
+            'alert-type' => $messageType,
+            'message' => $message,
+        ])
+        : redirect()->back()->with([
+            'alert-type' => $messageType,
+            'message' => $message,
+        ]);
     }
 
     private function returnWithMessageAfterUpdate($model, $successMessage, $failedMessage, $routeName): RedirectResponse
@@ -30,14 +29,14 @@ trait RedirectHelperTrait
         $actionStatus = $model->wasChanged();
         [$messageType, $message] = $this->getMessages($successMessage, $failedMessage, $actionStatus);
         return $actionStatus
-            ? redirect()->route($routeName)->with([
-                'alert-type' => $messageType,
-                'messege' => $message,
-            ])
-            : redirect()->back()->with([
-                'alert-type' => $messageType,
-                'messege' => $message,
-            ]);
+        ? redirect()->route($routeName)->with([
+            'alert-type' => $messageType,
+            'messege' => $message,
+        ])
+        : redirect()->back()->with([
+            'alert-type' => $messageType,
+            'messege' => $message,
+        ]);
     }
 
     private function generateMessages($successMessage, $failedMessage): array
@@ -55,7 +54,7 @@ trait RedirectHelperTrait
     {
         [$successMessage, $failedMessage] = $this->generateMessages($successMessage, $failedMessage);
 
-        $messageType = $actionStatus ? MessageType::SUCCESS->value : MessageType:: ERROR->value;
+        $messageType = $actionStatus ? MessageType::SUCCESS->value : MessageType::ERROR->value;
         $message = $actionStatus ? trans($successMessage) : trans($failedMessage);
 
         return [
@@ -68,10 +67,10 @@ trait RedirectHelperTrait
     {
         $messages = RedirectMessage::getAll();
 
-        if(!$notification){
+        if (!$notification) {
             $notification = [
-                'messege' => trans("admin_validation.{$messages[$type]}"),
-                'alert-type' => ($type === RedirectType::ERROR->value) ? MessageType::ERROR->value : MessageType::SUCCESS->value
+                'message' => trans("admin_validation.{$messages[$type]}"),
+                'alert-type' => ($type === RedirectType::ERROR->value) ? MessageType::ERROR->value : MessageType::SUCCESS->value,
             ];
         }
 

@@ -206,23 +206,23 @@
     <script src="{{ asset('backend/tinymce/js/tinymce/tinymce.min.js') }}"></script>
 
     <script>
-        @session('messege')
-        var type = "{{ Session::get('alert-type', 'info') }}"
-        switch (type) {
-            case 'info':
-                toastr.info("{{ Session::get('message') }}");
-                break;
-            case 'success':
-                toastr.success("{{ Session::get('message') }}");
-                break;
-            case 'warning':
-                toastr.warning("{{ Session::get('message') }}");
-                break;
-            case 'error':
-                toastr.error("{{ Session::get('message') }}");
-                break;
-        }
-        @endsession
+        @if (session('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info("{{ Session::get('message') }}");
+                    break;
+                case 'success':
+                    toastr.success("{{ Session::get('message') }}");
+                    break;
+                case 'warning':
+                    toastr.warning("{{ Session::get('message') }}");
+                    break;
+                case 'error':
+                    toastr.error("{{ Session::get('message') }}");
+                    break;
+            }
+        @endif
     </script>
 
     @if ($errors->any())
@@ -285,6 +285,16 @@
                 this.submit();
             });
         })(jQuery);
+    </script>
+
+    <script>
+        "use strict";
+
+        function makeSlug(selector, target) {
+            var name = $(selector).val();
+            var slug = name.toLowerCase().replace(/^-+|-+$/g, '').replace(/\s/g, '-').replace(/\-\-+/g, '-');
+            $(target).val(slug);
+        }
     </script>
 
     @stack('js')

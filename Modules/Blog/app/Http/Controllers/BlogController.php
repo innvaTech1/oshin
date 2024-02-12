@@ -16,7 +16,7 @@ use Modules\Blog\app\Models\BlogCategory;
 use Modules\Blog\app\Models\BlogTranslation;
 use Modules\Language\app\Enums\TranslationModels;
 use Modules\Language\app\Models\Language;
-use Modules\Language\App\Traits\GenerateTranslationTrait;
+use Modules\Language\app\Traits\GenerateTranslationTrait;
 
 class BlogController extends Controller
 {

@@ -10,7 +10,7 @@ function file_upload($request_file, $old_file, $file_path)
     $extention = $request_file->getClientOriginalExtension();
     $file_name = 'ecommerce-img' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
     $file_name = $file_path . $file_name;
-    $request_file->move(public_path($file_path), $file_name);
+    $request_file->move(public_path('uploads/' . $file_path), $file_name);
 
     if ($old_file) {
         if (File::exists(public_path($old_file))) {
@@ -20,6 +20,15 @@ function file_upload($request_file, $old_file, $file_path)
     }
 
     return $file_name;
+}
+if (!(function_exists('file_delete'))) {
+    function file_delete($file_path)
+    {
+        if (File::exists(public_path($file_path))) {
+            unlink(public_path($file_path));
+        }
+    }
+
 }
 // file upload method
 if (!function_exists('allLanguages')) {
