@@ -7,10 +7,66 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
-    return to_route('admin.dashboard');
+    return view('frontend.home');
 })->name('home');
+Route::get('/search', function () {
+    return view('frontend.search');
+})->name('search');
+Route::get('/product', function () {
+    return view('frontend.productDetails');
+})->name('productDetails');
+Route::get('/contactus', function () {
+    return view('frontend.contactUs');
+})->name('contactus');
+Route::get('/wishlist', function () {
+    return view('frontend.wishlist');
+})->name('wishlist');
+Route::get('/cart', function () {
+    return view('frontend.cart');
+})->name('cart');
+Route::get('/checkout', function () {
+    return view('frontend.checkout');
+})->name('checkout');
+Route::get('/order-success', function () {
+    return view('frontend.orderSuccess');
+})->name('orederSuccess');
+Route::get('/order-tracking', function () {
+    return view('frontend.orderTracking');
+})->name('orederTracking');
+Route::get('/compare', function () {
+    return view('frontend.compare');
+})->name('compare');
+Route::get('/aboutus', function () {
+    return view('frontend.aboutus');
+})->name('aboutus');
+Route::get('/notfound', function () {
+    return view('frontend.404');
+})->name('notfound');
+Route::get('/faq', function () {
+    return view('frontend.faq');
+})->name('faq');
 
+// SELLER
+Route::get('/be-a-seller', function () {
+    return view('frontend.seller.sellerBecome');
+})->name('sellerBecome');
+Route::get('/all-seller', function () {
+    return view('frontend.seller.allseller');
+})->name('allseller');
+Route::get('/vendor/name', function () {
+    return view('frontend.seller.vendorDetails');
+})->name('vendorDetails');
+
+
+
+// USER
 Route::get('/dashboard', function () {
+    return view('frontend.dashboard.dashboard');
+})->name('userDashboard');
+
+
+// ADMIN
+Route::get('/admin/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -57,7 +113,6 @@ Route::get('/payment-addon-faild', [PaymentController::class, 'payment_addon_fai
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-require __DIR__.'/admin.php';
-
+require __DIR__ . '/admin.php';
