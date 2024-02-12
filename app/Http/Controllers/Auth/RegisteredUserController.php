@@ -18,7 +18,7 @@ class RegisteredUserController extends Controller {
     use GetGlobalInformationTrait;
 
     public function create(): View {
-        return view( 'auth.register' );
+        return view( 'frontend.auth.register' );
     }
 
     public function store( Request $request ): RedirectResponse {
