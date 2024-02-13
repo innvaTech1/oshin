@@ -106,3 +106,15 @@ if (!function_exists('checkAdminHasPermission')) {
         return Auth::guard('admin')->user()->can($permission) ? true : false;
     }
 }
+
+if (!function_exists('slugCreate')) {
+    function slugCreate($name, $lang_code = null)
+    {
+        if ($lang_code) {
+            $slug = strtolower(str_replace(' ', '-', $name[$lang_code]));
+        } else {
+            $slug = strtolower(str_replace(' ', '-', $name));
+        }
+        return $slug;
+    }
+}
