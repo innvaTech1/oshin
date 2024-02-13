@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
+use App\Traits\LogActivity;
 use App\Traits\RedirectHelperTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,13 +48,13 @@ class CategoryController extends Controller
         try {
             $this->categoryService->save($request->except('_token'));
             DB::commit();
-            // LogActivity::successLog('Category Added.');
+            LogActivity::successLog('Category Added.');
             return $this->redirectWithMessage(RedirectType::CREATE->value, 'admin.category.index');
 
         } catch (Exception $e) {
             DB::rollBack();
 
-            // LogActivity::errorLog($e->getMessage());
+            LogActivity::errorLog($e->getMessage());
             return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index');
 
         }

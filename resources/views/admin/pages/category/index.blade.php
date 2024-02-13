@@ -107,29 +107,29 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @foreach ($teams as $index => $team)
+                                            @foreach ($categories as $index => $category)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
-                                                    <td>{{ $team->name }}</td>
-                                                    <td>{{ $team->designation }}</td>
+                                                    <td>{{ $category->name }}</td>
+                                                    <td>{{ $category->parent_category->name }}</td>
                                                     <td>
-                                                        @if ($team->status == 'active')
+                                                        @if ($category->status == 1)
                                                             <span class="badge badge-success">{{ __('Active') }}</span>
                                                         @else
                                                             <span class="badge badge-danger">{{ __('Inactive') }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.ourteam.edit', $team->id) }}"
+                                                        <a href="{{ route('admin.category.edit', $category->id) }}"
                                                             class="btn btn-primary btn-sm"><i class="fa fa-edit"
                                                                 aria-hidden="true"></i></a>
                                                         <a href="javascript:;" data-toggle="modal"
                                                             data-target="#deleteModal" class="btn btn-danger btn-sm"
-                                                            onclick="deleteData({{ $team->id }})"><i
+                                                            onclick="deleteData({{ $category->id }})"><i
                                                                 class="fa fa-trash" aria-hidden="true"></i></a>
                                                     </td>
                                                 </tr>
-                                            @endforeach --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
