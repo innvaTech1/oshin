@@ -41,14 +41,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
             // Categories Routes
 
-            Route::resource('category', CategoryController::class)->except('destroy');
-            Route::get('bulk-category-upload', [CategoryController::class,'bulk_category_upload_page'])->name('bulk_category_upload_page');
-            Route::get('download-category-list-csv', [CategoryController::class,'csv_category_download'])->name('csv_category_download');
-            Route::post('bulk-category-upload-store', [CategoryController::class,'bulk_category_store'])->name('bulk_category_store');
-            Route::post('/category/delete', [CategoryController::class,'delete'])->name('category.delete');
-            Route::get('/category-info', [CategoryController::class,'info'])->name('categories.index_info');
-            Route::get('/categories/get-data', [CategoryController::class,'getData'])->name('categories.get-data');
-            Route::post('/request-product/approved', [ProductController::class,'approved'])->name('request.approved');
+            Route::resource('category', CategoryController::class);
+            Route::get('bulk-category-upload', [CategoryController::class, 'bulk_category_upload_page'])->name('bulk_category_upload_page');
+            Route::get('download-category-list-csv', [CategoryController::class, 'csv_category_download'])->name('csv_category_download');
+            Route::post('bulk-category-upload-store', [CategoryController::class, 'bulk_category_store'])->name('bulk_category_store');
+            Route::get('/category-info', [CategoryController::class, 'info'])->name('categories.index_info');
+            Route::get('/categories/get-data', [CategoryController::class, 'getData'])->name('categories.get-data');
+            Route::post('/request-product/approved', [ProductController::class, 'approved'])->name('request.approved');
         });
 
         Route::controller(AdminProfileController::class)->group(function () {

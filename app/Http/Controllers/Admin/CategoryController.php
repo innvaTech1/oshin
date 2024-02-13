@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\RedirectType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\UpdateCategoeryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use App\Traits\LogActivity;
 use App\Traits\RedirectHelperTrait;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
@@ -72,17 +72,37 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        try {
+            $category = $this->categoryService->editById($id);
+            return response()->json($category);
+        } catch (Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => $e,
+            ]);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoeryRequest $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->categoryService->update($request->except('_token'), $id);
+            DB::commit();
+            LogActivity::successLog('Category Updated.');
+            return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.category.index');
+            return $this->loadTableData();
+        } catch (Exception $e) {
+            DB::rollBack();
+            LogActivity::errorLog($e->getMessage());
+            return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index');
+        }
     }
 
     /**
@@ -90,6 +110,23 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $parent_id = $this->categoryService->checkParentId($id);
+
+            if ($parent_id->count() > 0) {
+                return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index', [], ['message' => 'Sorry This id related with another category']);
+            }
+            $result = $this->categoryService->deleteById($id);
+
+            if ($result == "not_possible") {
+                return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index', [], ['message' => 'Related data exist in multiple directory']);
+            }
+            LogActivity::successLog('category delete successful.');
+            return $this->redirectWithMessage(RedirectType::DELETE->value, 'admin.category.index');
+        } catch (Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index');
+        }
+
     }
 }

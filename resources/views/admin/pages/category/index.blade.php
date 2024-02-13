@@ -1,14 +1,14 @@
 @extends('admin.master_layout')
 
 @section('title')
-    <title>{{ __('Add Category') }}</title>
+    <title>{{ __('Category List') }}</title>
 @endsection
 
 @section('admin-content')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>{{ __('Add Category') }}</h1>
+                <h1>{{ __('Category List') }}</h1>
             </div>
 
             <div class="section-body">
@@ -17,7 +17,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <form action="{{ route('admin.category.store') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                    enctype="multipart/form-data" id="form">
                                     @csrf
                                     <div class="row">
                                         <div class="form-group col-12">
@@ -111,7 +111,7 @@
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $category->name }}</td>
-                                                    <td>{{ $category->parent_category->name }}</td>
+                                                    <td>{{ $category?->parent_category?->name }}</td>
                                                     <td>
                                                         @if ($category->status == 1)
                                                             <span class="badge badge-success">{{ __('Active') }}</span>
@@ -121,7 +121,7 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.category.edit', $category->id) }}"
-                                                            class="btn btn-primary btn-sm"><i class="fa fa-edit"
+                                                            class="btn btn-primary btn-sm edit-btn"><i class="fa fa-edit"
                                                                 aria-hidden="true"></i></a>
                                                         <a href="javascript:;" data-toggle="modal"
                                                             data-target="#deleteModal" class="btn btn-danger btn-sm"
@@ -154,6 +154,49 @@
                     $('.parent').addClass('d-none');
                 }
             });
+            $('.edit-btn').click(function(e) {
+                e.preventDefault();
+                const url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#name').val(response.name);
+                        $('#slug').val(response.slug);
+                        $('#commission_rate').val(response.commission_rate);
+                        if (response.searchable == 1) {
+                            $("[name='searchable'][value='1']").prop('checked', true);
+                        } else {
+                            $("[name='searchable'][value='0']").prop('checked', true);
+                        }
+                        if (response.status == 1) {
+                            $("[name='status'][value='1']").prop('checked', true);
+                        } else {
+                            $("[name='status'][value='0']").prop('checked', true);
+                        }
+                        if (response.parent_id) {
+                            $("[name='category']").prop('checked', true);
+                            $('.parent').removeClass('d-none');
+                            $('.select2').val(response.parent_id).trigger('change');
+                        }
+                        let url = "{{ route('admin.category.update', ':id') }}";
+                        url = url.replace(':id', response.id);
+                        console.log(url);
+                        $('#form').attr('action', url);
+                        const categoryId = "<input type='hidden' name='category_id' value='" +
+                            response.id + "'>";
+                        const method = "<input type='hidden' name='_method' value='PUT'>";
+                        $('#form').append(categoryId);
+                        $('#form').append(method);
+                    }
+                });
+            })
         });
+
+        function deleteData(id) {
+            let url = '{{ route('admin.category.destroy', ':id') }}';
+            url = url.replace(':id', id);
+            $("#deleteForm").attr('action', url);
+        }
     </script>
 @endpush

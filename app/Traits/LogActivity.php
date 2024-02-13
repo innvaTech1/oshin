@@ -3,13 +3,21 @@
 namespace App\Traits;
 
 use App\Models\LogActivity as ModelsLogActivity;
-use Illuminate\Support\Facades\Request;
-use Browser;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Request;
+use Jenssegers\Agent\Facades\Agent;
 
+// use Laravel\Dusk\Browser;
 
 class LogActivity
 {
+
+    public static $browser;
+    public function __construct()
+    {
+        self::$browser = Agent::browser();
+
+    }
 
     public static function addLog($type, $subject)
     {
@@ -19,7 +27,7 @@ class LogActivity
         $log['url'] = Request::fullUrl();
         $log['method'] = Request::method();
         $log['ip'] = Request::ip();
-        $log['agent'] = Browser::browserFamily() . '-' . Browser::browserVersion() . '-' . Browser::browserEngine() . '-' . Browser::platformName() . '-' . Browser::deviceModel();
+        $log['agent'] = Agent::browser() . '-' . Agent::version(self::$browser) . '-' . Agent::platform() . '-' . Agent::platform() . '-' . Agent::device();
         $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
         ModelsLogActivity::create($log);
     }
@@ -86,14 +94,16 @@ class LogActivity
         $log['url'] = Request::fullUrl();
         $log['method'] = Request::method();
         $log['ip'] = Request::ip();
-        $log['agent'] = Browser::browserFamily() . '-' . Browser::browserVersion() . '-' . Browser::browserEngine() . '-' . Browser::platformName() . '-' . Browser::deviceModel();
+        $log['agent'] = Agent::browser() . '-' . Agent::version(self::$browser) . '-' . Agent::platform() . '-' . Agent::platform() . '-' . Agent::device();
         $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
         ModelsLogActivity::create($log);
     }
 
     public static function addLogoutLog($user_id, $subject)
     {
-        $loginActivity = ModelsLogActivity::where('login', 1)->where('logout_time', null)->where('user_id', $user_id)->where('ip', Request::ip())->where('agent', Browser::browserFamily() . '-' . Browser::browserVersion() . '-' . Browser::browserEngine() . '-' . Browser::platformName() . '-' . Browser::deviceModel())->first();
+        $agent = new Agent();
+
+        $loginActivity = ModelsLogActivity::where('login', 1)->where('logout_time', null)->where('user_id', $user_id)->where('ip', Request::ip())->where('agent', Agent::browser() . '-' . Agent::version(self::$browser) . '-' . Agent::platform() . '-' . Agent::platform() . '-' . Agent::device())->first();
         if ($loginActivity) {
             $loginActivity->logout_time = Carbon::now();
             $loginActivity->subject = $subject;

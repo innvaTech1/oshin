@@ -86,17 +86,23 @@ class CategoryRepository
 
         return true;
     }
+    public function edit($id)
+    {
+        $category = $this->category->findOrFail($id);
+        return $category;
+    }
     public function update($data, $id)
     {
+
         $category = $this->category->find($id);
-        if (isset($data['category_type'])) {
+        if (isset($data['parent_id'])) {
             $parent_depth = Category::find($data['parent_id']);
             $data['depth_level'] = $parent_depth->depth_level + 1;
         } else {
             $data['depth_level'] = 1;
         }
         $data['commission_rate'] = isset($data['commission_rate']) ? $data['commission_rate'] : 0;
-        $data['parent_id'] = isset($data['category_type']) ? $data['parent_id'] : 0;
+        $data['parent_id'] = isset($data['parent_id']) ? $data['parent_id'] : 0;
 
         if (isset($data['image'])) {
             $thumbnail_image = $data['image'];
@@ -121,5 +127,9 @@ class CategoryRepository
             }
             return 'possible';
         }
+    }
+    public function checkParentId($id)
+    {
+        return Category::where('parent_id', $id)->get();
     }
 }
