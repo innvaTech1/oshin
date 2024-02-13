@@ -27,6 +27,11 @@
                             {{ __('Category') }}
                         </a>
                     </li>
+                    <li class="{{ Route::is('admin.brand*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.brand.index') }}">
+                            {{ __('Brand') }}
+                        </a>
+                    </li>
                     <li class="{{ Route::is('admin.blogs.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('admin.blogs.index') }}">
                             {{ __('Post List') }}

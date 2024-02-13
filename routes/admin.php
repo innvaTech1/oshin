@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 /*  Start Admin panel Controller  */
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -48,6 +49,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::get('/category-info', [CategoryController::class, 'info'])->name('categories.index_info');
             Route::get('/categories/get-data', [CategoryController::class, 'getData'])->name('categories.get-data');
             Route::post('/request-product/approved', [ProductController::class, 'approved'])->name('request.approved');
+
+            // Brands
+            Route::resource('brand', BrandController::class);
         });
 
         Route::controller(AdminProfileController::class)->group(function () {
