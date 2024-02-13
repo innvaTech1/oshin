@@ -67,7 +67,7 @@ class CategoryRepository
     }
     public function save($data)
     {
-        if (isset($data['category_type'])) {
+        if (isset($data['parent_id'])) {
             $parent_depth = Category::where('id', $data['parent_id'])->first();
             $data['depth_level'] = $parent_depth->depth_level + 1;
         } else {

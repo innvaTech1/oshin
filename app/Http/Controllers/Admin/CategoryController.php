@@ -54,7 +54,6 @@ class CategoryController extends Controller
             DB::rollBack();
 
             // LogActivity::errorLog($e->getMessage());
-
             return $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.category.index');
 
         }
