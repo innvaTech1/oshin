@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','404 Not Found')
+@section('title','Forgot Password')
 @section('content')
  <!-- Breadcrumb Section Start -->
  <section class="breadcrumb-section pt-0">
@@ -39,15 +39,16 @@
                 <div class="d-flex align-items-center justify-content-center h-100">
                     <div class="log-in-box">
                         <div class="log-in-title">
-                            <h3>Welcome To Fastkart</h3>
+                            <h3>Welcome To {{ env('APP_NAME') }}</h3>
                             <h4>Forgot your password</h4>
                         </div>
 
                         <div class="input-box">
-                            <form class="row g-4">
+                            <form class="row g-4" action="{{ route('forget-password') }}" method="POST">
+                                @csrf
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating log-in-form">
-                                        <input type="email" class="form-control" id="email"
+                                        <input type="email" name="email" class="form-control" id="email"
                                             placeholder="Email Address">
                                         <label for="email">Email Address</label>
                                     </div>

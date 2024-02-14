@@ -10,8 +10,8 @@
     </div>
     <!-- Loader End -->
 
-     <!-- Header Start -->
-     <header class="header-2">
+    <!-- Header Start -->
+    <header class="header-2">
         <div class="header-notification theme-bg-color overflow-hidden py-2">
             <div class="notification-slider">
                 <div>
@@ -46,7 +46,8 @@
                                 </span>
                             </button>
                             <a href="index.html" class="web-logo nav-logo">
-                                <img src="../assets/images/logo/3.png" class="img-fluid blur-up lazyload" alt="">
+                                <img src="../assets/images/logo/3.png" class="img-fluid blur-up lazyload"
+                                    alt="">
                             </a>
 
                             <div class="search-full">
@@ -90,19 +91,24 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a id="eng" class="dropdown-item" href="javascript:void(0)">English</a>
+                                                <a id="eng" class="dropdown-item"
+                                                    href="javascript:void(0)">English</a>
                                             </li>
                                             <li>
-                                                <a id="hin" class="dropdown-item" href="javascript:void(0)">Hindi</a>
+                                                <a id="hin" class="dropdown-item"
+                                                    href="javascript:void(0)">Hindi</a>
                                             </li>
                                             <li>
-                                                <a id="guj" class="dropdown-item" href="javascript:void(0)">Gujarati</a>
+                                                <a id="guj" class="dropdown-item"
+                                                    href="javascript:void(0)">Gujarati</a>
                                             </li>
                                             <li>
-                                                <a id="arb" class="dropdown-item" href="javascript:void(0)">Arabic</a>
+                                                <a id="arb" class="dropdown-item"
+                                                    href="javascript:void(0)">Arabic</a>
                                             </li>
                                             <li>
-                                                <a id="rus" class="dropdown-item" href="javascript:void(0)">Russia</a>
+                                                <a id="rus" class="dropdown-item"
+                                                    href="javascript:void(0)">Russia</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="javascript:void(0)">Chinese</a>
@@ -117,16 +123,20 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a id="usd" class="dropdown-item" href="javascript:void(0)">USD</a>
+                                                <a id="usd" class="dropdown-item"
+                                                    href="javascript:void(0)">USD</a>
                                             </li>
                                             <li>
-                                                <a id="inr" class="dropdown-item" href="javascript:void(0)">INR</a>
+                                                <a id="inr" class="dropdown-item"
+                                                    href="javascript:void(0)">INR</a>
                                             </li>
                                             <li>
-                                                <a id="eur" class="dropdown-item" href="javascript:void(0)">EUR</a>
+                                                <a id="eur" class="dropdown-item"
+                                                    href="javascript:void(0)">EUR</a>
                                             </li>
                                             <li>
-                                                <a id="aud" class="dropdown-item" href="javascript:void(0)">AUD</a>
+                                                <a id="aud" class="dropdown-item"
+                                                    href="javascript:void(0)">AUD</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -215,9 +225,46 @@
 
                                                 <div class="button-group">
                                                     <a href="cart.html" class="btn btn-sm cart-button">View Cart</a>
-                                                    <a href="checkout.html" class="btn btn-sm cart-button theme-bg-color
+                                                    <a href="checkout.html"
+                                                        class="btn btn-sm cart-button theme-bg-color
                                                     text-white">Checkout</a>
                                                 </div>
+                                            </div>
+                                        </li>
+                                        <li class="onhover-dropdown">
+                                            <button class="header-icon bag-icon">
+                                                <i class="iconly-Profile icli"></i>
+                                            </button>
+                                            <div class="onhover-div onhover-div-login">
+                                                {{-- auth --}}
+                                                @auth
+                                                    <ul class="user-box-name">
+                                                        <li class="product-box-contain">
+                                                            <i></i>
+                                                            <form action="{{ route('logout') }}" method="post">
+                                                                @csrf
+                                                                <button type="submit" class="btn" style="border-color: #0da487; background-color: #0da487; color: white;">Log Out</button>
+
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                    {{-- not auth --}}
+                                                @else
+                                                    <ul class="user-box-name">
+                                                        <li class="product-box-contain">
+                                                            <i></i>
+                                                            <a href="login.html">Log In</a>
+                                                        </li>
+
+                                                        <li class="product-box-contain">
+                                                            <a href="sign-up.html">Register</a>
+                                                        </li>
+
+                                                        <li class="product-box-contain">
+                                                            <a href="forgot.html">Forgot Password</a>
+                                                        </li>
+                                                    </ul>
+                                                @endauth
                                             </div>
                                         </li>
                                     </ul>
@@ -642,7 +689,8 @@
                             <div class="offcanvas offcanvas-collapse order-xl-2" id="primaryMenu">
                                 <div class="offcanvas-header navbar-shadow">
                                     <h5>Menu</h5>
-                                    <button class="btn-close lead" type="button" data-bs-dismiss="offcanvas"></button>
+                                    <button class="btn-close lead" type="button"
+                                        data-bs-dismiss="offcanvas"></button>
                                 </div>
                                 <div class="offcanvas-body">
                                     <ul class="navbar-nav">
@@ -769,17 +817,22 @@
                                                             <a class="dropdown-item"
                                                                 href="product-left-thumbnail.html">Product
                                                                 Thumbnail</a>
-                                                            <a class="dropdown-item" href="product-4-image.html">Product
+                                                            <a class="dropdown-item"
+                                                                href="product-4-image.html">Product
                                                                 Images</a>
-                                                            <a class="dropdown-item" href="product-slider.html">Product
+                                                            <a class="dropdown-item"
+                                                                href="product-slider.html">Product
                                                                 Slider</a>
-                                                            <a class="dropdown-item" href="product-sticky.html">Product
+                                                            <a class="dropdown-item"
+                                                                href="product-sticky.html">Product
                                                                 Sticky</a>
                                                             <a class="dropdown-item"
                                                                 href="product-accordion.html">Product Accordion</a>
-                                                            <a class="dropdown-item" href="product-circle.html">Product
+                                                            <a class="dropdown-item"
+                                                                href="product-circle.html">Product
                                                                 Tab</a>
-                                                            <a class="dropdown-item" href="product-digital.html">Product
+                                                            <a class="dropdown-item"
+                                                                href="product-digital.html">Product
                                                                 Tab</a>
 
                                                             <h5 class="custom-mt dropdown-header">Product Features
@@ -802,7 +855,8 @@
                                                                 Product Variants Style </h5>
                                                             <a class="dropdown-item"
                                                                 href="product-rectangle.html">Variant Rectangle</a>
-                                                            <a class="dropdown-item" href="product-circle.html">Variant
+                                                            <a class="dropdown-item"
+                                                                href="product-circle.html">Variant
                                                                 Circle <label class="menu-label">New</label></a>
                                                             <a class="dropdown-item"
                                                                 href="product-color-image.html">Variant Image
@@ -818,7 +872,8 @@
                                                             <a class="dropdown-item"
                                                                 href="product-left-thumbnail.html">Sticky
                                                                 Checkout</a>
-                                                            <a class="dropdown-item" href="product-dynamic.html">Dynamic
+                                                            <a class="dropdown-item"
+                                                                href="product-dynamic.html">Dynamic
                                                                 Checkout</a>
                                                             <a class="dropdown-item" href="product-sticky.html">Secure
                                                                 Checkout</a>
@@ -837,9 +892,11 @@
                                                             <a class="dropdown-item" href="product-image.html">Product
                                                                 Simple</a>
                                                             <a class="dropdown-item" href="product-rectangle.html">
-                                                                Product Classified <label class="menu-label">New</label>
+                                                                Product Classified <label
+                                                                    class="menu-label">New</label>
                                                             </a>
-                                                            <a class="dropdown-item" href="product-size-chart.html">Size
+                                                            <a class="dropdown-item"
+                                                                href="product-size-chart.html">Size
                                                                 Chart <label class="menu-label">New</label></a>
                                                             <a class="dropdown-item"
                                                                 href="product-size-chart.html">Delivery &
@@ -893,10 +950,12 @@
                                                         <a class="dropdown-item" href="shop-left-sidebar.html">Beans &
                                                             Brinjals</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Broccoli
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Broccoli
                                                             & Cauliflower</a>
 
-                                                        <a href="shop-left-sidebar.html" class="dropdown-item">Chilies,
+                                                        <a href="shop-left-sidebar.html"
+                                                            class="dropdown-item">Chilies,
                                                             Garlic</a>
 
                                                         <a class="dropdown-item"
@@ -917,10 +976,12 @@
                                                         <a class="dropdown-item" href="shop-left-sidebar.html">Beans &
                                                             Brinjals</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Broccoli
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Broccoli
                                                             & Cauliflower</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Chilies,
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Chilies,
                                                             Garlic</a>
 
                                                         <a class="dropdown-item"
@@ -929,7 +990,8 @@
                                                         <a class="dropdown-item" href="shop-left-sidebar.html">Gourd,
                                                             Cucumber</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Potatoes
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Potatoes
                                                             & Tomatoes</a>
 
                                                         <a href="shop-left-sidebar.html" class="dropdown-item">Peas &
@@ -938,19 +1000,23 @@
 
                                                     <div class="dropdown-column col-xl-3">
                                                         <h5 class="dropdown-header">Exotic Vegetables</h5>
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Asparagus
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Asparagus
                                                             & Artichokes</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Avocados
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Avocados
                                                             & Peppers</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Broccoli
+                                                        <a class="dropdown-item"
+                                                            href="shop-left-sidebar.html">Broccoli
                                                             & Zucchini</a>
 
                                                         <a class="dropdown-item" href="shop-left-sidebar.html">Celery,
                                                             Fennel & Leeks</a>
 
-                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Chilies &
+                                                        <a class="dropdown-item" href="shop-left-sidebar.html">Chilies
+                                                            &
                                                             Lime</a>
                                                     </div>
 
@@ -1109,7 +1175,8 @@
 
                         <div class="right-nav">
                             <div class="nav-number">
-                                <img src="../assets/images/icon/music.png" class="img-fluid blur-up lazyload" alt="">
+                                <img src="../assets/images/icon/music.png" class="img-fluid blur-up lazyload"
+                                    alt="">
                                 <span>(123) 456 7890</span>
                             </div>
                             <a href="javascript:void(0)" class="btn theme-bg-color ms-3 fire-button"

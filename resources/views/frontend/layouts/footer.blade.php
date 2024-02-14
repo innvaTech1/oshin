@@ -649,6 +649,17 @@
 <!-- theme setting js -->
 <script src="{{ asset('assets/js/theme-setting.js') }}"></script>
 
+{{-- toastr --}}
+<script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('backend/js/modules-toastr.js') }}"></script>
+
+@if (session()->has('messege'))
+    <script>
+        toastr.{{ session()->get('alert-type') }}("{{ session()->get('messege') }}");
+    </script>
+@endif
+
+
 @yield('scripts')
 </body>
 

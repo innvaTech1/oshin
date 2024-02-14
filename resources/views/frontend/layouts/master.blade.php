@@ -32,6 +32,9 @@
 
     <!-- Template css -->
     <link id="color-link" rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+    {{-- Toaster --}}
+    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}">
 </head>
 
 @include('frontend.layouts.header')
