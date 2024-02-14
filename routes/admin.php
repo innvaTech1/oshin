@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 
 /*  Start Admin panel Controller  */
@@ -52,6 +53,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
             // Brands
             Route::resource('brand', BrandController::class);
+            Route::resource('attribute', AttributeController::class);
+
         });
 
         Route::controller(AdminProfileController::class)->group(function () {
