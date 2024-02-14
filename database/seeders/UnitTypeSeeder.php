@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\UnitType;
 use Illuminate\Database\Seeder;
 
 class UnitTypeSeeder extends Seeder
@@ -12,6 +12,22 @@ class UnitTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $productTypeLists = [
+            'Kilogram',
+            'Gram',
+            'Litre',
+            'Millilitre',
+            'Piece',
+            'Dozen',
+            'Packet',
+            'Box',
+        ];
+
+        foreach ($productTypeLists as $productTypeList) {
+            UnitType::create([
+                'name' => $productTypeList,
+                'status' => 1,
+            ]);
+        }
     }
 }
