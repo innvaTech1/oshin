@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UnitTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*  End Admin panel Controller  */
@@ -54,6 +55,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             // Brands
             Route::resource('brand', BrandController::class);
             Route::resource('attribute', AttributeController::class);
+            Route::resource('unit', UnitTypeController::class);
 
         });
 
