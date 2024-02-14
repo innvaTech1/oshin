@@ -74,7 +74,15 @@ class AttributeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $this->attributeService->update($request->except("_token"), $id);
+            LogActivity::successLog('Attribute Updated.');
+            return $this->redirectWithSession(RedirectType::UPDATE->value, "admin.attribute.index");
+        } catch (\Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            return $this->redirectWithSession(RedirectType::ERROR->value);
+        }
+
     }
 
     /**
@@ -82,6 +90,6 @@ class AttributeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
     }
 }
