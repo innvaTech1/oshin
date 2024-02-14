@@ -3,23 +3,22 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\UserForgetPasswordJob;
 use App\Models\User;
-use App\Rules\CustomRecaptcha;
 use App\Traits\GetGlobalInformationTrait;
-use Cache;
-use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 use Str;
 
-class PasswordResetLinkController extends Controller {
+class PasswordResetLinkController extends Controller
+{
     use GetGlobalInformationTrait;
 
-    public function create(): View {
-        return view( 'auth.forgot-password' );
+    public function create(): View
+    {
+        return view('frontend.auth.forgot');
     }
 
     /**
@@ -27,61 +26,59 @@ class PasswordResetLinkController extends Controller {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store( Request $request ): RedirectResponse {
-        $request->validate( [
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
             'email' => ['required', 'email'],
-        ] );
+        ]);
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink(
-            $request->only( 'email' )
+            $request->only('email')
         );
 
         return $status == Password::RESET_LINK_SENT
-        ? back()->with( 'status', __( $status ) )
-        : back()->withInput( $request->only( 'email' ) )
-            ->withErrors( ['email' => __( $status )] );
+            ? back()->with('status', __($status))
+            : back()->withInput($request->only('email'))
+            ->withErrors(['email' => __($status)]);
     }
 
-    public function custom_forget_password( Request $request ) {
+    public function custom_forget_password(Request $request)
+    {
 
-        $setting = Cache::get( 'setting' );
-
-        $request->validate( [
+        $request->validate([
             'email'                => ['required', 'email'],
-            'g-recaptcha-response' => $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : '',
         ], [
-            'email.required'                => __( 'Email is required' ),
-            'g-recaptcha-response.required' => __( 'Please complete the recaptcha to submit the form' ),
-        ] );
+            'email.required'                => __('Email is required'),
+        ]);
 
-        $user = User::where( 'email', $request->email )->first();
+        $user = User::where('email', $request->email)->first();
 
-        if ( $user ) {
-            $user->forget_password_token = Str::random( 100 );
+        if ($user) {
+
+            $forgot_pass_token = Str::random(100);
+
+            $user->forget_password_token = $forgot_pass_token;
             $user->save();
 
-            dispatch( new UserForgetPasswordJob( $user ) );
+            Mail::send('frontend.emails.password-reset', [
+                'name'  => $user->name,
+                'token' => $forgot_pass_token
+            ], function ($message) use ($request,$user) {
+                $message->to($request->email, $user->name);
+                $message->subject('Reset Password');
+            });
 
-            $notification = __( 'A password reset link has been send to your mail' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
-            return redirect()->back()->with( $notification );
 
+            $notification = __('A password reset link has been send to your mail');
+            $notification = array('messege' => $notification, 'alert-type' => 'success');
+            return redirect(route('resetEmail'))->with($notification);
         } else {
-            $notification = __( 'Email does not exist' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-            return redirect()->back()->with( $notification );
+            $notification = __('Email does not exist');
+            $notification = array('messege' => $notification, 'alert-type' => 'error');
+            return redirect()->back()->with($notification);
         }
-
-        MailHelper::setMailConfig();
-
-        $status = Password::sendResetLink(
-            $request->only( 'email' )
-        );
-
-        $notification = __( 'A password reset link has been send to your mail' );
-        $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
     }
 }

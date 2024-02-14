@@ -26,18 +26,17 @@ class AuthenticatedSessionController extends Controller {
      * Handle an incoming authentication request.
      */
     public function store( Request $request ): RedirectResponse {
-        $setting = Cache::get( 'setting' );
+
+        // dd($request->all());
 
         $rules = [
             'email'                => 'required|email',
             'password'             => 'required',
-            'g-recaptcha-response' => $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : '',
         ];
 
         $customMessages = [
             'email.required'                => __( 'Email is required' ),
             'password.required'             => __( 'Password is required' ),
-            'g-recaptcha-response.required' => __( 'Please complete the recaptcha to submit the form' ),
         ];
         $this->validate( $request, $rules, $customMessages );
 
@@ -63,7 +62,7 @@ class AuthenticatedSessionController extends Controller {
                             $notification = __( 'Login Successfully' );
                             $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
 
-                            return redirect()->intended( route( 'dashboard' ) )->with( $notification );
+                            return redirect()->intended( route( 'userDashboard' ) )->with( $notification );
                         }
                     } else {
                         $notification = __( 'Invalid Password' );
