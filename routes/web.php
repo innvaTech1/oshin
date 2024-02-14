@@ -1,10 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('frontend.home');
@@ -57,13 +56,10 @@ Route::get('/vendor/name', function () {
     return view('frontend.seller.vendorDetails');
 })->name('vendorDetails');
 
-
-
 // USER
 Route::get('/dashboard', function () {
     return view('frontend.dashboard.dashboard');
 })->name('userDashboard');
-
 
 // ADMIN
 Route::get('/admin/dashboard', function () {
@@ -79,8 +75,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('set-language', [DashboardController::class, 'setLanguage'])->name('set-language');
 
-
-
 Route::post('apply-coupon', [PaymentController::class, 'apply_coupon'])->name('apply-coupon');
 
 /**payment related route start */
@@ -92,26 +86,15 @@ Route::get('pay-via-paypal', [PaymentController::class, 'pay_via_paypal'])->name
 
 Route::post('pay-via-bank', [PaymentController::class, 'pay_via_bank'])->name('pay-via-bank');
 
-
 Route::post('pay-via-razorpay', [PaymentController::class, 'pay_via_razorpay'])->name('pay-via-razorpay');
 
 Route::get('pay-via-mollie', [PaymentController::class, 'pay_via_mollie'])->name('pay-via-mollie');
 Route::get('pay-via-instamojo', [PaymentController::class, 'pay_via_instamojo'])->name('pay-via-instamojo');
 
-
 Route::get('/payment-addon-success', [PaymentController::class, 'payment_addon_success'])->name('payment-addon-success');
 Route::get('/payment-addon-faild', [PaymentController::class, 'payment_addon_faild'])->name('payment-addon-faild');
 
-
 /**payment related route end */
-
-
-
-
-
-
-
-
 
 require __DIR__ . '/auth.php';
 

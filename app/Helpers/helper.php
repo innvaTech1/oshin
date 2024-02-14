@@ -8,15 +8,27 @@ use Modules\Language\app\Models\Language;
 function file_upload($request_file, $old_file, $file_path)
 {
     $extention = $request_file->getClientOriginalExtension();
-    $file_name = 'wsus-img' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
+    $file_name = 'ecommerce-img' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
     $file_name = $file_path . $file_name;
-    $request_file->move(public_path($file_path), $file_name);
+    $request_file->move(public_path('uploads/' . $file_path), $file_name);
 
     if ($old_file) {
-        if (File::exists(public_path($old_file))) unlink(public_path($old_file));
+        if (File::exists(public_path($old_file))) {
+            unlink(public_path($old_file));
+        }
+
     }
 
     return $file_name;
+}
+if (!(function_exists('file_delete'))) {
+    function file_delete($file_path)
+    {
+        if (File::exists(public_path($file_path))) {
+            unlink(public_path($file_path));
+        }
+    }
+
 }
 // file upload method
 if (!function_exists('allLanguages')) {
@@ -47,7 +59,8 @@ function admin_lang()
 }
 
 // calculate currency
-function currency($price){
+function currency($price)
+{
     // currency information will be loaded by Session value
 
     // $currency_icon = Session::get('currency_icon');
@@ -63,16 +76,16 @@ function currency($price){
     $price = $price * $currency_rate;
     $price = number_format($price, 2, '.', ',');
 
-    if($currency_position == 'before_price'){
-        $price = $currency_icon.$price;
-    }elseif($currency_position == 'before_price_with_space'){
-        $price = $currency_icon.' '.$price;
-    }elseif($currency_position == 'after_price'){
-        $price = $price.$currency_icon;
-    }elseif($currency_position == 'after_price_with_space'){
-        $price = $price.' '.$currency_icon;
-    }else{
-        $price = $currency_icon.$price;
+    if ($currency_position == 'before_price') {
+        $price = $currency_icon . $price;
+    } elseif ($currency_position == 'before_price_with_space') {
+        $price = $currency_icon . ' ' . $price;
+    } elseif ($currency_position == 'after_price') {
+        $price = $price . $currency_icon;
+    } elseif ($currency_position == 'after_price_with_space') {
+        $price = $price . ' ' . $currency_icon;
+    } else {
+        $price = $currency_icon . $price;
     }
 
     return $price;
@@ -81,14 +94,27 @@ function currency($price){
 // calculate currency
 
 // custom decode and encode input value
-function html_decode($text){
-    $after_decode =  htmlspecialchars_decode($text, ENT_QUOTES);
+function html_decode($text)
+{
+    $after_decode = htmlspecialchars_decode($text, ENT_QUOTES);
     return $after_decode;
 }
 
 if (!function_exists('checkAdminHasPermission')) {
-    function checkAdminHasPermission($permission):bool
+    function checkAdminHasPermission($permission): bool
     {
         return Auth::guard('admin')->user()->can($permission) ? true : false;
+    }
+}
+
+if (!function_exists('slugCreate')) {
+    function slugCreate($name, $lang_code = null)
+    {
+        if ($lang_code) {
+            $slug = strtolower(str_replace(' ', '-', $name[$lang_code]));
+        } else {
+            $slug = strtolower(str_replace(' ', '-', $name));
+        }
+        return $slug;
     }
 }

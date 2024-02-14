@@ -239,7 +239,7 @@ CREATE TABLE `payment_gateways` (
 INSERT INTO `payment_gateways` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (1, 'razorpay_key', 'rzp_test_K7CipNQYyyMPiS', NULL, '2023-11-09 00:30:28'),
 (2, 'razorpay_secret', 'zSBmNMorJrirOrnDrbOd1ALO', NULL, '2023-11-09 00:30:28'),
-(3, 'razorpay_name', 'WebSolutionUs', NULL, '2023-11-09 00:30:28'),
+(3, 'razorpay_name', 'ecommerceUs', NULL, '2023-11-09 00:30:28'),
 (4, 'razorpay_description', 'This is test payment window', NULL, '2023-11-09 00:30:28'),
 (5, 'razorpay_charge', '5.00', NULL, '2023-11-09 00:30:28'),
 (6, 'razorpay_theme_color', '#6d0ce4', NULL, '2023-11-09 00:30:28'),
@@ -248,7 +248,7 @@ INSERT INTO `payment_gateways` (`id`, `key`, `value`, `created_at`, `updated_at`
 (9, 'razorpay_image', 'uploads/website-images/file-2023-11-09-04-10-24-5782.jpg', NULL, '2023-11-08 22:10:24'),
 (10, 'flutterwave_public_key', 'FLWPUBK_TEST-5760e3ff9888aa1ab5e5cd1ec3f99cb1-X', NULL, '2023-11-09 04:20:49'),
 (11, 'flutterwave_secret_key', 'FLWSECK_TEST-81cb5da016d0a51f7329d4a8057e766d-X', NULL, '2023-11-09 04:20:50'),
-(12, 'flutterwave_app_name', 'WebSolutionUs', NULL, '2023-11-09 04:20:50'),
+(12, 'flutterwave_app_name', 'ecommerceUs', NULL, '2023-11-09 04:20:50'),
 (13, 'flutterwave_charge', '1', NULL, '2023-11-09 04:20:49'),
 (14, 'flutterwave_currency_id', '3', NULL, '2023-11-09 04:20:49'),
 (15, 'flutterwave_status', 'active', NULL, '2023-11-09 04:20:50'),
@@ -333,7 +333,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'app_name', 'WebSolutionUs', NULL, '2023-11-06 02:50:59'),
+(1, 'app_name', 'ecommerceUs', NULL, '2023-11-06 02:50:59'),
 (2, 'logo', 'uploads/website-images/avatar-2023-11-06-05-56-36-9968.png', NULL, '2023-11-05 23:56:36'),
 (5, 'timezone', 'Asia/Dhaka', NULL, '2023-11-06 02:50:59'),
 (6, 'favicon', 'uploads/website-images/avatar-2023-11-06-05-57-37-1791.png', NULL, '2023-11-05 23:57:37'),
@@ -373,7 +373,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (40, 'mail_password', 'mail password', NULL, '2023-11-06 05:25:34'),
 (41, 'mail_port', '587', NULL, '2023-11-06 05:25:34'),
 (42, 'mail_encryption', 'ssl', NULL, '2023-11-06 05:25:34'),
-(43, 'mail_sender_name', 'WebSolutionUs', NULL, '2023-11-06 05:25:34');
+(43, 'mail_sender_name', 'ecommerceUs', NULL, '2023-11-06 05:25:34');
 
 -- --------------------------------------------------------
 

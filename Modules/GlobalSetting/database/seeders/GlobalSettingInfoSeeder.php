@@ -13,10 +13,10 @@ class GlobalSettingInfoSeeder extends Seeder
     public function run(): void
     {
         $setting_data = [
-            "app_name" => "WebSolutionUs",
-            "logo" => "websolution-logo.jpg",
+            "app_name" => "ecommerceUs",
+            "logo" => "ecommerce-logo.jpg",
             "timezone" => "Asia/Dhaka",
-            "favicon" => "websolution-favicon.jpg",
+            "favicon" => "ecommerce-favicon.jpg",
             "cookie_status" => "active",
             "border" => "normal",
             "corners" => "large",
@@ -53,7 +53,7 @@ class GlobalSettingInfoSeeder extends Seeder
             "mail_password" => "589852aa28",
             "mail_port" => "587",
             "mail_encryption" => "ssl",
-            "mail_sender_name" => "WebSolutionUs",
+            "mail_sender_name" => "ecommerceUs",
             "contact_message_receiver_mail" => "receiver@gmail.com",
             "pusher_app_id" => "pusher_app_id",
             "pusher_app_key" => "pusher_app_key",

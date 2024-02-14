@@ -9,7 +9,6 @@ use Modules\Language\app\Jobs\{
     DeleteTranslationDataJob,
     UpdateTranslationCodeJob
 };
-use Modules\Language\App\Traits\TranslateableModelsTrait;
 
 trait SyncModelsTrait
 {
