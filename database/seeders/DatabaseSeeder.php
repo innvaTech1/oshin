@@ -4,15 +4,15 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Modules\MenuBuilder\database\seeders\MenuBuilderDatabaseSeeder;
-use Modules\PageBuilder\database\seeders\PageBuilderDatabaseSeeder;
-use Modules\GlobalSetting\database\seeders\GlobalSettingInfoSeeder;
+use Modules\BasicPayment\database\seeders\BasicPaymentInfoSeeder;
+use Modules\Currency\database\seeders\CurrencySeeder;
 use Modules\GlobalSetting\database\seeders\CustomPaginationSeeder;
 use Modules\GlobalSetting\database\seeders\EmailTemplateSeeder;
+use Modules\GlobalSetting\database\seeders\GlobalSettingInfoSeeder;
 use Modules\GlobalSetting\database\seeders\SeoInfoSeeder;
-use Modules\BasicPayment\database\seeders\BasicPaymentInfoSeeder;
 use Modules\Language\database\seeders\LanguageSeeder;
-use Modules\Currency\database\seeders\CurrencySeeder;
+use Modules\MenuBuilder\database\seeders\MenuBuilderDatabaseSeeder;
+use Modules\PageBuilder\database\seeders\PageBuilderDatabaseSeeder;
 use Modules\PaymentGateway\database\seeders\PaymentGatewaySeeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,7 +34,9 @@ class DatabaseSeeder extends Seeder
             PaymentGatewaySeeder::class,
             SeoInfoSeeder::class,
             RolePermissionSeeder::class,
-            AdminInfoSeeder::class
+            AdminInfoSeeder::class,
+            CategorySeeder::class,
+            BrandSeeder::class,
         ]);
     }
 }
