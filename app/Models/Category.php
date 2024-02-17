@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
+
     use HasFactory;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $fillable = [
         'name',
@@ -45,7 +47,7 @@ class Category extends Model
     }
     public function brands()
     {
-        // return $this->belongsToMany(Brand::class);
+        return $this->belongsToMany(Brand::class);
     }
     public function products()
     {

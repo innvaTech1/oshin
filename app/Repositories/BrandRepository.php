@@ -44,14 +44,6 @@ class BrandRepository
 
         $data['featured'] = isset($data['featured']) ? true : false;
         $brand->fill($data)->save();
-        if (isset($data['brand_image'])) {
-            UsedMedia::create([
-                'media_id' => $data['brand_image'],
-                'usable_id' => $brand->id,
-                'usable_type' => get_class($brand),
-                'used_for' => 'brand_image',
-            ]);
-        }
         return true;
     }
     public function find($id)

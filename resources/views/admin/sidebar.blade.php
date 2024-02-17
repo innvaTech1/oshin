@@ -42,6 +42,16 @@
                             {{ __('Unit Type') }}
                         </a>
                     </li>
+                    <li class="{{ Route::is('admin.product.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.product.index') }}">
+                            {{ __('Product List') }}
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('admin.product.create') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.product.create') }}">
+                            {{ __('Add Product') }}
+                        </a>
+                    </li>
                     <li class="{{ Route::is('admin.blogs.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('admin.blogs.index') }}">
                             {{ __('Post List') }}

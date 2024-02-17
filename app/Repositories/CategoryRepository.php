@@ -54,7 +54,8 @@ class CategoryRepository
     }
     public function getAll()
     {
-        return Category::with(['parentCategory', 'brands'])->take(100)->get();
+        // return Category::with(['parentCategory', 'brands'])->take(100)->get();
+        return Category::with(['parentCategory'])->take(100)->get();
     }
     public function getActiveAll()
     {

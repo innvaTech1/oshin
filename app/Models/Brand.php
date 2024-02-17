@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Cache;
 
 class Brand extends Model
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+
     use HasFactory;
 
     protected $fillable = ["name", "logo", "description", "link", "status", "featured", "meta_title", "meta_description", "sort_id", 'total_sale', 'avg_rating', "slug", "created_by", "updated_by",
@@ -54,4 +56,25 @@ class Brand extends Model
     // {
     //     return $this->hasManyThrough(SellerProduct::class, Product::class)->activeSeller();
     // }
+
+    public function categories()
+    {
+        return $this->hasManyDeep(Category::class,
+            [
+                Product::class,
+                CategoryProduct::class,
+            ],
+            [
+                'brand_id', // Foreign key on the "products" table.
+                'category_id', // Foreign key on the "category_product" table.
+                'id', // Local key on the "brands" table.
+            ],
+            [
+                'id', // Local key on the "products" table.
+                'brand_id', // Foreign key on the "category_product" table.
+                'category_id', // Foreign key on the "categories" table.
+            ]
+        );
+    }
+
 }

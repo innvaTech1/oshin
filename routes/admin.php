@@ -36,7 +36,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
         // Product routes
         Route::group(['as.' => 'product', 'prefix' => 'products'], function () {
-            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/', [ProductController::class, 'index'])->name('product.index');
+            Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+            Route::post('/', [ProductController::class, 'store'])->name('product.store');
             Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::get('/{id}/clone', [ProductController::class, 'clone'])->name('clone');
             Route::get('bulk-product-upload', [ProductController::class, 'bulk_product_upload_page'])->name('bulk_product_upload_page');

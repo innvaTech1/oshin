@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Modules\GlobalSetting\app\Models\Setting;
 use Modules\Language\app\Models\Language;
 
 function file_upload($request_file, $old_file, $file_path)
@@ -117,4 +119,64 @@ if (!function_exists('slugCreate')) {
         }
         return $slug;
     }
+}
+if (!function_exists('selling_price')) {
+    function selling_price($amount = 0, $discount_type = 1, $discount_amount = 0)
+    {
+        $discount = 0;
+        if ($discount_type == 0) {
+            $discount = ($amount / 100) * $discount_amount;
+        }if ($discount_type == 1) {
+            $discount = $discount_amount;
+        }
+        $selling_price = $amount - $discount;
+        return $selling_price;
+    }
+}
+if (!function_exists('getDiscountAmount')) {
+    function getDiscountAmount($amount = 0, $discount_type = 1, $discount_amount = 0)
+    {
+        $discount = 0;
+        if ($discount_type == 0) {
+            $discount = ($amount / 100) * $discount_amount;
+        }if ($discount_type == 1) {
+            $discount = $discount_amount;
+        }
+        return $discount;
+    }
+}
+if (!function_exists('activeFileStorage')) {
+    function activeFileStorage()
+    {
+        try {
+            if (Cache::has('file_storage')) {
+                $file_storage = Cache::get('file_storage');
+                return $file_storage;
+            } else {
+                $row = Setting::where('key', 'file_storage')->where('value', 1)->first();
+                if ($row) {
+                    Cache::forget('file_storage');
+                    Cache::rememberForever('file_storage', function () use ($row) {
+                        return $row->type;
+                    });
+                    $file_storage = Cache::get('file_storage');
+                    return $file_storage;
+                } else {
+                    return 'Local';
+                }
+            }
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('productSlug')) {
+    function productSlug($str)
+    {
+        $str = preg_replace("/[~`{}.'\"\!\@\#\$\%\^\&\*\(\)\_\=\+\/\?\>\<\,\[\]\:\;\|\\\]/", "", $str);
+        $str = preg_replace("/[\/_|+ -]+/", '-', $str);
+        return strtolower($str);
+    }
+
 }

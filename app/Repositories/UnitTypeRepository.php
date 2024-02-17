@@ -13,7 +13,7 @@ class UnitTypeRepository
 
     public function getActiveAll()
     {
-        return UnitType::latest()->Active()->get();
+        return UnitType::latest()->where('status', 1)->get();
     }
 
     public function create(array $data)
