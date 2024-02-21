@@ -13,32 +13,33 @@ class Brand extends Model
 
     use HasFactory;
 
-    protected $fillable = ["name", "logo", "description", "link", "status", "featured", "meta_title", "meta_description", "sort_id", 'total_sale', 'avg_rating', "slug", "created_by", "updated_by",
+    protected $fillable = [
+        "name", "logo", "description", "link", "status", "featured", "meta_title", "meta_description", "sort_id", 'total_sale', 'avg_rating', "slug", "created_by", "updated_by",
     ];
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-        static::created(function ($brand) {
-            $brand->created_by = Auth::guard('admin')->user()->id ?? null;
-        });
+    //     static::created(function ($brand) {
+    //         $brand->created_by = Auth::guard('admin')->user()->id ?? null;
+    //     });
 
-        static::updating(function ($brand) {
-            $brand->updated_by = Auth::guard('admin')->user()->id ?? null;
-        });
-        self::created(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-        self::updated(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-        self::deleted(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-    }
+    //     static::updating(function ($brand) {
+    //         $brand->updated_by = Auth::guard('admin')->user()->id ?? null;
+    //     });
+    //     self::created(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    //     self::updated(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    //     self::deleted(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    // }
 
     public function products()
     {
@@ -59,7 +60,8 @@ class Brand extends Model
 
     public function categories()
     {
-        return $this->hasManyDeep(Category::class,
+        return $this->hasManyDeep(
+            Category::class,
             [
                 Product::class,
                 CategoryProduct::class,
@@ -76,5 +78,4 @@ class Brand extends Model
             ]
         );
     }
-
 }

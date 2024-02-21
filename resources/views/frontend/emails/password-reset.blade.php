@@ -119,7 +119,7 @@
                             style="background-color: #f7f7f7;display: flex;align-items: center;justify-content: space-between;width: 100%;">
                             <td class="header-logo" style="padding: 10px 32px;">
                                 <a href="../front-end/index.html" style="display: block; text-align: left;">
-                                    <img src="images/logo.png" class="main-logo" alt="logo">
+                                    <img src="{{ asset('assets/images/logo/3.png') }}" style="width: 100px; height: 80px;" class="main-logo" alt="logo">
                                 </a>
                             </td>
                             <td class="header-menu" style="display: block; padding: 10px 32px;text-align: right;">
@@ -214,7 +214,7 @@
                                     <tr>
                                         <td>
                                             <h4 style="font-size: 19px; font-weight: 700; margin: 0;">Shop For <span
-                                                    class="theme-color">Fastkart</span></h4>
+                                                    class="theme-color">{{ env('APP_NAME') }}</span></h4>
                                         </td>
                                     </tr>
                                 </table>

@@ -10,46 +10,47 @@ use Illuminate\Support\Facades\Cache;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ["product_name", "sku", "slug", 'user_id', "product_type", "unit_type_id", "brand_id", "thumbnail_image_source", "barcode_type", "model_number", "shipping_type", "shipping_cost", "discount_type", "discount", "tax_type", "tax", "pdf", "video_provider", "video_link", "description", 'specification', "minimum_order_qty", 'min_sell_price', 'max_sell_price', 'total_sale', "max_order_qty", "meta_title", "meta_description", "meta_image", 'is_physical', 'is_approved', 'status', 'display_in_details', 'requested_by', "created_by", "updated_by", 'stock_manage', 'avg_rating', 'recent_view',
+    protected $fillable = [
+        "product_name", "sku", "slug", 'user_id', "product_type", "unit_type_id", "brand_id", "thumbnail_image_source", "barcode_type", "model_number", "shipping_type", "shipping_cost", "discount_type", "discount", "tax_type", "tax", "pdf", "video_provider", "video_link", "description", 'specification', "minimum_order_qty", 'min_sell_price', 'max_sell_price', 'total_sale', "max_order_qty", "meta_title", "meta_description", "meta_image", 'is_physical', 'is_approved', 'status', 'display_in_details', 'requested_by', "created_by", "updated_by", 'stock_manage', 'avg_rating', 'recent_view',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::saving(function ($model) {
-            if ($model->created_by == null) {
-                $model->created_by = Auth::guard('admin')->user()->id ?? null;
-            }
-        });
-        static::updating(function ($model) {
-            $model->updated_by = Auth::guard('admin')->user()->id ?? null;
-        });
-        self::creating(function ($model) {
-            $model->slug = $model->createSlug($model->product_name);
-        });
-        self::created(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-        self::updating(function ($model) {
-            $model->slug = $model->createSlug($model->product_name, $model->id);
-        });
-        self::updated(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-        self::deleted(function ($model) {
-            Cache::forget('MegaMenu');
-            Cache::forget('HeaderSection');
-        });
-    }
+    // public static function boot()
+    // {
+    //     parent::boot();
+    //     static::saving(function ($model) {
+    //         if ($model->created_by == null) {
+    //             $model->created_by = Auth::guard('admin')->user()->id ?? null;
+    //         }
+    //     });
+    //     static::updating(function ($model) {
+    //         $model->updated_by = Auth::guard('admin')->user()->id ?? null;
+    //     });
+    //     self::creating(function ($model) {
+    //         $model->slug = $model->createSlug($model->product_name);
+    //     });
+    //     self::created(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    //     self::updating(function ($model) {
+    //         $model->slug = $model->createSlug($model->product_name, $model->id);
+    //     });
+    //     self::updated(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    //     self::deleted(function ($model) {
+    //         Cache::forget('MegaMenu');
+    //         Cache::forget('HeaderSection');
+    //     });
+    // }
     public function unit_type()
     {
         return $this->belongsTo(UnitType::class)->withDefault();
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class)->withPivot('category_id', 'product_id');
+        return $this->belongsToMany(Category::class, 'category_products')->withPivot('category_id', 'product_id');
     }
     private function createSlug($name, $model = null)
     {
@@ -71,6 +72,10 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class, "brand_id")->withDefault();
+    }
+    public function images()
+    {
+        return $this->hasMany(ProductGalaryImage::class, 'product_id');
     }
     public function variations()
     {
@@ -111,4 +116,12 @@ class Product extends Model
         return $this->belongsTo(GstTax::class, 'tax_id', 'id');
     }
 
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class,'product_id');
+    }
+    public function cart()
+    {
+        return $this->hasOne(Cart::class,'product_id');
+    }
 }

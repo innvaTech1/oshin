@@ -131,4 +131,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(SocialiteCredential::class, 'user_id');
     }
+
+    public function wishlistItems()
+    {
+        return $this->hasMany(Wishlist::class,'user_id');
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class,'user_id');
+    }
 }
