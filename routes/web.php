@@ -1,28 +1,42 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\frontend\ProductController;
+use App\Http\Controllers\frontend\WishlistController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/check-email', function () {
+    return view('frontend.emails.password-reset',[
+        'name' => 'John Smith',
+        'token' => 'lorem ipsum dolor sit amet, consectetur adip'
+    ]);
+})->name('home');
 Route::get('/', function () {
     return view('frontend.home');
 })->name('home');
 Route::get('/search', function () {
     return view('frontend.search');
 })->name('search');
-Route::get('/product', function () {
-    return view('frontend.productDetails');
-})->name('productDetails');
+Route::get('/product/{id}/{slug}', [ProductController::class, 'show'])->name('productDetails');
 Route::get('/contactus', function () {
     return view('frontend.contactUs');
 })->name('contactus');
-Route::get('/wishlist', function () {
-    return view('frontend.wishlist');
-})->name('wishlist');
-Route::get('/cart', function () {
-    return view('frontend.cart');
-})->name('cart');
+
+// WISHLIST ROUTES
+Route::get('/wishlist',[WishlistController::class,'index'])->middleware('auth')->name('wishlist');
+Route::post('/wishlist/add',[WishlistController::class,'store'])->middleware('auth')->name('wishlist.add');
+Route::delete('/wishlist/delete/{id}',[WishlistController::class,'destroy'])->middleware('auth')->name('wishlist.delete');
+
+// CART
+Route::get('/cart',[CartController::class,'index'])->middleware('auth')->name('cart.index');
+Route::post('/cart/add',[CartController::class,'store'])->middleware('auth')->name('cart.add');
+Route::delete('/cart/delete/{id}',[CartController::class,'destroy'])->middleware('auth')->name('cart.delete');
+
+
+
 Route::get('/checkout', function () {
     return view('frontend.checkout');
 })->name('checkout');

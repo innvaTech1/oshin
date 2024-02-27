@@ -315,13 +315,14 @@ $(".notifi-wishlist").on("click", function () {
    ==========================*/
 const loaderEl = document.getElementsByClassName("fullpage-loader")[0];
 document.addEventListener("readystatechange", (event) => {
-    const readyState = "complete";
+    const readyState = "interactive";
+
     if (document.readyState == readyState) {
         loaderEl.classList.add("fullpage-loader--invisible");
 
         setTimeout(() => {
             loaderEl.parentNode.removeChild(loaderEl);
-        }, 100);
+        },100);
     }
 });
 

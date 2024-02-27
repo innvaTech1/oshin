@@ -55,7 +55,7 @@
 
                 <div class="col-xxl-2 col-xl-4 col-sm-6">
                     <div class="footer-title">
-                        <h4>About Fastkart</h4>
+                        <h4>About {{ env('APP_NAME') }}</h4>
                     </div>
                     <ul class="footer-list footer-contact mb-sm-0 mb-3">
                         <li>
@@ -146,7 +146,7 @@
                             <a href="javascript:void(0)">
                                 <div class="inform-box flex-start-box">
                                     <i data-feather="map-pin"></i>
-                                    <p>Fastkart Demo Store, Demo store india 345 - 659</p>
+                                    <p>{{ env('APP_NAME') }} Demo Store, Demo store india 345 - 659</p>
                                 </div>
                             </a>
                         </li>
@@ -164,7 +164,7 @@
                             <a href="javascript:void(0)">
                                 <div class="inform-box">
                                     <i data-feather="mail"></i>
-                                    <p>Email Us: Support@Fastkart.com</p>
+                                    <p>Email Us: support@ecom.com</p>
                                 </div>
                             </a>
                         </li>
@@ -512,34 +512,6 @@
     </div>
 </div>
 <!-- Cookie Bar Box End -->
-
-<!-- Items section Start -->
-<div class="button-item">
-    <button class="item-btn btn text-white">
-        <i class="iconly-Bag-2 icli"></i>
-    </button>
-</div>
-<div class="item-section">
-    <button class="close-button">
-        <i class="fas fa-times"></i>
-    </button>
-    <h6>
-        <i class="iconly-Bag-2 icli"></i>
-        <span>5 Items</span>
-    </h6>
-    <ul class="items-image">
-        <li>
-            <img src="../assets/images/veg-3/cate1/1.png" alt="">
-        </li>
-        <li>
-            <img src="../assets/images/veg-3/cate1/2.png" alt="">
-        </li>
-        <li>+3</li>
-    </ul>
-    <button onclick="location.href = 'cart.html';" class="btn item-button btn-sm fw-bold">$ 20.70</button>
-</div>
-<!-- Items section End -->
-
 <!-- Tap to top and theme setting button start -->
 <div class="theme-option">
     <div class="setting-box">
@@ -607,6 +579,17 @@
 <!-- jquery ui-->
 <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
 
+<script>
+    $(document).ready(function() {
+        // Set up CSRF token for jQuery AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+</script>
+
 <!-- Bootstrap js-->
 <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap/popper.min.js') }}"></script>
@@ -625,10 +608,6 @@
 
 <!-- Auto Height Js -->
 <script src="{{ asset('assets/js/auto-height.js') }}"></script>
-
-<!-- Quantity Js -->
-<script src="{{ asset('assets/js/quantity.js') }}"></script>
-<script src="{{ asset('assets/js/quantity-2.js') }}"></script>
 
 <!-- Timer Js -->
 <script src="{{ asset('assets/js/timer1.js') }}"></script>

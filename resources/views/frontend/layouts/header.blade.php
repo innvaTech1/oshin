@@ -16,7 +16,7 @@
             <div class="notification-slider">
                 <div>
                     <div class="timer-notification text-center">
-                        <h6><strong class="me-1">Welcome to Fastkart!</strong>Wrap new offers/gift
+                        <h6><strong class="me-1">Welcome to {{ env('APP_NAME') }}!</strong>Wrap new offers/gift
                             every single day on Weekends.<strong class="ms-1">New Coupon Code: Fast024
                             </strong>
                         </h6>
@@ -46,8 +46,8 @@
                                 </span>
                             </button>
                             <a href="index.html" class="web-logo nav-logo">
-                                <img src="../assets/images/logo/3.png" class="img-fluid blur-up lazyload"
-                                    alt="">
+                                <img src="{{ asset('assets/images/logo/3.png') }}" class="img-fluid blur-up lazyload"
+                                    alt="logo" style="height: 80px">
                             </a>
 
                             <div class="search-full">
@@ -164,14 +164,20 @@
                                         </li>
 
                                         <li class="onhover-dropdown">
-                                            <a href="javascript:void(0)" class="header-icon swap-icon">
-                                                <i class="iconly-Heart icli"></i>
-                                            </a>
-
+                                            @auth
+                                                <a href="{{ route('wishlist') }}" class="header-icon swap-icon">
+                                                    <i class="iconly-Heart icli"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('login') }}" class="header-icon swap-icon">
+                                                    <i class="iconly-Heart icli"></i>
+                                                </a>
+                                            @endauth
                                         </li>
 
+
                                         <li class="onhover-dropdown">
-                                            <a href="cart.html" class="header-icon bag-icon">
+                                            <a href="{{ route('cart.index') }}" class="header-icon bag-icon">
                                                 <small class="badge-number">2</small>
                                                 <i class="iconly-Bag-2 icli"></i>
                                             </a>
@@ -243,7 +249,9 @@
                                                             <i></i>
                                                             <form action="{{ route('logout') }}" method="post">
                                                                 @csrf
-                                                                <button type="submit" class="btn" style="border-color: #0da487; background-color: #0da487; color: white;">Log Out</button>
+                                                                <button type="submit" class="btn"
+                                                                    style="border-color: #0da487; background-color: #0da487; color: white;">Log
+                                                                    Out</button>
 
                                                             </form>
                                                         </li>

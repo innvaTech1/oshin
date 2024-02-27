@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Str;
 
@@ -25,9 +26,7 @@ class AuthenticatedSessionController extends Controller {
     /**
      * Handle an incoming authentication request.
      */
-    public function store( Request $request ): RedirectResponse {
-
-        // dd($request->all());
+    public function store( Request $request )  {
 
         $rules = [
             'email'                => 'required|email',
@@ -62,7 +61,7 @@ class AuthenticatedSessionController extends Controller {
                             $notification = __( 'Login Successfully' );
                             $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
 
-                            return redirect()->intended( route( 'userDashboard' ) )->with( $notification );
+                            return redirect()->intended(Session::get('url.intended', route( 'userDashboard' )))->with( $notification );
                         }
                     } else {
                         $notification = __( 'Invalid Password' );

@@ -124,14 +124,14 @@
                         <tr class="header"
                             style="background-color: #f7f7f7;display: flex;align-items: center;justify-content: space-between;width: 100%;">
                             <td class="header-logo" style="padding: 10px 32px;">
-                                <a href="../front-end/index.html" style="display: block; text-align: left;">
-                                    <img src="images/logo.png" class="main-logo" alt="logo">
+                                <a href="/" style="display: block; text-align: left;">
+                                    <img src="{{ asset('assets/images/logo/3.png') }}" style="width: 100px; height: 80px;" class="main-logo" alt="logo">
                                 </a>
                             </td>
                             <td class="header-menu" style="display: block; padding: 10px 32px;text-align: right;">
                                 <ul>
                                     <li>
-                                        <a href="../front-end/index.html">Home</a>
+                                        <a href="/">Home</a>
                                     </li>
                                     <li>
                                         <a href="../front-end/wishlist.html">Wishlist</a>
@@ -203,7 +203,7 @@
                                     <p
                                         style="font-size: 14px; font-weight: 600; width: 82%; margin: 0 auto; line-height: 1.5; color: #939393; font-family: 'Nunito Sans', sans-serif;">
                                         If you have any question, please email us at <span
-                                            class="theme-color">Fastkart@example.com</span> or vixit our <span
+                                            class="theme-color">{{ env('APP_NAME') }}@example.com</span> or vixit our <span
                                             class="theme-color">FAQs.</span> You can also chat with a real live human
                                         during our operating hours. they can answer questions about account or help you
                                         with your meditation practice.</p>
