@@ -245,7 +245,7 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="row g-sm-4 g-3">
+                                {{-- <div class="row g-sm-4 g-3">
                                     <div class="col-xxl-3 col-lg-6 col-md-4 col-sm-6">
                                         <div class="product-box-3 theme-bg-white h-100">
                                             <div class="product-header">
@@ -664,7 +664,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
@@ -679,7 +679,7 @@
                                     </span>
                                 </div>
 
-                                <div class="order-contain">
+                                {{-- <div class="order-contain">
                                     <div class="order-box dashboard-bg-box">
                                         <div class="order-container">
                                             <div class="order-icon">
@@ -988,7 +988,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
@@ -1595,7 +1595,7 @@
                                     </span>
                                 </div>
 
-                                <div class="download-detail dashboard-bg-box">
+                                {{-- <div class="download-detail dashboard-bg-box">
                                     <form>
                                         <div class="input-group download-form">
                                             <input type="text" class="form-control"
@@ -2126,7 +2126,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 

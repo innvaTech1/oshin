@@ -41,12 +41,12 @@ class CartController extends Controller
         $actionType = $request->input('type');
         $page = $request->input('page') || null;
 
-        if ($quantity > 5 || $quantity < 0) {
+        if ($quantity < 0) {
             $notification = array('messege' => 'Product quantity maximun exceeded.', 'alert-type' => 'error');
             if ($page == 'product_page') {
                 return redirect()->back()->with($notification);
             }
-            return response()->json(['message' => 'Product quantity maximun exceeded.'],400);
+            return response()->json(['message' => 'Product quantity maximun exceeded.'], 400);
         }
         if ($page == 'product_page' && $quantity == 0) {
             $quantity = 1;
@@ -61,25 +61,22 @@ class CartController extends Controller
         // Create or update cart record
         $cart = Cart::updateOrCreate(
             ['user_id' => $userID, 'product_id' => $productId],
-            ['quantity' => $quantity, 'total_amount' => 100]
+            ['quantity' => $quantity, 'total_amount' => rand(100, 400)]
         );
-
-        if ($page == 'product_page') {
-            $notification = array('messege' => 'Product added to cart successfully', 'alert-type' => 'success');
-            return redirect(route('cart.index'))->with($notification);
-        }
 
         if ($quantity == 0) {
             $cart->delete();
             return response()->json(['message' => 'Product was removed from cart.']);
         }
 
-        if ($actionType == 'ADD') {
-            return response()->json(['message' => 'Product added to cart successfully.']);
-        } else if ($actionType == 'INC') {
-            return response()->json(['message' => 'Quantity of the product increased successfully.']);
-        } else {
-            return response()->json(['message' => 'Quantity of the product decresased successfully.']);
+        $product = $cart->getProduct()->first();
+
+        if ($actionType == 'ADD') { //ADD
+            return response()->json(['message' => 'Product added to cart successfully.', 'cart' => $cart, 'product' => $product]);
+        } else if ($actionType == 'INC') {  // INCREASE
+            return response()->json(['message' => 'Quantity of the product increased successfully.', 'cart' => $cart, 'product' => $product]);
+        } else { //DECREASE
+            return response()->json(['message' => 'Quantity of the product decresased successfully.', 'cart' => $cart, 'product' => $product]);
         }
     }
 

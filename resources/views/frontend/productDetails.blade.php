@@ -170,575 +170,542 @@
                                 </div>
 
                                 @if (!$in_cart)
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <div class="note-box product-package">
-                                            <div class="cart_qty qty-box product-qty">
-                                                <div class="input-group">
-                                                    <button type="button" class="qty-right-plus" data-type="plus"
-                                                        data-field="">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                    <input type="hidden" name="page" value="product_page">
-                                                    <input class="form-control input-number qty-input" type="text"
-                                                        name="quantity" value="1">
-                                                    <button type="button" class="qty-left-minus" data-type="minus"
-                                                        data-field="">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
+                                    <div class="note-box product-package">
+                                        <div class="cart_qty qty-box product-qty">
+                                            <div class="input-group">
+                                                <button type="button" class="qty-right-plus" data-type="plus"
+                                                    data-field="">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <input class="form-control input-number qty-input" type="text"
+                                                    name="quantity" value="1">
+                                                <button type="button" class="qty-left-minus" data-type="minus"
+                                                    data-field="">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
                                             </div>
+                                        </div>
 
-                                            <button class="btn btn-md bg-dark cart-button text-white w-100">Add To
-                                                Cart</button>
-                                    </form>
-                            </div>
-                        @else
-                            <div class="note-box product-package">
-                                <button onclick="window.location.href = '{{ route('cart.index') }}'"
-                                    class="btn btn-md bg-dark cart-button text-white w-100">Already In Cart</button>
-                            </div>
-                            @endif
-
-                            <div class="progress-sec">
-                                <div class="left-progressbar">
-                                    <h6>Please hurry! Only 5 left in stock</h6>
-                                    <div role="progressbar" class="progress warning-progress">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                            style="width: 50%;"></div>
+                                        <button id="add-to-cart" class="btn btn-md bg-dark cart-button text-white w-100"
+                                            data-product-id="{{ $product->id }}">Add To
+                                            Cart</button>
                                     </div>
-                                </div>
-                            </div>
+                                @else
+                                    <div class="note-box product-package">
+                                        <button onclick="window.location.href = '{{ route('cart.index') }}'"
+                                            class="btn btn-md bg-dark cart-button text-white w-100">Already In
+                                            Cart</button>
+                                    </div>
+                                @endif
 
-                            <div class="buy-box">
-                                <a href="#" id="add-to-wishlist" data-product-id="{{ $product->id }}">
-                                    <i data-feather="heart" id="heart-icon"
-                                        @if ($is_wishlisted) style="color: red; fill: red;" @endif></i>
-                                    <span>Wishlist</span>
-                                </a>
-                                <a href="compare.html">
-                                    <i data-feather="shuffle"></i>
-                                    <span>Add To Compare</span>
-                                </a>
-                            </div>
-
-                            <div class="pickup-box">
-                                <div class="product-title">
-                                    <h4>Store Information</h4>
-                                </div>
-
-                                <div class="pickup-detail">
-                                    <h4 class="text-content">Lollipop cake chocolate chocolate cake dessert
-                                        jujubes.
-                                        Shortbread sugar plum dessert powder cookie sweet brownie.</h4>
-                                </div>
-
-                                <div class="product-info">
-                                    <ul class="product-info-list product-info-list-2">
-                                        <li>Type : <a href="javascript:void(0)">Black Forest</a></li>
-                                        <li>SKU : <a href="javascript:void(0)">SDFVW65467</a></li>
-                                        <li>MFG : <a href="javascript:void(0)">Jun 4, 2022</a></li>
-                                        <li>Stock : <a href="javascript:void(0)">2 Items Left</a></li>
-                                        <li>Tags : <a href="javascript:void(0)">Cake,</a> <a
-                                                href="javascript:void(0)">Backery</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="payment-option">
-                                <div class="product-title">
-                                    <h4>Guaranteed Safe Checkout</h4>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/1.svg" class="blur-up lazyload"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/2.svg" class="blur-up lazyload"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/3.svg" class="blur-up lazyload"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/4.svg" class="blur-up lazyload"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <img src="../assets/images/product/payment/5.svg" class="blur-up lazyload"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="product-section-box">
-                            <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
-                                        data-bs-target="#description" type="button" role="tab">Description</button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info"
-                                        type="button" role="tab">Additional info</button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="care-tab" data-bs-toggle="tab" data-bs-target="#care"
-                                        type="button" role="tab">Care
-                                        Instructions</button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="review-tab" data-bs-toggle="tab"
-                                        data-bs-target="#review" type="button" role="tab">Review</button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content custom-tab" id="myTabContent">
-                                <div class="tab-pane fade show active" id="description" role="tabpanel">
-                                    <div class="product-description">
-                                        <div class="nav-desh">
-                                            <p>{{ $product->description }}</p>
+                                <div class="progress-sec">
+                                    <div class="left-progressbar">
+                                        <h6>Please hurry! Only 5 left in stock</h6>
+                                        <div role="progressbar" class="progress warning-progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                style="width: 50%;"></div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="info" role="tabpanel">
-                                    <div class="table-responsive">
-                                        <table class="table info-table">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Type</td>
-                                                    <td>{{ $product->product_type == 1 ? 'Single Product' : 'Variant Product' }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Category</td>
-                                                    <td>NEED TO WORK</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Brand</td>
-                                                    <td>{{ $product->brand->name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Model</td>
-                                                    <td>{{ $product->model_number }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Type</td>
-                                                    <td>
-                                                        {{ $product->shipping_type == 1 ? 'Free Shipping' : 'Flat Shipping' }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="buy-box">
+                                    <a href="javascript:void(0)" id="add-to-wishlist"
+                                        data-product-id="{{ $product->id }}">
+                                        <i data-feather="heart" id="heart-icon"
+                                            @if ($is_wishlisted) style="color: red; fill: red;" @endif></i>
+                                        <span>Wishlist</span>
+                                    </a>
+                                    <a href="#">
+                                        <i data-feather="shuffle"></i>
+                                        <span>Add To Compare</span>
+                                    </a>
                                 </div>
 
-                                <div class="tab-pane fade" id="care" role="tabpanel">
-                                    <div class="information-box">
-                                        <ul>
-                                            <li>Store cream cakes in a refrigerator. Fondant cakes should be
-                                                stored in an air conditioned environment.</li>
+                                <div class="pickup-box">
+                                    <div class="product-title">
+                                        <h4>Store Information</h4>
+                                    </div>
 
-                                            <li>Slice and serve the cake at room temperature and make sure
-                                                it is not exposed to heat.</li>
+                                    <div class="pickup-detail">
+                                        <h4 class="text-content">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                                            Vel soluta accusantium doloribus aperiam velit cumque?</h4>
+                                    </div>
 
-                                            <li>Use a serrated knife to cut a fondant cake.</li>
-
-                                            <li>Sculptural elements and figurines may contain wire supports
-                                                or toothpicks or wooden skewers for support.</li>
-
-                                            <li>Please check the placement of these items before serving to
-                                                small children.</li>
-
-                                            <li>The cake should be consumed within 24 hours.</li>
-
-                                            <li>Enjoy your cake!</li>
+                                    <div class="product-info">
+                                        <ul class="product-info-list product-info-list-2">
+                                            <li>Type : <a href="javascript:void(0)">Fashion Wear</a></li>
+                                            <li>SKU : <a href="javascript:void(0)">SDFVW65467</a></li>
+                                            <li>MFG : <a href="javascript:void(0)">Jun 4, 2022</a></li>
+                                            <li>Stock : <a href="javascript:void(0)">2 Items Left</a></li>
+                                            <li>Tags : <a href="javascript:void(0)">men, </a> <a
+                                                    href="javascript:void(0)">women</a></li>
                                         </ul>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="review" role="tabpanel">
-                                    <div class="review-box">
-                                        <div class="row">
-                                            <div class="col-xl-5">
-                                                <div class="product-rating-box">
-                                                    <div class="row">
-                                                        <div class="col-xl-12">
-                                                            <div class="product-main-rating">
-                                                                <h2>3.40
-                                                                    <i data-feather="star"></i>
-                                                                </h2>
+                                <div class="payment-option">
+                                    <div class="product-title">
+                                        <h4>Guaranteed Safe Checkout</h4>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('uploads/0.jpg') }}s="blur-up lazyload"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('uploads/0.jpg') }}s="blur-up lazyload"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('uploads/0.jpg') }}s="blur-up lazyload"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('uploads/0.jpg') }}s="blur-up lazyload"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('uploads/0.jpg') }}s="blur-up lazyload"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 
-                                                                <h5>5 Overall Rating</h5>
+                        <div class="col-12">
+                            <div class="product-section-box">
+                                <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                                            data-bs-target="#description" type="button"
+                                            role="tab">Description</button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="info-tab" data-bs-toggle="tab"
+                                            data-bs-target="#info" type="button" role="tab">Additional info</button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="care-tab" data-bs-toggle="tab"
+                                            data-bs-target="#care" type="button" role="tab">Care
+                                            Instructions</button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
+                                            data-bs-target="#review" type="button" role="tab">Review</button>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content custom-tab" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                                        <div class="product-description">
+                                            <div class="nav-desh">
+                                                <p>{{ $product->description }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="info" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table info-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Type</td>
+                                                        <td>{{ $product->product_type == 1 ? 'Single Product' : 'Variant Product' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Category</td>
+                                                        <td>NEED TO WORK</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Brand</td>
+                                                        <td>{{ $product->brand->name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Model</td>
+                                                        <td>{{ $product->model_number }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Shipping Type</td>
+                                                        <td>
+                                                            {{ $product->shipping_type == 1 ? 'Free Shipping' : 'Flat Shipping' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="care" role="tabpanel">
+                                        <div class="information-box">
+                                            <ul>
+                                                <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus quae
+                                                    dolorum dolor, facilis dolorem officiis maiores doloremque accusantium
+                                                    fugit, suscipit blanditiis! Impedit ratione dolorum, vitae nostrum
+                                                    veritatis aliquam velit mollitia!</li>
+                                                <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus quae
+                                                    dolorum dolor, facilis dolorem officiis maiores doloremque accusantium
+                                                    fugit, suscipit blanditiis! Impedit ratione dolorum, vitae nostrum
+                                                    veritatis aliquam velit mollitia!</li>
+                                                <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus quae
+                                                    dolorum dolor, facilis dolorem officiis maiores doloremque accusantium
+                                                    fugit, suscipit blanditiis! Impedit ratione dolorum, vitae nostrum
+                                                    veritatis aliquam velit mollitia!</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="review" role="tabpanel">
+                                        <div class="review-box">
+                                            <div class="row">
+                                                <div class="col-xl-5">
+                                                    <div class="product-rating-box">
+                                                        <div class="row">
+                                                            <div class="col-xl-12">
+                                                                <div class="product-main-rating">
+                                                                    <h2>3.40
+                                                                        <i data-feather="star"></i>
+                                                                    </h2>
+
+                                                                    <h5>5 Overall Rating</h5>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-xl-12">
-                                                            <ul class="product-rating-list">
-                                                                <li>
-                                                                    <div class="rating-product">
-                                                                        <h5>5<i data-feather="star"></i></h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" style="width: 40%;">
+                                                            <div class="col-xl-12">
+                                                                <ul class="product-rating-list">
+                                                                    <li>
+                                                                        <div class="rating-product">
+                                                                            <h5>5<i data-feather="star"></i></h5>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar"
+                                                                                    style="width: 40%;">
+                                                                                </div>
                                                                             </div>
+                                                                            <h5 class="total">2</h5>
                                                                         </div>
-                                                                        <h5 class="total">2</h5>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="rating-product">
-                                                                        <h5>4<i data-feather="star"></i></h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" style="width: 20%;">
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="rating-product">
+                                                                            <h5>4<i data-feather="star"></i></h5>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar"
+                                                                                    style="width: 20%;">
+                                                                                </div>
                                                                             </div>
+                                                                            <h5 class="total">1</h5>
                                                                         </div>
-                                                                        <h5 class="total">1</h5>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="rating-product">
-                                                                        <h5>3<i data-feather="star"></i></h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" style="width: 0%;">
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="rating-product">
+                                                                            <h5>3<i data-feather="star"></i></h5>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar"
+                                                                                    style="width: 0%;">
+                                                                                </div>
                                                                             </div>
+                                                                            <h5 class="total">0</h5>
                                                                         </div>
-                                                                        <h5 class="total">0</h5>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="rating-product">
-                                                                        <h5>2<i data-feather="star"></i></h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" style="width: 20%;">
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="rating-product">
+                                                                            <h5>2<i data-feather="star"></i></h5>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar"
+                                                                                    style="width: 20%;">
+                                                                                </div>
                                                                             </div>
+                                                                            <h5 class="total">1</h5>
                                                                         </div>
-                                                                        <h5 class="total">1</h5>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="rating-product">
-                                                                        <h5>1<i data-feather="star"></i></h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" style="width: 20%;">
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="rating-product">
+                                                                            <h5>1<i data-feather="star"></i></h5>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar"
+                                                                                    style="width: 20%;">
+                                                                                </div>
                                                                             </div>
+                                                                            <h5 class="total">1</h5>
                                                                         </div>
-                                                                        <h5 class="total">1</h5>
-                                                                    </div>
-                                                                </li>
+                                                                    </li>
 
-                                                            </ul>
+                                                                </ul>
 
-                                                            <div class="review-title-2">
-                                                                <h4 class="fw-bold">Review this product</h4>
-                                                                <p>Let other customers know what you think</p>
-                                                                <button class="btn" type="button"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#writereview">Write a
-                                                                    review</button>
+                                                                <div class="review-title-2">
+                                                                    <h4 class="fw-bold">Review this product</h4>
+                                                                    <p>Let other customers know what you think</p>
+                                                                    <button class="btn" type="button"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#writereview">Write a
+                                                                        review</button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-xl-7">
-                                                <div class="review-people">
-                                                    <ul class="review-list">
-                                                        <li>
-                                                            <div class="people-box">
-                                                                <div>
-                                                                    <div class="people-image people-text">
-                                                                        <img alt="user" class="img-fluid "
-                                                                            src="../assets/images/review/1.jpg">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="people-comment">
-                                                                    <div class="people-name"><a href="javascript:void(0)"
-                                                                            class="name">Jack Doe</a>
-                                                                        <div class="date-time">
-                                                                            <h6 class="text-content"> 29 Sep
-                                                                                2023
-                                                                                06:40:PM
-                                                                            </h6>
-                                                                            <div class="product-rating">
-                                                                                <ul class="rating">
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"></i>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="reply">
-                                                                        <p>Avoid this product. The quality is
-                                                                            terrible, and
-                                                                            it started falling apart almost
-                                                                            immediately. I
-                                                                            wish I had read more reviews before
-                                                                            buying.
-                                                                            Lesson learned.</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="people-box">
-                                                                <div>
-                                                                    <div class="people-image people-text">
-                                                                        <img alt="user" class="img-fluid "
-                                                                            src="../assets/images/review/2.jpg">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="people-comment">
-                                                                    <div class="people-name"><a href="javascript:void(0)"
-                                                                            class="name">Jessica
-                                                                            Miller</a>
-                                                                        <div class="date-time">
-                                                                            <h6 class="text-content"> 29 Sep
-                                                                                2023
-                                                                                06:34:PM
-                                                                            </h6>
-                                                                            <div class="product-rating">
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                    </ul>
+                                                <div class="col-xl-7">
+                                                    <div class="review-people">
+                                                        <ul class="review-list">
+                                                            <li>
+                                                                <div class="people-box">
+                                                                    <div>
+                                                                        <div class="people-image people-text">
+                                                                            <img alt="user" class="img-fluid "
+                                                                                src="{{ asset('uploads/0.jpg') }}                                                                   </div>
+                                                                    <div class="people-comment">
+                                                                            <div class="people-name"><a
+                                                                                    href="javascript:void(0)"
+                                                                                    class="name">Jack Doe</a>
+                                                                                <div class="date-time">
+                                                                                    <h6 class="text-content"> 29 Sep
+                                                                                        2023
+                                                                                        06:40:PM
+                                                                                    </h6>
+                                                                                    <div class="product-rating">
+                                                                                        <ul class="rating">
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"></i>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="reply">
-                                                                        <p>Honestly, I regret buying this item.
-                                                                            The
-                                                                            quality
-                                                                            is subpar, and it feels like a waste
-                                                                            of
-                                                                            money. I
-                                                                            wouldn't recommend it to anyone.</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="people-box">
-                                                                <div>
-                                                                    <div class="people-image people-text">
-                                                                        <img alt="user" class="img-fluid "
-                                                                            src="../assets/images/review/3.jpg">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="people-comment">
-                                                                    <div class="people-name"><a href="javascript:void(0)"
-                                                                            class="name">Rome Doe</a>
-                                                                        <div class="date-time">
-                                                                            <h6 class="text-content"> 29 Sep
-                                                                                2023
-                                                                                06:18:PM
-                                                                            </h6>
-                                                                            <div class="product-rating">
-                                                                                <ul class="rating">
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"></i>
-                                                                                    </li>
-                                                                                </ul>
+                                                                            <div class="reply">
+                                                                                <p>Lorem ipsum dolor sit amet consectetur
+                                                                                    adipisicing elit. Nisi, est!</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="reply">
-                                                                        <p>I am extremely satisfied with this
-                                                                            purchase. The
-                                                                            item arrived promptly, and the
-                                                                            quality
-                                                                            is
-                                                                            exceptional. It's evident that the
-                                                                            makers paid
-                                                                            attention to detail. Overall, a
-                                                                            fantastic buy!
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="people-box">
-                                                                <div>
-                                                                    <div class="people-image people-text">
-                                                                        <img alt="user" class="img-fluid "
-                                                                            src="../assets/images/review/4.jpg">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="people-comment">
-                                                                    <div class="people-name"><a href="javascript:void(0)"
-                                                                            class="name">Sarah
-                                                                            Davis</a>
-                                                                        <div class="date-time">
-                                                                            <h6 class="text-content"> 29 Sep
-                                                                                2023
-                                                                                05:58:PM
-                                                                            </h6>
-                                                                            <div class="product-rating">
-                                                                                <ul class="rating">
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"></i>
-                                                                                    </li>
-                                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <div class="people-box">
+                                                                    <div>
+                                                                        <div class="people-image people-text">
+                                                                            <img alt="user" class="img-fluid "
+                                                                                src="{{ asset('uploads/0.jpg') }}                                                                   </div>
+                                                                    <div class="people-comment">
+                                                                            <div class="people-name"><a
+                                                                                    href="javascript:void(0)"
+                                                                                    class="name">Jessica
+                                                                                    Miller</a>
+                                                                                <div class="date-time">
+                                                                                    <h6 class="text-content"> 29 Sep
+                                                                                        2023
+                                                                                        06:34:PM
+                                                                                    </h6>
+                                                                                    <div class="product-rating">
+                                                                                        <div class="product-rating">
+                                                                                            <ul class="rating">
+                                                                                                <li>
+                                                                                                    <i data-feather="star"
+                                                                                                        class="fill"></i>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <i data-feather="star"
+                                                                                                        class="fill"></i>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <i data-feather="star"
+                                                                                                        class="fill"></i>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <i data-feather="star"
+                                                                                                        class="fill"></i>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <i
+                                                                                                        data-feather="star"></i>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="reply">
+                                                                                <p>Lorem ipsum dolor sit amet consectetur
+                                                                                    adipisicing elit. Ut, tempora!.</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="reply">
-                                                                        <p>I am genuinely delighted with this
-                                                                            item.
-                                                                            It's a
-                                                                            total winner! The quality is superb,
-                                                                            and
-                                                                            it has
-                                                                            added so much convenience to my
-                                                                            daily
-                                                                            routine.
-                                                                            Highly satisfied customer!</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="people-box">
-                                                                <div>
-                                                                    <div class="people-image people-text">
-                                                                        <img alt="user" class="img-fluid "
-                                                                            src="../assets/images/review/5.jpg">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="people-comment">
-                                                                    <div class="people-name"><a href="javascript:void(0)"
-                                                                            class="name">John Doe</a>
-                                                                        <div class="date-time">
-                                                                            <h6 class="text-content"> 29 Sep
-                                                                                2023
-                                                                                05:22:PM
-                                                                            </h6>
-                                                                            <div class="product-rating">
-                                                                                <ul class="rating">
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"
-                                                                                            class="fill"></i>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <i data-feather="star"></i>
-                                                                                    </li>
-                                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <div class="people-box">
+                                                                    <div>
+                                                                        <div class="people-image people-text">
+                                                                            <img alt="user" class="img-fluid "
+                                                                                src="{{ asset('uploads/0.jpg') }}                                                                   </div>
+                                                                    <div class="people-comment">
+                                                                            <div class="people-name"><a
+                                                                                    href="javascript:void(0)"
+                                                                                    class="name">Rome Doe</a>
+                                                                                <div class="date-time">
+                                                                                    <h6 class="text-content"> 29 Sep
+                                                                                        2023
+                                                                                        06:18:PM
+                                                                                    </h6>
+                                                                                    <div class="product-rating">
+                                                                                        <ul class="rating">
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"></i>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="reply">
+                                                                                <p>
+                                                                                    Lorem ipsum dolor sit amet, consectetur
+                                                                                    adipisicing elit. Nihil, fuga.
+                                                                                </p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="reply">
-                                                                        <p>Very impressed with this purchase.
-                                                                            The
-                                                                            item is of
-                                                                            excellent quality, and it has
-                                                                            exceeded
-                                                                            my
-                                                                            expectations.</p>
+                                                            </li>
+                                                            <li>
+                                                                <div class="people-box">
+                                                                    <div>
+                                                                        <div class="people-image people-text">
+                                                                            <img alt="user" class="img-fluid "
+                                                                                src="{{ asset('uploads/0.jpg') }}                                                                   </div>
+                                                                    <div class="people-comment">
+                                                                            <div class="people-name"><a
+                                                                                    href="javascript:void(0)"
+                                                                                    class="name">Sarah
+                                                                                    Davis</a>
+                                                                                <div class="date-time">
+                                                                                    <h6 class="text-content"> 29 Sep
+                                                                                        2023
+                                                                                        05:58:PM
+                                                                                    </h6>
+                                                                                    <div class="product-rating">
+                                                                                        <ul class="rating">
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"></i>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="reply">
+                                                                                <p>Lorem, ipsum dolor sit amet consectetur
+                                                                                    adipisicing elit. Iusto delectus iure
+                                                                                    aut non? Nesciunt, quasi.</p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
+                                                            </li>
+                                                            <li>
+                                                                <div class="people-box">
+                                                                    <div>
+                                                                        <div class="people-image people-text">
+                                                                            <img alt="user" class="img-fluid "
+                                                                                src="{{ asset('uploads/0.jpg') }}                                                                   </div>
+                                                                    <div class="people-comment">
+                                                                            <div class="people-name"><a
+                                                                                    href="javascript:void(0)"
+                                                                                    class="name">John Doe</a>
+                                                                                <div class="date-time">
+                                                                                    <h6 class="text-content"> 29 Sep
+                                                                                        2023
+                                                                                        05:22:PM
+                                                                                    </h6>
+                                                                                    <div class="product-rating">
+                                                                                        <ul class="rating">
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"
+                                                                                                    class="fill"></i>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <i data-feather="star"></i>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="reply">
+                                                                                <p>Lorem ipsum dolor sit amet consectetur,
+                                                                                    adipisicing elit. In, harum!</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -748,179 +715,125 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xxl-3 col-xl-4 col-lg-5 d-none d-lg-block wow fadeInUp">
-                <div class="right-sidebar-box">
-                    <div class="vendor-box">
-                        <div class="vendor-contain">
-                            <div class="vendor-image">
-                                <img src="../assets/images/product/vendor.png" class="blur-up lazyload" alt="">
-                            </div>
-
-                            <div class="vendor-name">
-                                <h5 class="fw-500">Noodles Co.</h5>
-
-                                <div class="product-rating mt-1">
-                                    <ul class="rating">
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star"></i>
-                                        </li>
-                                    </ul>
-                                    <span>(36 Reviews)</span>
+                <div class="col-xxl-3 col-xl-4 col-lg-5 d-none d-lg-block wow fadeInUp">
+                    <div class="right-sidebar-box">
+                        <div class="vendor-box">
+                            <div class="vendor-contain">
+                                <div class="vendor-image">
+                                    <img src="{{ asset('uploads/0.jpg') }}-up lazyload" alt="">
                                 </div>
 
+                                <div class="vendor-name">
+                                    <h5 class="fw-500">Fashion Co.</h5>
+
+                                    <div class="product-rating mt-1">
+                                        <ul class="rating">
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star"></i>
+                                            </li>
+                                        </ul>
+                                        <span>(36 Reviews)</span>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
 
-                        <p class="vendor-detail">Noodles & Company is an American fast-casual
-                            restaurant that offers international and American noodle dishes and pasta.</p>
+                            <p class="vendor-detail">Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
+                                odio officiis delectus magnam perspiciatis explicabo pariatur facere mollitia veniam
+                                provident?</p>
 
-                        <div class="vendor-list">
-                            <ul>
-                                <li>
-                                    <div class="address-contact">
-                                        <i data-feather="map-pin"></i>
-                                        <h5>Address: <span class="text-content">1288 Franklin Avenue</span>
-                                        </h5>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="address-contact">
-                                        <i data-feather="headphones"></i>
-                                        <h5>Contact Seller: <span class="text-content">(+1)-123-456-789</span>
-                                        </h5>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Trending Product -->
-                    {{-- <div class="pt-25">
-                            <div class="category-menu">
-                                <h3>Trending Products</h3>
-
-                                <ul class="product-list product-right-sidebar border-0 p-0">
+                            <div class="vendor-list">
+                                <ul>
                                     <li>
-                                        <div class="offer-product">
-                                            <a href="product-left-thumbnail.html" class="offer-image">
-                                                <img src="../assets/images/vegetable/product/23.png"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="offer-detail">
-                                                <div>
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h6 class="name">Meatigo Premium Goat Curry</h6>
-                                                    </a>
-                                                    <span>450 G</span>
-                                                    <h6 class="price theme-color">$ 70.00</h6>
-                                                </div>
-                                            </div>
+                                        <div class="address-contact">
+                                            <i data-feather="map-pin"></i>
+                                            <h5>Address: <span class="text-content">1288 Demo Avenue</span>
+                                            </h5>
                                         </div>
                                     </li>
 
                                     <li>
-                                        <div class="offer-product">
-                                            <a href="product-left-thumbnail.html" class="offer-image">
-                                                <img src="../assets/images/vegetable/product/24.png"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="offer-detail">
-                                                <div>
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h6 class="name">Dates Medjoul Premium Imported</h6>
-                                                    </a>
-                                                    <span>450 G</span>
-                                                    <h6 class="price theme-color">$ 40.00</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="offer-product">
-                                            <a href="product-left-thumbnail.html" class="offer-image">
-                                                <img src="../assets/images/vegetable/product/25.png"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="offer-detail">
-                                                <div>
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h6 class="name">Good Life Walnut Kernels</h6>
-                                                    </a>
-                                                    <span>200 G</span>
-                                                    <h6 class="price theme-color">$ 52.00</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="mb-0">
-                                        <div class="offer-product">
-                                            <a href="product-left-thumbnail.html" class="offer-image">
-                                                <img src="../assets/images/vegetable/product/26.png"
-                                                    class="blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="offer-detail">
-                                                <div>
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h6 class="name">Apple Red Premium Imported</h6>
-                                                    </a>
-                                                    <span>1 KG</span>
-                                                    <h6 class="price theme-color">$ 80.00</h6>
-                                                </div>
-                                            </div>
+                                        <div class="address-contact">
+                                            <i data-feather="headphones"></i>
+                                            <h5>Contact Seller: <span class="text-content">(+1)-123-456-789</span>
+                                            </h5>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
-                        </div> --}}
+                        </div>
 
-                    <!-- Banner Section -->
-                    <div class="ratio_156 pt-25">
-                        <div class="home-contain">
-                            <img src="../assets/images/vegetable/banner/8.jpg" class="bg-img blur-up lazyload"
-                                alt="">
-                            <div class="home-detail p-top-left home-p-medium">
-                                <div>
-                                    <h6 class="text-yellow home-banner">Seafood</h6>
-                                    <h3 class="text-uppercase fw-normal"><span class="theme-color fw-bold">Freshes</span>
-                                        Products</h3>
-                                    <h3 class="fw-light">every hour</h3>
-                                    <button onclick="location.href = 'shop-left-sidebar.html';"
-                                        class="btn btn-animation btn-md fw-bold mend-auto">Shop Now <i
-                                            class="fa-solid fa-arrow-right icon"></i></button>
+                        <!-- Trending Product -->
+                        <div class="pt-25">
+                            <div class="category-menu">
+                                <h3>Trending Products</h3>
+
+                                <ul class="product-list product-right-sidebar border-0 p-0">
+                                    @foreach ([1, 2, 3, 4] as $index)
+                                        <li>
+                                            <div class="offer-product">
+                                                <a href="#" class="offer-image">
+                                                    <img src="{{ asset('uploads/' . $index . '.jpg') }}"
+                                                        class="img-fluid blur-up lazyload" alt="">
+                                                </a>
+
+                                                <div class="offer-detail">
+                                                    <div>
+                                                        <a href="#">
+                                                            <h6 class="name">Lorem ipsum dolor sit amet.</h6>
+                                                        </a>
+                                                        <span>450 G</span>
+                                                        <h6 class="price theme-color">$ 70.00</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Banner Section -->
+                        <div class="ratio_156 pt-25">
+                            <div class="home-contain">
+                                <img src="{{ asset('uploads/0.jpg') }}" class="bg-img blur-up lazyload" alt="">
+                                <div class="home-detail p-top-left home-p-medium">
+                                    <div>
+                                        <h6 class="text-yellow home-banner">Fashion</h6>
+                                        <h3 class="text-uppercase fw-normal"><span
+                                                class="theme-color fw-bold">Cool</span>
+                                            Products</h3>
+                                        <h3 class="fw-light">every hour</h3>
+                                        <button onclick="location.href = 'shop-left-sidebar.html';"
+                                            class="btn btn-animation btn-md fw-bold mend-auto">Shop Now <i
+                                                class="fa-solid fa-arrow-right icon"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
     <!-- Product Left Sidebar End -->
 
     <!-- Related Product Section Start -->
-    {{-- <section class="product-list-section section-b-space">
+    <section class="product-list-section section-b-space">
         <div class="container-fluid-lg">
             <div class="title">
                 <h2>Related Products</h2>
@@ -937,9 +850,9 @@
                             <div class="product-box-3 wow fadeInUp">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left.htm">
-                                            <img src="../assets/images/cake/product/11.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/11.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -951,13 +864,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -967,9 +880,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Cake</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Chocolate Chip Cookies 250 g</h5>
+                                        <span class="span-name">Lorem, ipsum.</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -991,7 +904,7 @@
                                             </ul>
                                             <span>(5.0)</span>
                                         </div>
-                                        <h6 class="unit">500 G</h6>
+                                        {{-- <h6 class="unit">500 G</h6> --}}
                                         <h5 class="price"><span class="theme-color">$10.25</span> <del>$12.57</del>
                                         </h5>
                                         <div class="add-to-cart-box bg-white">
@@ -1024,9 +937,9 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.05s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/2.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1038,13 +951,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1053,9 +966,9 @@
                                 </div>
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Vegetable</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Fresh Bread and Pastry Flour 200 g</h5>
+                                        <span class="span-name">Lorem, ipsum.</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1077,7 +990,7 @@
                                             </ul>
                                             <span>(4.0)</span>
                                         </div>
-                                        <h6 class="unit">250 ml</h6>
+                                        {{-- <h6 class="unit">250 ml</h6> --}}
                                         <h5 class="price"><span class="theme-color">$08.02</span> <del>$15.15</del>
                                         </h5>
                                         <div class="add-to-cart-box bg-white">
@@ -1110,9 +1023,9 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/3.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1124,13 +1037,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1140,9 +1053,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Vegetable</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Peanut Butter Bite Premium Butter Cookies 600 g</h5>
+                                        <span class="span-name">Lorem, ipsum.</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet consectetur.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1164,7 +1077,7 @@
                                             </ul>
                                             <span>(2.4)</span>
                                         </div>
-                                        <h6 class="unit">350 G</h6>
+                                        {{-- <h6 class="unit">350 G</h6> --}}
                                         <h5 class="price"><span class="theme-color">$04.33</span> <del>$10.36</del>
                                         </h5>
                                         <div class="add-to-cart-box bg-white">
@@ -1197,9 +1110,9 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.15s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/4.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1211,13 +1124,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1227,9 +1140,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Snacks</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">SnackAmor Combo Pack of Jowar Stick and Jowar Chips</h5>
+                                        <span class="span-name">Lorem Ipsum</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet consectetur.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1251,7 +1164,7 @@
                                             </ul>
                                             <span>(5.0)</span>
                                         </div>
-                                        <h6 class="unit">570 G</h6>
+                                        {{-- <h6 class="unit">570 G</h6> --}}
                                         <h5 class="price"><span class="theme-color">$12.52</span> <del>$13.62</del>
                                         </h5>
                                         <div class="add-to-cart-box bg-white">
@@ -1284,9 +1197,9 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.2s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/5.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1298,13 +1211,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1314,9 +1227,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Snacks</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Yumitos Chilli Sprinkled Potato Chips 100 g</h5>
+                                        <span class="span-name">Lorem Ipsum</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet consectetur.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1338,7 +1251,7 @@
                                             </ul>
                                             <span>(3.8)</span>
                                         </div>
-                                        <h6 class="unit">100 G</h6>
+                                        {{-- <h6 class="unit">100 G</h6> --}}
                                         <h5 class="price"><span class="theme-color">$10.25</span> <del>$12.36</del>
                                         </h5>
                                         <div class="add-to-cart-box bg-white">
@@ -1371,9 +1284,9 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.25s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/6.png"
-                                                class="img-fluid blur-up lazyload" alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid blur-up lazyload"
+                                                alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1385,13 +1298,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1401,9 +1314,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Vegetable</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Fantasy Crunchy Choco Chip Cookies</h5>
+                                        <span class="span-name">Lorem, ipsum.</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1426,7 +1339,7 @@
                                             <span>(4.0)</span>
                                         </div>
 
-                                        <h6 class="unit">550 G</h6>
+                                        {{-- <h6 class="unit">550 G</h6> --}}
 
                                         <h5 class="price"><span class="theme-color">$14.25</span> <del>$16.57</del>
                                         </h5>
@@ -1460,9 +1373,8 @@
                             <div class="product-box-3 wow fadeInUp" data-wow-delay="0.3s">
                                 <div class="product-header">
                                     <div class="product-image">
-                                        <a href="product-left-thumbnail.html">
-                                            <img src="../assets/images/cake/product/7.png" class="img-fluid"
-                                                alt="">
+                                        <a href="#">
+                                            <img src="{{ asset('uploads/0.jpg') }}" class="img-fluid" alt="">
                                         </a>
 
                                         <ul class="product-option">
@@ -1474,13 +1386,13 @@
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
+                                                <a href="#">
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
 
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <a href="#" class="notifi-wishlist">
                                                     <i data-feather="heart"></i>
                                                 </a>
                                             </li>
@@ -1490,9 +1402,9 @@
 
                                 <div class="product-footer">
                                     <div class="product-detail">
-                                        <span class="span-name">Vegetable</span>
-                                        <a href="product-left-thumbnail.html">
-                                            <h5 class="name">Fresh Bread and Pastry Flour 200 g</h5>
+                                        <span class="span-name">Lorem, ipsum.</span>
+                                        <a href="#">
+                                            <h5 class="name">Lorem ipsum dolor sit amet.</h5>
                                         </a>
                                         <div class="product-rating mt-2">
                                             <ul class="rating">
@@ -1515,7 +1427,7 @@
                                             <span>(3.8)</span>
                                         </div>
 
-                                        <h6 class="unit">1 Kg</h6>
+                                        {{-- <h6 class="unit">1 Kg</h6> --}}
 
                                         <h5 class="price"><span class="theme-color">$12.68</span> <del>$14.69</del>
                                         </h5>
@@ -1548,7 +1460,7 @@
                 </div>
             </div>
         </div>
-    </section> --}}
+    </section>
     <!-- Related Product Section End -->
 @endsection
 @section('more-footer')
@@ -1559,20 +1471,19 @@
                 <div class="col-12">
                     <div class="cart-content">
                         <div class="product-image">
-                            <img src="../assets/images/product/category/1.jpg" class="img-fluid blur-up lazyload"
-                                alt="">
+                            <img src="{{ asset('uploads/0.jpg') }}s="img-fluid blur-up lazyload" alt="">
                             <div class="content">
-                                <h5>Creamy Chocolate Cake</h5>
+                                <h5>Lorem ipsum dolor sit amet.</h5>
                                 <h6>$32.96<del class="text-danger">$96.00</del><span>55% off</span></h6>
                             </div>
                         </div>
                         <div class="selection-section">
                             <div class="form-group mb-0">
                                 <select id="input-state" class="form-control form-select">
-                                    <option selected disabled>Choose Weight...</option>
-                                    <option>1/2 KG</option>
-                                    <option>1 KG</option>
-                                    <option>1.5 KG</option>
+                                    <option selected disabled>Choose size...</option>
+                                    <option>SM</option>
+                                    <option>L</option>
+                                    <option>XL</option>
                                 </select>
                             </div>
                             <div class="cart_qty qty-box product-qty m-0">
@@ -1589,7 +1500,7 @@
                             </div>
                         </div>
                         <div class="add-btn">
-                            <a class="btn theme-bg-color text-white wishlist-btn" href="wishlist.html"><i
+                            <a class="btn theme-bg-color text-white wishlist-btn" href="#"><i
                                     class="fa fa-bookmark"></i> Wishlist</a>
                             <a class="btn theme-bg-color text-white" href="cart.html"><i
                                     class="fas fa-shopping-cart"></i> Add To Cart</a>
@@ -1616,45 +1527,44 @@
                         <div class="product-wrapper">
                             <div class="product-image">
                                 <img class="img-fluid" alt="Solid Collared Tshirts"
-                                    src="../assets/images/fashion/product/26.jpg">
-                            </div>
-                            <div class="product-content">
-                                <h5 class="name">Solid Collared Tshirts</h5>
-                                <div class="product-review-rating">
-                                    <div class="product-rating">
-                                        <h6 class="price-number">$16.00</h6>
+                                    src="{{ asset('uploads/0.jpg') }}" />
+                                <div class="product-content">
+                                    <h5 class="name">Lorem ipsum dolor sit amet.</h5>
+                                    <div class="product-review-rating">
+                                        <div class="product-rating">
+                                            <h6 class="price-number">$16.00</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="review-box">
-                            <div class="product-review-rating">
-                                <label>Rating</label>
-                                <div class="product-rating">
-                                    <ul class="rating">
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star" class="fill"></i>
-                                        </li>
-                                        <li>
-                                            <i data-feather="star"></i>
-                                        </li>
-                                    </ul>
+                            <div class="review-box">
+                                <div class="product-review-rating">
+                                    <label>Rating</label>
+                                    <div class="product-rating">
+                                        <ul class="rating">
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="review-box">
-                            <label for="content" class="form-label">Your Question *</label>
-                            <textarea id="content" rows="3" class="form-control" placeholder="Your Question"></textarea>
-                        </div>
+                            <div class="review-box">
+                                <label for="content" class="form-label">Your Question *</label>
+                                <textarea id="content" rows="3" class="form-control" placeholder="Your Question"></textarea>
+                            </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1715,44 +1625,65 @@
                     }
                 });
             });
-        });
 
-        $('.qty-right-plus').on('click', function(e) {
-            e.preventDefault();
-            var input = $(this).siblings('input[name="quantity"]');
-            var newValue = parseInt(input.val()) + 1;
+            // add to cart
+            $('#add-to-cart').on('click', function(e) {
+                e.preventDefault();
+                // Get the product ID from the data-product-id attribute
+                var productId = $(this).data('product-id');
+                // Get the quantity from the input field
+                var quantityInput = $('input[name="quantity"]');
+                var quantity = quantityInput.val();
+                if (parseInt(quantity) === 0) {
+                    quantityInput.val(1); // Update the input field value
+                    quantity = 1; // Update the quantity variable
+                }
+                // Perform an AJAX POST request
+                callAddToCart(productId, quantity);
 
-            if (newValue <= 4) {
-                input.val(newValue);
-                input.attr('data-button-pressed',
-                    'plus'); // Set the data attribute to indicate the plus button was pressed
-                // Enable the decrement button if the value becomes greater than 0
-                input.siblings('.qty-left-minus').prop('disabled', false);
-            }
+                setTimeout(() => {
+                    $('.product-qty').css('display', 'none');
+                    $('#add-to-cart').removeAttr('id').prop('disabled', true).text('Added To Cart');
+                }, 500);
+            });
 
-            // Disable the increment button if the value becomes 4
-            if (newValue === 4) {
-                $(this).prop('disabled', true);
-            }
-        });
+            $('.qty-right-plus').on('click', function(e) {
+                e.preventDefault();
+                var input = $(this).siblings('input[name="quantity"]');
+                var newValue = parseInt(input.val()) + 1;
 
-        $('.qty-left-minus').on('click', function(e) {
-            e.preventDefault();
-            var input = $(this).siblings('input[name="quantity"]');
-            var newValue = parseInt(input.val()) - 1;
+                if (newValue <= 4) {
+                    input.val(newValue);
+                    input.attr('data-button-pressed',
+                        'plus'); // Set the data attribute to indicate the plus button was pressed
+                    // Enable the decrement button if the value becomes greater than 0
+                    input.siblings('.qty-left-minus').prop('disabled', false);
+                }
 
-            if (newValue >= 1) {
-                input.val(newValue);
-                input.attr('data-button-pressed',
-                    'minus'); // Set the data attribute to indicate the minus button was pressed
-                // Enable the increment button if the value becomes less than 4
-                input.siblings('.qty-right-plus').prop('disabled', false);
-            }
+                // Disable the increment button if the value becomes 4
+                if (newValue === 4) {
+                    $(this).prop('disabled', true);
+                }
+            });
 
-            // Disable the decrement button if the value becomes 0
-            if (newValue === 1) {
-                $(this).prop('disabled', true);
-            }
-        });
+            $('.qty-left-minus').on('click', function(e) {
+                e.preventDefault();
+                var input = $(this).siblings('input[name="quantity"]');
+                var newValue = parseInt(input.val()) - 1;
+
+                if (newValue >= 1) {
+                    input.val(newValue);
+                    input.attr('data-button-pressed',
+                        'minus'); // Set the data attribute to indicate the minus button was pressed
+                    // Enable the increment button if the value becomes less than 4
+                    input.siblings('.qty-right-plus').prop('disabled', false);
+                }
+
+                // Disable the decrement button if the value becomes 0
+                if (newValue === 1) {
+                    $(this).prop('disabled', true);
+                }
+            });
+        })
     </script>
 @endsection

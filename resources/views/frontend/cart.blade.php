@@ -32,6 +32,11 @@
                 <div class="col-xxl-9">
                     <div class="cart-table">
                         <div class="table-responsive-xl">
+                            @if ($cart->isEmpty())
+                                <h2 style="color: #FF9999; border: 2px solid #FF9999; padding: 10px;">No products in cart.
+                                    <a href="{{ route('home') }}">Click here </a>to add products to your cart.
+                                </h2>
+                            @endif
                             <table class="table">
                                 <tbody>
                                     @foreach ($cart as $item)
@@ -147,7 +152,7 @@
                         <div class="button-group cart-button">
                             <ul>
                                 <li>
-                                    <button onclick="location.href = '{{ route('checkout') }}';"
+                                    <button onclick="location.href = '{{ route('home') }}';"
                                         class="btn btn-animation proceed-btn fw-bold">Process To Checkout</button>
                                 </li>
 
@@ -167,59 +172,19 @@
 @endsection
 @section('scripts')
     <script>
-        // add to cart actions
-        const ActionType = {
-            ADD: 'ADD',
-            INC: 'INC',
-            DEC: 'DEC'
-        };
-        // add to cart ajax fn
-        function callAddToCart(id, qty, type) {
-            $.ajax({
-                url: '/cart/add', // URL to send the POST request
-                type: 'POST',
-                data: {
-                    product_id: id,
-                    quantity: qty,
-                    type: type
-                },
-                success: function(response) {
-                    console.log(response);
-                    if (type == 'ADD') {
-                        toastr.success(response.message);
-                    } else if (type == 'INC') {
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function(error) {
-                    // Handle error response, e.g., show an error message
-                    toastr.error(error.responseJSON.message);
-                }
-            });
-        }
-
         $('.qty-right-plus').on('click', function(e) {
             e.preventDefault();
             var productId = $(this).data('product-id');
             var input = $(this).siblings('input[name="quantity"]');
             var newValue = parseInt(input.val()) + 1;
+            input.val(newValue);
+            input.attr('data-button-pressed',
+                'plus'); // Set the data attribute to indicate the plus button was pressed
+            // Enable the decrement button if the value becomes greater than 0
+            input.siblings('.qty-left-minus').prop('disabled', false);
+            // make ajax request
+            callAddToCart(productId, newValue, 'INC');
 
-            if (newValue <= 4) {
-                input.val(newValue);
-                input.attr('data-button-pressed',
-                    'plus'); // Set the data attribute to indicate the plus button was pressed
-                // Enable the decrement button if the value becomes greater than 0
-                input.siblings('.qty-left-minus').prop('disabled', false);
-                // make ajax request
-                callAddToCart(productId, newValue, ActionType.INC);
-            }
-
-            // Disable the increment button if the value becomes 4
-            if (newValue === 4) {
-                $(this).prop('disabled', true);
-            }
         });
 
         $('.qty-left-minus').on('click', function(e) {
@@ -235,9 +200,8 @@
                 // Enable the increment button if the value becomes less than 4
                 input.siblings('.qty-right-plus').prop('disabled', false);
                 // make ajax request
-                callAddToCart(productId, newValue, ActionType.DEC);
+                callAddToCart(productId, newValue, 'DEC');
             }
-
             // Disable the decrement button if the value becomes 0
             if (newValue === 1) {
                 $(this).prop('disabled', true);

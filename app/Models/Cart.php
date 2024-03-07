@@ -24,4 +24,8 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function getProduct()
+    {
+        return $this->belongsTo(Product::class,'product_id')->select('id', 'product_name', 'thumbnail_image_source','slug');
+    }
 }

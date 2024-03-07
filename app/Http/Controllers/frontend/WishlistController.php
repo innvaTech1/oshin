@@ -23,7 +23,6 @@ class WishlistController extends Controller
                 }]);
         }])->where('user_id', Auth::id())->get();
 
-        // dd($items);
 
         return view('frontend.wishlist', [
             'items' => $items

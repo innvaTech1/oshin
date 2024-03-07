@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Modules\GlobalSetting\app\Models\Setting;
-use View, Cache, Session;
+use Cache, Session;
+use Illuminate\Support\Facades\Auth;
 use Modules\Currency\app\Models\MultiCurrency;
 
 class AppServiceProvider extends ServiceProvider
@@ -46,7 +49,6 @@ class AppServiceProvider extends ServiceProvider
             config(['broadcasting.connections.pusher.options.cluster' => $setting->pusher_app_cluster]);
             config(['broadcasting.connections.pusher.options.host' => 'api-' . $setting->pusher_app_cluster . '.pusher.com']);
         } catch (\Throwable $th) {
-
         }
 
         View::composer('*', function ($view) {
@@ -54,6 +56,16 @@ class AppServiceProvider extends ServiceProvider
             $setting = Cache::get('setting');
 
             $view->with('setting', $setting);
+        });
+
+        View::composer('frontend.layouts.master', function ($view) {
+            if (Auth::check()) {
+                $cart_items = Cart::select('id', 'product_id', 'user_id', 'quantity')->where('user_id', Auth::id())->with('product:id,product_name,thumbnail_image_source,slug')->get();
+            } else {
+                $cart_items = [];
+            }
+
+            $view->with('cart_items', $cart_items);
         });
 
         /**

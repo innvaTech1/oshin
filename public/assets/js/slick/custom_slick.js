@@ -4,18 +4,18 @@
 $('.category-slider').slick({
     arrows: true,
     infinite: true,
-    slidesToShow: 8,
+    slidesToShow: 5,
     slidesToScroll: 1,
     responsive: [{
         breakpoint: 1745,
         settings: {
-            slidesToShow: 7,
+            slidesToShow: 5,
         }
     },
     {
         breakpoint: 1399,
         settings: {
-            slidesToShow: 6,
+            slidesToShow: 5,
         }
     },
     {
@@ -715,7 +715,7 @@ $('.slider-5_2').slick({
 });
 
 $('.slider-6').slick({
-    arrows: false,
+    arrows: true,
     infinite: true,
     slidesToShow: 6,
     slidesToScroll: 1,
