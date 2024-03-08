@@ -34,8 +34,7 @@
                         <div class="product-box-3 h-100">
                             <div class="product-header">
                                 <div class="product-image" style="padding: 0px;margin-bottom:20px">
-                                    <a
-                                        href="{{ route('productDetails', ['id' => $item->product->id, 'slug' => $item->product->slug]) }}">
+                                    <a href="{{ route('productDetails', ['slug' => $item->product->slug]) }}">
                                         <img src="{{ asset($item->product->thumbnail_image_source) }}"
                                             class="img-fluid blur-up lazyload" alt="">
                                     </a>
@@ -120,39 +119,6 @@
                 });
             });
 
-            // add to cart actions
-            const ActionType = {
-                ADD: 'ADD',
-                INC: 'INC',
-                DEC: 'DEC'
-            };
-
-            // add to cart ajax fn
-            function callAddToCart(id, qty, type) {
-                $.ajax({
-                    url: '/cart/add', // URL to send the POST request
-                    type: 'POST',
-                    data: {
-                        product_id: id,
-                        quantity: qty,
-                        type: type
-                    },
-                    success: function(response) {
-                        if (type == 'ADD') {
-                            toastr.success(response.message);
-                        } else if (type == 'INC') {
-                            toastr.success(response.message);
-                        } else {
-                            toastr.error(response.message);
-                        }
-                    },
-                    error: function(error) {
-                        // Handle error response, e.g., show an error message
-                        toastr.error(error.responseJSON.message);
-                    }
-                });
-            }
-
             // add to cart
             $('.btn-add-cart').on('click', function(e) {
                 e.preventDefault();
@@ -161,7 +127,7 @@
                 // Get the quantity from the input field
                 var quantity = $('input[name="quantity"]').val();
                 // Perform an AJAX POST request
-                callAddToCart(productId, quantity, ActionType.ADD);
+                callAddToCart(productId, quantity, 'ADD');
             });
 
             // Increase quantity
@@ -170,14 +136,10 @@
                 var productId = $(this).data('product-id');
                 var input = $(this).prev('input[name="quantity"]');
                 var newValue = parseInt(input.val()) + 1;
-                if (newValue <= 4) {
-                    input.val(newValue);
-                    // Perform an AJAX POST request
-                    callAddToCart(productId, newValue, ActionType.INC);
-                } else {
-                    // Disable the button if new value exceeds 4
-                    $(this).prop('disabled', true);
-                }
+                input.val(newValue);
+                // Perform an AJAX POST request
+                callAddToCart(productId, newValue, 'INC');
+
             });
 
             // Decrease quantity
@@ -189,7 +151,7 @@
                 if (newValue >= 0) {
                     input.val(newValue);
                     // Perform an AJAX POST request
-                    callAddToCart(productId, newValue, ActionType.DEC);
+                    callAddToCart(productId, newValue, 'DEC');
                 }
             });
         });

@@ -58,24 +58,24 @@ class Brand extends Model
     //     return $this->hasManyThrough(SellerProduct::class, Product::class)->activeSeller();
     // }
 
-    public function categories()
-    {
-        return $this->hasManyDeep(
-            Category::class,
-            [
-                Product::class,
-                CategoryProduct::class,
-            ],
-            [
-                'brand_id', // Foreign key on the "products" table.
-                'category_id', // Foreign key on the "category_product" table.
-                'id', // Local key on the "brands" table.
-            ],
-            [
-                'id', // Local key on the "products" table.
-                'brand_id', // Foreign key on the "category_product" table.
-                'category_id', // Foreign key on the "categories" table.
-            ]
-        );
-    }
+    // public function categories()
+    // {
+    //     return $this->hasManyDeep(
+    //         Category::class,
+    //         [
+    //             Product::class,
+    //             CategoryProduct::class,
+    //         ],
+    //         [
+    //             'brand_id', // Foreign key on the "products" table.
+    //             'category_id', // Foreign key on the "category_product" table.
+    //             'id', // Local key on the "brands" table.
+    //         ],
+    //         [
+    //             'id', // Local key on the "products" table.
+    //             'brand_id', // Foreign key on the "category_product" table.
+    //             'category_id', // Foreign key on the "categories" table.
+    //         ]
+    //     );
+    // }
 }

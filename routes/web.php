@@ -2,73 +2,70 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\frontend\ProductController;
 use App\Http\Controllers\frontend\WishlistController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/check-email', function () {
-    return view('frontend.emails.password-reset',[
-        'name' => 'John Smith',
-        'token' => 'lorem ipsum dolor sit amet, consectetur adip'
-    ]);
-})->name('home');
-Route::get('/', function () {
-    return view('frontend.home');
-})->name('home');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', function () {
     return view('frontend.search');
 })->name('search');
-Route::get('/product/{id}/{slug}', [ProductController::class, 'show'])->name('productDetails');
-Route::get('/contactus', function () {
-    return view('frontend.contactUs');
-})->name('contactus');
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('productDetails');
+Route::get('/category', function () {
+    return view('frontend.category');
+})->name('category');
+// Route::get('/contactus', function () {
+//     return view('frontend.contactUs');
+// })->name('contactus');
 
 // WISHLIST ROUTES
-Route::get('/wishlist',[WishlistController::class,'index'])->middleware('auth')->name('wishlist');
-Route::post('/wishlist/add',[WishlistController::class,'store'])->middleware('auth')->name('wishlist.add');
-Route::delete('/wishlist/delete/{id}',[WishlistController::class,'destroy'])->middleware('auth')->name('wishlist.delete');
+Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('auth')->name('wishlist');
+Route::post('/wishlist/add', [WishlistController::class, 'store'])->middleware('auth')->name('wishlist.add');
+Route::delete('/wishlist/delete/{id}', [WishlistController::class, 'destroy'])->middleware('auth')->name('wishlist.delete');
 
 // CART
-Route::get('/cart',[CartController::class,'index'])->middleware('auth')->name('cart.index');
-Route::post('/cart/add',[CartController::class,'store'])->middleware('auth')->name('cart.add');
-Route::delete('/cart/delete/{id}',[CartController::class,'destroy'])->middleware('auth')->name('cart.delete');
+Route::get('/cart', [CartController::class, 'index'])->middleware('auth')->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
+Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cart.delete');
 
 
 
-Route::get('/checkout', function () {
-    return view('frontend.checkout');
-})->name('checkout');
-Route::get('/order-success', function () {
-    return view('frontend.orderSuccess');
-})->name('orederSuccess');
-Route::get('/order-tracking', function () {
-    return view('frontend.orderTracking');
-})->name('orederTracking');
-Route::get('/compare', function () {
-    return view('frontend.compare');
-})->name('compare');
-Route::get('/aboutus', function () {
-    return view('frontend.aboutus');
-})->name('aboutus');
+// Route::get('/checkout', function () {
+//     return view('frontend.checkout');
+// })->name('checkout');
+// Route::get('/order-success', function () {
+//     return view('frontend.orderSuccess');
+// })->name('orederSuccess');
+// Route::get('/order-tracking', function () {
+//     return view('frontend.orderTracking');
+// })->name('orederTracking');
+// Route::get('/compare', function () {
+//     return view('frontend.compare');
+// })->name('compare');
+// Route::get('/aboutus', function () {
+//     return view('frontend.aboutus');
+// })->name('aboutus');
 Route::get('/notfound', function () {
     return view('frontend.404');
 })->name('notfound');
-Route::get('/faq', function () {
-    return view('frontend.faq');
-})->name('faq');
+// Route::get('/faq', function () {
+//     return view('frontend.faq');
+// })->name('faq');
 
 // SELLER
-Route::get('/be-a-seller', function () {
-    return view('frontend.seller.sellerBecome');
-})->name('sellerBecome');
-Route::get('/all-seller', function () {
-    return view('frontend.seller.allseller');
-})->name('allseller');
-Route::get('/vendor/name', function () {
-    return view('frontend.seller.vendorDetails');
-})->name('vendorDetails');
+// Route::get('/be-a-seller', function () {
+//     return view('frontend.seller.sellerBecome');
+// })->name('sellerBecome');
+// Route::get('/all-seller', function () {
+//     return view('frontend.seller.allseller');
+// })->name('allseller');
+// Route::get('/vendor/name', function () {
+//     return view('frontend.seller.vendorDetails');
+// })->name('vendorDetails');
 
 // USER
 Route::get('/dashboard', function () {
