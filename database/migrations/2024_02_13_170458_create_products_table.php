@@ -42,7 +42,6 @@ return new class extends Migration
             $table->Integer("max_order_qty")->nullable();
             $table->string("meta_title", 255)->nullable();
             $table->longText("meta_description")->nullable();
-            $table->string("meta_image", 255)->nullable();
             $table->boolean('is_physical')->default(0);
             $table->boolean('is_approved')->default(0);
             $table->unsignedTinyInteger('status')->default(1);

@@ -1,7 +1,12 @@
-@props(['label_text' => __('Thumbnail Image'), ' multiple' => 'no', 'dataImages' => false])
+@props([
+    'label_text' => __('Thumbnail Image'),
+    ' multiple' => 'no',
+    'dataImages' => false,
+    'classes' => 'col-12 col-md-4 col-lg-3',
+])
 
 {{-- Media preview area --}}
-<div class="select-media-preview d-flex"></div>
+<div class="select-media-preview row"></div>
 
 <label>{{ $label_text }}<span class="text-danger">*</span></label>
 <div class="input-group">
@@ -19,7 +24,7 @@
             <div class="indeterminate"></div>
         </div>
     </div>
-    {{-- media moal --}}
+    {{-- media modal --}}
     <div class="modal fade" tabindex="-1" role="dialog" id="mediaModal">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -170,7 +175,7 @@
             $('.select-media-preview').empty();
             selecteImages.forEach(item => {
                 $('.select-media-preview').append(
-                    `<div class="preview-item">
+                    `<div class="{{ $classes }} preview-item">
                         <img src="{{ asset('') }}${item['path']}">
                         <span class="preview-item-remove" data-id="${item['id']}"><i class="fas fa-times"></i></span>
                     </div>`

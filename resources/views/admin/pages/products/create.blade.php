@@ -20,19 +20,19 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h3 class="section-title">Product Information</h3>
+                                            <h3 class="section-title">{{ __('Product Information') }}</h3>
                                         </div>
                                         <div class="form-group col-12">
                                             <label class="d-block">Type</label>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Single" value="single"
-                                                    name="type">
-                                                <label class="form-check-label" for="Single">Single</label>
+                                                    name="type" checked>
+                                                <label class="form-check-label" for="Single">{{ __('Single') }}</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Variant"
                                                     value="variant" name="type">
-                                                <label class="form-check-label" for="Variant">Variant</label>
+                                                <label class="form-check-label" for="Variant">{{ __('Variant') }}</label>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -40,12 +40,13 @@
                                             <input type="text" id="name" class="form-control" name="name">
                                         </div>
 
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-6 product-single">
                                             <label>{{ __('Product SKU') }}</label>
                                             <input type="text" id="productSku" class="form-control" name="product_sku">
                                         </div>
-                                        <div class="form-group col-4">
-                                            <label>{{ __('Variant SKU Prefix') }} <span class="text-danger">*</span></label>
+                                        <div class="form-group col-4 product-variant d-none">
+                                            <label>{{ __('Variant SKU Prefix') }} <span
+                                                    class="text-danger">*</span></label>
                                             <input type="text" id="variant_sku_prefix" class="form-control"
                                                 name="variant_sku_prefix">
                                         </div>
@@ -92,46 +93,56 @@
                                         </div>
 
                                         <div class="form-group col-9">
-                                            <label>{{ __('Tags') }} </label>
-                                            <input type="text" class="form-control tags" name="tags">
+                                            <label>{{ __('Attribute') }} </label>
+                                            <select name="attribute_id[]" id="" class="form-control select2" mulitple>
+                                                <option value="" disabled>Select</option>
+                                                @foreach ($data['attributes'] as $attribute)
+                                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="form-group col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="is_physical"
-                                                    id="is_physical" value="1" checked>
-                                                <label class="form-check-label" for="is_physical">
-                                                    Is physical Product?
-                                                </label>
+                                            <label class="custom-switch mt-2" style="padding-left: 0px !important;">
+                                                <input type="checkbox" name="is_physical" id="is_physical" value="1"
+                                                    checked class="custom-switch-input">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span
+                                                    class="custom-switch-description">{{ __('Is physical Product?') }}</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group col-6 col-md-12 d-none single_digital_file">
+                                            <label>{{ __('Program File') }} </label>
+                                            <input type="file" class="form-control" name="single_digital_file">
+                                        </div>
+
+                                        <div class="col-12 row physical_product">
+                                            <div class="col-12">
+                                                <h3 class="section-title">{{ __('Weight Height Info') }}</h3>
+                                            </div>
+                                            <div class="form-group col-6 col-md-2">
+                                                <label>{{ __('Weight (cm)') }} </label>
+                                                <input type="text" class="form-control" name="weight">
+                                            </div>
+
+                                            <div class="form-group col-6 col-md-2">
+                                                <label>{{ __('Height (cm)') }} </label>
+                                                <input type="text" class="form-control" name="height">
+                                            </div>
+                                            <div class="form-group col-6 col-md-2">
+                                                <label>{{ __('Length (cm)') }} </label>
+                                                <input type="text" class="form-control" name="length">
+                                            </div>
+                                            <div class="form-group col-6 col-md-6">
+                                                <label>{{ __('Additional Shipping Charge') }} </label>
+                                                <input type="text" class="form-control" name="length">
                                             </div>
                                         </div>
-
-                                        <div class="col-12">
-                                            <h3 class="section-title">Weight Height Info</h3>
-                                        </div>
-
-                                        <div class="form-group col-6 col-md-2">
-                                            <label>{{ __('Weight (cm)') }} </label>
-                                            <input type="text" class="form-control" name="weight">
-                                        </div>
-
-                                        <div class="form-group col-6 col-md-2">
-                                            <label>{{ __('Height (cm)') }} </label>
-                                            <input type="text" class="form-control" name="height">
-                                        </div>
-                                        <div class="form-group col-6 col-md-2">
-                                            <label>{{ __('Length (cm)') }} </label>
-                                            <input type="text" class="form-control" name="length">
-                                        </div>
-                                        <div class="form-group col-6 col-md-6">
-                                            <label>{{ __('Additional Shipping Charge') }} </label>
-                                            <input type="text" class="form-control" name="length">
-                                        </div>
-
                                         <div class="col-12">
                                             <h3 class="section-title">{{ __('Price Info And Stock') }}</h3>
                                         </div>
-                                        <div class="form-group col-6 col-md-6">
+                                        <div class="form-group col-6 col-md-6 product-single">
                                             <label>{{ __('Selling Price') }} </label>
                                             <input type="text" class="form-control" name="selling_price">
                                         </div>
@@ -149,7 +160,17 @@
                                         <div class="col-12">
                                             <h3 class="section-title">{{ __('Wholesale Price') }}</h3>
                                         </div>
-                                        <div class="col-12 wholesale-container">
+
+                                        <div class="form-group col-12">
+                                            <label class="custom-switch mt-2" style="padding-left: 0px !important;">
+                                                <input type="checkbox" name="is_wholesale" id="is_wholesale"
+                                                    value="1" class="custom-switch-input">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span
+                                                    class="custom-switch-description">{{ __('Allow Wholesale?') }}</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-12 wholesale-container d-none">
                                             <div class="row">
                                                 <div class="form-group col-3">
                                                     <input type="text" class="form-control" name="min_qty[]"
@@ -171,11 +192,34 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-12">
-                                            <label>{{ __('Status') }} <span class="text-danger">*</span></label>
-                                            <select name="status" class="form-control">
-                                                <option value="amount">{{ __('Amount') }}</option>
-                                                <option value="percentage">{{ __('Percentage') }}</option>
-                                            </select>
+                                            <label>{{ __('Description') }} <span class="text-danger">*</span></label>
+                                            <textarea name="description" id="" cols="30" rows="10" class="summernote">{{ old('description') }}</textarea>
+                                            @error('description')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label>{{ __('Specification') }} <span class="text-danger">*</span></label>
+                                            <textarea name="specification" id="" cols="30" rows="10" class="summernote">{{ old('specification') }}</textarea>
+                                            @error('specification')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-12">
+                                            <h3 class="section-title">{{ __('Seo Information') }}</h3>
+                                        </div>
+
+                                        <div class="form-group col-6 col-md-12">
+                                            <label>{{ __('Meta Title') }} </label>
+                                            <input type="text" class="form-control" name="meta_title"
+                                                value="{{ old('meta_title') }}">
+                                        </div>
+
+                                        <div class="form-group col-6 col-md-12">
+                                            <label>{{ __('Meta Description') }} </label>
+                                            <textarea name="meta_description" id="" cols="30" rows="10" class="form-control"
+                                                style="height: 85px;">{{ old('meta_description') }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -190,53 +234,42 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Image') }} <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control-file" name="image">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Name') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="name" class="form-control" name="name">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Desgination') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="designation" class="form-control"
-                                                name="designation">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Facebook') }} </label>
-                                            <input type="text" class="form-control" name="facebook">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Twitter') }} </label>
-                                            <input type="text" class="form-control" name="twitter">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Linkedin') }} </label>
-                                            <input type="text" class="form-control" name="linkedin">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Instagram') }} </label>
-                                            <input type="text" class="form-control" name="instagram">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Status') }} <span class="text-danger">*</span></label>
-                                            <select name="status" class="form-control">
-                                                <option value="active">{{ __('Active') }}</option>
-                                                <option value="inactive">{{ __('Inactive') }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-12">
-                                            <button class="btn btn-primary">{{ __('Save') }}</button>
+                                            <h3 class="section-title">{{ __('Product Image') }}</h3>
+                                        </div>
+
+                                        {{-- Media File input --}}
+                                        @if (Module::isEnabled('Media'))
+                                            <div class="form-group col-md-12">
+                                                <x-media::media-input name="image[]" multiple="yes" classes="col-12 " />
+                                            </div>
+                                        @endif
+                                        <div class="col-12">
+                                            <h3 class="section-title">{{ __('Other Info') }}</h3>
+                                        </div>
+
+                                        <div class="form-group col-12">
+                                            <label class="custom-switch mt-2" style="padding-left: 0px !important;">
+                                                <input type="checkbox" name="is_partial_amount" id="is_partial_amount"
+                                                    value="1" class="custom-switch-input">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span
+                                                    class="custom-switch-description">{{ __('Allow Partial Amount?') }}</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-12 partial_amount d-none">
+                                            <label>{{ __('Partial Amount') }} </label>
+                                            <input type="number" id="partial_amount" class="form-control"
+                                                name="partial_amount">
+                                        </div>
+
+                                        <div class="form-group col-12">
+                                            <label class="custom-switch mt-2" style="padding-left: 0px !important;">
+                                                <input type="checkbox" name="status" id="status" value="1"
+                                                    class="custom-switch-input" checked>
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="custom-switch-description">{{ __('Status') }}</span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -246,9 +279,18 @@
                 </form>
         </section>
     </div>
+
+    {{-- Media Modal Show --}}
+    @if (Module::isEnabled('Media'))
+        @stack('media_list_html')
+    @endif
 @endsection
 
 @push('js')
+    {{-- Media Js --}}
+    @if (Module::isEnabled('Media'))
+        @stack('media_libary_js')
+    @endif
     <script>
         $(document).ready(function() {
             $('.add-row').on('click', function() {
@@ -260,6 +302,50 @@
             $(document).on('click', '.remove-row', function() {
                 $(this).parent().parent().remove();
             });
+
+            $('[name="type"]').on('change', function() {
+                if ($(this).val() == 'single') {
+                    $('.product-single').removeClass('d-none');
+                    $('.product-variant').addClass('d-none');
+                } else {
+                    $('.product-single').addClass('d-none');
+                    $('.product-variant').removeClass('d-none');
+                }
+            });
+
+            $('[name="is_physical"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('.single_digital_file').addClass('d-none');
+                    $('.physical_product').removeClass('d-none');
+                } else {
+                    $('.single_digital_file').removeClass('d-none');
+                    $('.physical_product').addClass('d-none');
+                }
+            });
+
+            $('[name="is_wholesale"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('.wholesale-container').removeClass('d-none');
+                } else {
+                    $('.wholesale-container').addClass('d-none');
+                }
+            });
+            $('#is_partial_amount').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('.partial_amount').removeClass('d-none');
+                } else {
+                    $('.partial_amount').addClass('d-none');
+                }
+            });
         })
     </script>
+
+@endpush
+
+
+{{-- Media Css --}}
+@push('css')
+    @if (Module::isEnabled('Media'))
+        @stack('media_libary_css')
+    @endif
 @endpush

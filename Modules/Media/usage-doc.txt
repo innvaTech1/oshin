@@ -1,5 +1,5 @@
 @section('admin-content')
-    <form
+    <form>
        {{-- Media File input --}}
         @if (Module::isEnabled('Media'))
             <div class="form-group col-md-8 offset-md-2">
