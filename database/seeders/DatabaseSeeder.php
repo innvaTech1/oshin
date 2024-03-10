@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Cache;
 use Modules\BasicPayment\database\seeders\BasicPaymentInfoSeeder;
 use Modules\Currency\database\seeders\CurrencySeeder;
 use Modules\GlobalSetting\database\seeders\CustomPaginationSeeder;
@@ -21,33 +20,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Cache::has('fresh_install') && Cache::get('fresh_install')) {
-            $this->call([
-                LanguageSeeder::class,
-                CurrencySeeder::class,
-                GlobalSettingInfoSeeder::class,
-                BasicPaymentInfoSeeder::class,
-                PaymentGatewaySeeder::class,
-                CustomPaginationSeeder::class,
-                EmailTemplateSeeder::class,
-                SeoInfoSeeder::class,
-                RolePermissionSeeder::class,
-                AdminInfoSeeder::class,
-            ]);
-        } else {
-            $this->call([
-                LanguageSeeder::class,
-                CurrencySeeder::class,
-                GlobalSettingInfoSeeder::class,
-                BasicPaymentInfoSeeder::class,
-                PaymentGatewaySeeder::class,
-                CustomPaginationSeeder::class,
-                EmailTemplateSeeder::class,
-                SeoInfoSeeder::class,
-                RolePermissionSeeder::class,
-                AdminInfoSeeder::class,
-            ]);
-        }
+        $this->call([
+            LanguageSeeder::class,
+            CurrencySeeder::class,
+            GlobalSettingInfoSeeder::class,
+            BasicPaymentInfoSeeder::class,
+            PaymentGatewaySeeder::class,
+            CustomPaginationSeeder::class,
+            EmailTemplateSeeder::class,
+            SeoInfoSeeder::class,
+            RolePermissionSeeder::class,
+            AdminInfoSeeder::class,
+        ]);
 
         // if(app()->isLocal()){
         //     $this->call([
