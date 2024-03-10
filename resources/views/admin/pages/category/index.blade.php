@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-admin.save-button :text="__('admin.Save')" />
+                                            <x-admin.save-button :text="__('Save')" />
                                         </div>
                                     </div>
                                 </form>
