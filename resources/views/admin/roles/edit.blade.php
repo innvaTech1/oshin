@@ -6,11 +6,15 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.role.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Update Role') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
-                    <div class="breadcrumb-item active"><a href="{{ route('admin.role.index') }}">{{ __('Manage Roles') }}</a>
+                    <div class="breadcrumb-item active"><a
+                            href="{{ route('admin.role.index') }}">{{ __('Manage Roles') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('Update Role') }}</div>
                 </div>
@@ -70,10 +74,12 @@
                                                                     <div class="custom-control custom-checkbox">
                                                                         <input
                                                                             {{ App\Models\Admin::roleHasPermission($role, $permissions) ? 'checked' : '' }}
-                                                                            class="custom-control-input" type="checkbox"
+                                                                            class="custom-control-input permession_group"
+                                                                            type="checkbox"
                                                                             id="{{ $i }}management"
                                                                             onclick="CheckPermissionByGroup('role-{{ $i }}-management-checkbox',this)"
-                                                                            value="2">
+                                                                            value="2" name="permession_group"
+                                                                            data-role-id="{{ $i }}">
                                                                         <label for="{{ $i }}management"
                                                                             class="custom-control-label text-capitalize">{{ $group->name }}</label>
                                                                     </div>
@@ -83,15 +89,15 @@
                                                                     @foreach ($permissionss as $permission)
                                                                         <div class="custom-control custom-checkbox">
                                                                             <input
-                                                                                onclick="checksinglepermission('role-{{ $i }}-management-checkbox','{{ $i }}management',{{ count($permissionss) }})"
                                                                                 {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
                                                                                 name="permissions[]"
                                                                                 class="custom-control-input" type="checkbox"
                                                                                 id="permission_checkbox_{{ $permission->id }}"
-                                                                                value="{{ $permission->name }}">
+                                                                                value="{{ $permission->name }}"
+                                                                                data-role-id="{{ $i }}">
                                                                             <label
                                                                                 for="permission_checkbox_{{ $permission->id }}"
-                                                                                class="custom-control-label">{{ $permission->name }}</label>
+                                                                                class="custom-control-label">{{ implode(' ', array_map('ucfirst', explode('.', $permission->name))) }}</label>
                                                                         </div>
                                                                         @php $j++; @endphp
                                                                     @endforeach
@@ -121,47 +127,46 @@
 
 @push('js')
     <script>
+        "use strict"
+        $('input[name^="permession_group"]').on('change', function() {
+            permission_all_checked();
+        });
+
         $('#permission_all').on('click', function() {
-            if ($(this).is(':checked')) {
-                $('input[type=checkbox]').prop('checked', true);
-            } else {
-                $('input[type=checkbox]').prop('checked', false);
-            }
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
         });
 
         function CheckPermissionByGroup(classname, checkthis) {
             const groupIdName = $("#" + checkthis.id);
             const classCheckBox = $('.' + classname + ' input');
-            if (groupIdName.is(':checked')) {
-                classCheckBox.prop('checked', true);
-            } else {
-                classCheckBox.prop('checked', false);
-            }
-            implementallcheck();
+
+            classCheckBox.prop('checked', groupIdName.prop('checked'));
         }
 
-        function checksinglepermission(groupClassname, groupId, countTotalPermission) {
-            const classCheckbox = $('.' + groupClassname + ' input');
-            const groupIDCheckBox = $('#' + groupId);
+        $('input[name^="permissions"]').on('change', function() {
+            const roleId = $(this).data('role-id');
+            checkGroupName(roleId)
+            permission_all_checked();
+        });
 
-            if ($('.' + groupClassname + ' input:checked').length == countTotalPermission) {
-                groupIDCheckBox.prop('checked', true);
-            } else {
-                groupIDCheckBox.prop('checked', false);
-            }
-            implementallcheck();
+        function checkGroupName(roleId) {
+            const groupCheckbox = $('#' + roleId + 'management');
+            const groupPermissions = $('input[name^="permissions"][data-role-id="' + roleId + '"]');
+            const checkedPermissionsCount = groupPermissions.filter(':checked').length;
+            const totalPermissionsCount = groupPermissions.length;
+            groupCheckbox.prop('checked', checkedPermissionsCount === totalPermissionsCount);
         }
 
-        function implementallcheck() {
-            const countPermisssions = {{ count($permissions) }};
-            const countPermisssionsGroup = {{ count($permission_groups) }};
-
-            if ($('input[type="checkbox"]').length > (countPermisssions + countPermisssionsGroup)) {
-                $('#permission_all').prop('checked', true);
-            } else {
-                $('#permission_all').prop('checked', false);
-            }
+        function permission_all_checked() {
+            var allCheckboxesChecked = $('input[type=checkbox]').not('#permission_all').length ===
+                $('input[type=checkbox]:checked').not('#permission_all').length;
+            $('#permission_all').prop('checked', allCheckboxesChecked);
         }
+
+        $('.permession_group').each(function() {
+            const roleId = $(this).data('role-id');
+            checkGroupName(roleId);
+        });
     </script>
 @endpush
 

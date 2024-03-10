@@ -2,21 +2,23 @@
 
 namespace Modules\ContactMessage\app\Jobs;
 
+use App\Traits\GetGlobalInformationTrait;
+use Cache;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Traits\GetGlobalInformationTrait;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Mail;
 use Modules\ContactMessage\app\Emails\ContactMessageMail;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
-use Mail, Exception, Cache;
 
 class ContactMessageSendJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, GetGlobalInformationTrait;
+    use Dispatchable, GetGlobalInformationTrait, InteractsWithQueue, Queueable, SerializesModels;
 
-   private $contact_message;
+    private $contact_message;
 
     public function __construct($contact_message)
     {
@@ -30,7 +32,7 @@ class ContactMessageSendJob implements ShouldQueue
     {
         $this->set_mail_config();
 
-        try{
+        try {
             $template = EmailTemplate::where('name', 'contact_mail')->first();
             $subject = $template->subject;
             $message = $template->message;
@@ -43,6 +45,7 @@ class ContactMessageSendJob implements ShouldQueue
             $email_setting = Cache::get('setting');
 
             Mail::to($email_setting->contact_message_receiver_mail)->send(new ContactMessageMail($subject, $message));
-        }catch(Exception $ex){}
+        } catch (Exception $ex) {
+        }
     }
 }

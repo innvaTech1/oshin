@@ -3,9 +3,7 @@
 namespace Modules\Currency\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Modules\Currency\app\Models\MultiCurrency;
 
 class CurrencyController extends Controller
@@ -27,6 +25,7 @@ class CurrencyController extends Controller
     public function create()
     {
         abort_unless(checkAdminHasPermission('currency.create'), 403);
+
         return view('currency::create');
     }
 
@@ -37,30 +36,30 @@ class CurrencyController extends Controller
     {
         abort_unless(checkAdminHasPermission('currency.store'), 403);
         $rules = [
-            'currency_name'=>'required|unique:multi_currencies',
-            'country_code'=>'required|unique:multi_currencies',
-            'currency_code'=>'required|unique:multi_currencies',
-            'currency_icon'=>'required|unique:multi_currencies',
-            'currency_rate'=>'required|numeric',
+            'currency_name' => 'required|unique:multi_currencies',
+            'country_code' => 'required|unique:multi_currencies',
+            'currency_code' => 'required|unique:multi_currencies',
+            'currency_icon' => 'required|unique:multi_currencies',
+            'currency_rate' => 'required|numeric',
         ];
         $customMessages = [
-            'currency_name.required' => trans('Currency name is required'),
-            'currency_name.unique' => trans('Currency name already exist'),
-            'country_code.required' => trans('Country code is required'),
-            'country_code.unique' => trans('Country code already exist'),
-            'currency_code.required' => trans('Currency code is required'),
-            'currency_code.unique' => trans('Currency code already exist'),
-            'currency_icon.required' => trans('Currency icon is required'),
-            'currency_icon.unique' => trans('Currency icon already exist'),
-            'currency_rate.required' => trans('Currency rate is required'),
-            'currency_rate.numeric' => trans('Currency rate must be number'),
+            'currency_name.required' => __('Currency name is required'),
+            'currency_name.unique' => __('Currency name already exist'),
+            'country_code.required' => __('Country code is required'),
+            'country_code.unique' => __('Country code already exist'),
+            'currency_code.required' => __('Currency code is required'),
+            'currency_code.unique' => __('Currency code already exist'),
+            'currency_icon.required' => __('Currency icon is required'),
+            'currency_icon.unique' => __('Currency icon already exist'),
+            'currency_rate.required' => __('Currency rate is required'),
+            'currency_rate.numeric' => __('Currency rate must be number'),
         ];
 
-        $request->validate($rules,$customMessages);
+        $request->validate($rules, $customMessages);
 
         $currency = new MultiCurrency();
 
-        if($request->is_default == 'yes'){
+        if ($request->is_default == 'yes') {
             MultiCurrency::where(['is_default' => 'yes'])->update(['is_default' => 'no']);
         }
 
@@ -74,11 +73,11 @@ class CurrencyController extends Controller
         $currency->status = $request->status;
         $currency->save();
 
-        $notification=trans('Created Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Created Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -98,34 +97,34 @@ class CurrencyController extends Controller
     {
         abort_unless(checkAdminHasPermission('currency.update'), 403);
         $rules = [
-            'currency_name'=>'required|unique:multi_currencies,currency_name,'.$id,
-            'country_code'=>'required|unique:multi_currencies,country_code,'.$id,
-            'currency_code'=>'required|unique:multi_currencies,currency_code,'.$id,
-            'currency_icon'=>'required|unique:multi_currencies,currency_icon,'.$id,
-            'currency_rate'=>'required|numeric',
+            'currency_name' => 'required|unique:multi_currencies,currency_name,'.$id,
+            'country_code' => 'required|unique:multi_currencies,country_code,'.$id,
+            'currency_code' => 'required|unique:multi_currencies,currency_code,'.$id,
+            'currency_icon' => 'required|unique:multi_currencies,currency_icon,'.$id,
+            'currency_rate' => 'required|numeric',
         ];
         $customMessages = [
-            'currency_name.required' => trans('Currency name is required'),
-            'currency_name.unique' => trans('Currency name already exist'),
-            'country_code.required' => trans('Country code is required'),
-            'country_code.unique' => trans('Country code already exist'),
-            'currency_code.required' => trans('Currency code is required'),
-            'currency_code.unique' => trans('Currency code already exist'),
-            'currency_icon.required' => trans('Currency icon is required'),
-            'currency_icon.unique' => trans('Currency icon already exist'),
-            'currency_rate.required' => trans('Currency rate is required'),
-            'currency_rate.numeric' => trans('Currency rate must be number'),
+            'currency_name.required' => __('Currency name is required'),
+            'currency_name.unique' => __('Currency name already exist'),
+            'country_code.required' => __('Country code is required'),
+            'country_code.unique' => __('Country code already exist'),
+            'currency_code.required' => __('Currency code is required'),
+            'currency_code.unique' => __('Currency code already exist'),
+            'currency_icon.required' => __('Currency icon is required'),
+            'currency_icon.unique' => __('Currency icon already exist'),
+            'currency_rate.required' => __('Currency rate is required'),
+            'currency_rate.numeric' => __('Currency rate must be number'),
         ];
 
-        $request->validate($rules,$customMessages);
+        $request->validate($rules, $customMessages);
 
         $currency = MultiCurrency::findOrFail($id);
 
-        if($request->is_default == 'yes'){
+        if ($request->is_default == 'yes') {
             MultiCurrency::where(['is_default' => 'yes'])->update(['is_default' => 'no']);
         }
 
-        if($currency->is_default == 'yes' && $request->is_default == 'no'){
+        if ($currency->is_default == 'yes' && $request->is_default == 'no') {
             MultiCurrency::where('id', 1)->update(['is_default' => 'yes']);
         }
 
@@ -139,8 +138,9 @@ class CurrencyController extends Controller
         $currency->status = $request->status;
         $currency->save();
 
-        $notification=trans('Updated Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Updated Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->route('admin.currency.index')->with($notification);
     }
 
@@ -151,15 +151,16 @@ class CurrencyController extends Controller
     {
         abort_unless(checkAdminHasPermission('currency.delete'), 403);
 
-        return "pending, admin can not be able to delete item when currency has assign to payment gateway";
+        return 'pending, admin can not be able to delete item when currency has assign to payment gateway';
         $currency = MultiCurrency::find($id);
-        if($currency->is_default == 'yes'){
+        if ($currency->is_default == 'yes') {
             MultiCurrency::where('id', 1)->update(['is_default' => 'yes']);
         }
         $currency->delete();
 
-        $notification = trans('Delete Successfully');
-        $notification = array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Delete Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->route('admin.currency.index')->with($notification);
 
         $is_flutterwave = Flutterwave::where('currency_id', $id)->first();
@@ -171,14 +172,16 @@ class CurrencyController extends Controller
         $is_sslcommerz = SslcommerzPayment::where('currency_id', $id)->first();
         $is_stripe = StripePayment::where('currency_id', $id)->first();
 
-        if($is_flutterwave || $is_instamojo || $is_paypal || $is_paystack || $is_mollie || $is_razorpay || $is_sslcommerz || $is_stripe){
-            $notification = trans('You can not delete this currency. Because there are one or more payment method has been created in this currency.');
-            $notification = array('messege'=>$notification,'alert-type'=>'error');
+        if ($is_flutterwave || $is_instamojo || $is_paypal || $is_paystack || $is_mollie || $is_razorpay || $is_sslcommerz || $is_stripe) {
+            $notification = __('You can not delete this currency. Because there are one or more payment method has been created in this currency.');
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
             return redirect()->route('admin.currency.index')->with($notification);
-        }else{
+        } else {
             $currency->delete();
-            $notification = trans('Delete Successfully');
-            $notification = array('messege'=>$notification,'alert-type'=>'success');
+            $notification = __('Delete Successfully');
+            $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
             return redirect()->route('admin.currency.index')->with($notification);
         }
     }

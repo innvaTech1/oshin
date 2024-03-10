@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <table class="table table-striped" id="dataTable">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>{{ __('SN') }}</th>
@@ -64,7 +64,7 @@
             </thead>
 
             <tbody>
-                @foreach ($withdraws as $index => $withdraw)
+                @forelse ($withdraws as $index => $withdraw)
                     <tr>
                         <td>{{ ++$index }}</td>
 
@@ -89,7 +89,10 @@
                         </td>
 
                     </tr>
-                @endforeach
+                @empty
+                    <x-empty-table :name="__('')" route="" create="no" :message="__('No data found!')"
+                        colspan="6"></x-empty-table>
+                @endforelse
             </tbody>
 
 

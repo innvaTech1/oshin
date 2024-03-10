@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum RedirectType:string
+enum RedirectType: string
 {
     case CREATE = 'create';
     case UPDATE = 'update';

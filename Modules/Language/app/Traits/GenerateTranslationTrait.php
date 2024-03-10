@@ -11,13 +11,6 @@ trait GenerateTranslationTrait
     /**
      * use this trait to automatically generate translation fields
      * for models and save to database
-     * @param TranslationModels $translationModel
-     * @param object $model
-     * @param string $forignKey
-     * @param object $request
-     * @param string $translationModelCustom
-     * @param bool $translateField
-     * @param array $customFields
      */
     protected function generateTranslations(
         TranslationModels $translationModel,
@@ -28,10 +21,9 @@ trait GenerateTranslationTrait
         array $customFields = [],
         ?string $translationModelCustom = null,
     ) {
-        if (!$translationModelCustom) {
+        if (! $translationModelCustom) {
             $translationClass = $translationModel->value;
         }
-
 
         $languages = Language::all();
         try {
@@ -55,7 +47,7 @@ trait GenerateTranslationTrait
                 }
                 foreach ($customFields as $key => $value) {
                     $code = $request->code ? $request->code : $request->lang_code ?? '';
-                    if($language->code !== $code){
+                    if ($language->code !== $code) {
                         $afterTrans = $tr ? $tr->translate($value) : $value;
                         $translationModel->$key = $afterTrans ?? $value;
                     } else {

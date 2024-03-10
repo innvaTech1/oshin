@@ -165,7 +165,7 @@
                                 theme: 'dark',
                                 icon: 'loader',
                                 iconUrl: 'https://hub.izmirnic.com/Files/Images/loading.gif',
-                                title: "{{ __('admin.Translation Processing, please wait...') }}",
+                                title: "{{ __('Translation Processing, please wait...') }}",
                                 position: 'center',
                             });
                         },
@@ -173,7 +173,7 @@
                             $input.val(response);
                             $input.prop('disabled', false);
                             iziToast.destroy();
-                            toastr.success("{{ __('admin.Translated Successfully!') }}");
+                            toastr.success("{{ __('Translated Successfully!') }}");
                             translateOneByOne(inputs, index + 1);
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
@@ -195,11 +195,11 @@
                     displayMode: 'once',
                     id: 'question',
                     zindex: 999,
-                    title: "{{ __('admin.This will take a while!') }}",
-                    message: "{{ __('admin.Are you sure?') }}",
+                    title: "{{ __('This will take a while!') }}",
+                    message: "{{ __('Are you sure?') }}",
                     position: 'center',
                     buttons: [
-                        ["<button><b>{{ __('admin.YES') }}</b></button>", function(instance, toast) {
+                        ["<button><b>{{ __('YES') }}</b></button>", function(instance, toast) {
                             var isDemo = "{{ env('PROJECT_MODE') ?? 1 }}";
 
                             if (isDemo == 0) {
@@ -207,7 +207,7 @@
                                     transitionOut: 'fadeOut'
                                 }, toast, 'button');
                                 toastr.error(
-                                    "{{ __('admin.This Is Demo Version. You Can Not Change Anything') }}");
+                                    "{{ __('This Is Demo Version. You Can Not Change Anything') }}");
                                 return;
                             }
 
@@ -222,7 +222,7 @@
                             translateOneByOne(inputs);
 
                         }, true],
-                        ["<button>{{ __('admin.NO') }}</button>", function(instance, toast) {
+                        ["<button>{{ __('NO') }}</button>", function(instance, toast) {
 
                             instance.hide({
                                 transitionOut: 'fadeOut'
@@ -245,7 +245,7 @@
 
             $(document).ready(function() {
                 var selectedTranslation = $('#selected-language').text();
-                var btnText = "{{ __('admin.Translate to') }}" + selectedTranslation;
+                var btnText = "{{ __('Translate to') }}" + selectedTranslation;
                 $('#translate-btn').text(btnText);
             });
         </script>

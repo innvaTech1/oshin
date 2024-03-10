@@ -17,11 +17,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-
 Broadcast::channel('livechat.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-
 
 Broadcast::channel('trackactiveuser', function ($user) {
     return $user->only('id');

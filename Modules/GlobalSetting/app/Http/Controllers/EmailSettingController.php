@@ -4,7 +4,6 @@ namespace Modules\GlobalSetting\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\GlobalSetting\app\Http\Controllers\GlobalSettingController;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
 use Modules\GlobalSetting\app\Models\Setting;
 
@@ -12,6 +11,7 @@ class EmailSettingController extends Controller {
     public function email_config() {
         abort_unless( checkAdminHasPermission( 'setting.view' ), 403 );
         $templates = EmailTemplate::all();
+
         return view( 'globalsetting::email.email_config', compact( 'templates' ) );
     }
 
@@ -26,13 +26,13 @@ class EmailSettingController extends Controller {
             'mail_port'         => 'required',
             'mail_encryption'   => 'required',
         ], [
-            'mail_sender_name.required'  => trans( 'Sender name is required' ),
-            'mail_host.required'         => trans( 'admin_validation.Mail host is required' ),
-            'mail_sender_email.required' => trans( 'admin_validation.Email is required' ),
-            'mail_username.required'     => trans( 'admin_validation.Smtp username is required' ),
-            'mail_password.unique'       => trans( 'admin_validation.Smtp password is required' ),
-            'mail_port.required'         => trans( 'admin_validation.Mail port is required' ),
-            'mail_encryption.required'   => trans( 'admin_validation.Mail encryption is required' ),
+            'mail_sender_name.required'  => __( 'Sender name is required' ),
+            'mail_host.required'         => __( 'Mail host is required' ),
+            'mail_sender_email.required' => __( 'Email is required' ),
+            'mail_username.required'     => __( 'Smtp username is required' ),
+            'mail_password.unique'       => __( 'Smtp password is required' ),
+            'mail_port.required'         => __( 'Mail port is required' ),
+            'mail_encryption.required'   => __( 'Mail encryption is required' ),
         ] );
 
         Setting::where( 'key', 'mail_sender_name' )->update( ['value' => $request->mail_sender_name] );
@@ -46,8 +46,9 @@ class EmailSettingController extends Controller {
         $setting_config = new GlobalSettingController();
         $setting_config->put_setting_cache();
 
-        $notification = trans( 'admin_validation.Update Successfully' );
-        $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
+        $notification = __( 'Update Successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with( $notification );
     }
 
@@ -71,9 +72,10 @@ class EmailSettingController extends Controller {
         } elseif ( $template->name == 'approved_withdraw' ) {
             return view( 'globalsetting::email.template.approved_withdraw', compact( 'template' ) );
         } else {
-            $notification = trans( 'admin_validation.Something went wrong' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-            return redirect()->route( 'admin.email-configuration', ['type' => 'email_template'] )->with( $notification );
+            $notification = __( 'Something went wrong' );
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+            return redirect()->back()->with( $notification );
         }
 
     }
@@ -97,12 +99,14 @@ class EmailSettingController extends Controller {
             $template->message = $request->message;
             $template->save();
             $notification = __( 'Updated Successfully' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
-            return redirect()->route( 'admin.email-configuration', ['type' => 'email_template'] )->with( $notification );
+            $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+            return redirect()->route( 'admin.email-configuration' )->with( $notification );
         } else {
             $notification = __( 'Something went wrong' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-            return redirect()->route( 'admin.email-configuration', ['type' => 'email_template'] )->with( $notification );
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+            return redirect()->back()->with( $notification );
         }
     }
 }

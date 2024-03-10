@@ -3,15 +3,15 @@
 namespace Modules\SupportTicket\app\Models;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\SupportTicket\Database\factories\TicketFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
     use HasFactory;
 
     protected $fillable = [];
+
     protected $appends = ['unseen_for_user', 'unseen_for_admin'];
 
     public function getUnseenForUserAttribute()

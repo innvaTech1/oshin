@@ -1,14 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Wallet\app\Http\Controllers\WalletController;
 use Modules\Wallet\app\Http\Controllers\Admin\WalletController as AdminWalletController;
+use Modules\Wallet\app\Http\Controllers\WalletController;
 
-
-Route::group(['as'=> 'wallet.', 'prefix' => 'wallet', 'middleware' => ['auth:web']], function () {
+Route::group(['as' => 'wallet.', 'prefix' => 'wallet', 'middleware' => ['auth:web']], function () {
     Route::resource('wallet', WalletController::class)->names('wallet');
 
-    Route::controller(WalletController::class)->group( function () {
+    Route::controller(WalletController::class)->group(function () {
 
         Route::post('pay-via-stripe', 'pay_via_stripe')->name('pay-via-stripe');
 
@@ -21,18 +20,14 @@ Route::group(['as'=> 'wallet.', 'prefix' => 'wallet', 'middleware' => ['auth:web
         Route::get('pay-via-mollie', 'pay_via_mollie')->name('pay-via-mollie');
         Route::get('pay-via-instamojo', 'pay_via_instamojo')->name('pay-via-instamojo');
 
-
         Route::get('/payment-addon-success', 'payment_addon_success')->name('payment-addon-success');
         Route::get('/payment-addon-faild', 'payment_addon_faild')->name('payment-addon-faild');
-
 
     });
 
 });
 
-
-
-Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
 
     Route::controller(AdminWalletController::class)->group(function () {
 

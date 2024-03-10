@@ -3,34 +3,34 @@
 namespace Modules\Coupon\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Modules\Coupon\app\Models\Coupon;
 use Modules\Coupon\app\Models\CouponHistory;
 
 class CouponController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $coupons = Coupon::where(['author_id' => 0])->latest()->get();
 
         return view('coupon::index', compact('coupons'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
-            'coupon_code'=>'required|unique:coupons',
-            'offer_percentage'=>'required|numeric',
-            'min_price'=>'required|numeric',
-            'expired_date'=>'required',
+            'coupon_code' => 'required|unique:coupons',
+            'offer_percentage' => 'required|numeric',
+            'min_price' => 'required|numeric',
+            'expired_date' => 'required',
         ];
         $customMessages = [
-            'coupon_code.required' => trans('Coupon code is required'),
-            'coupon_code.unique' => trans('Coupon already exist'),
-            'offer_percentage.required' => trans('Offer percentage is required'),
-            'expired_date.required' => trans('Expired date is required'),
-            'min_price.required' => trans('Minimum price is required'),
+            'coupon_code.required' => __('Coupon code is required'),
+            'coupon_code.unique' => __('Coupon already exist'),
+            'offer_percentage.required' => __('Offer percentage is required'),
+            'expired_date.required' => __('Expired date is required'),
+            'min_price.required' => __('Minimum price is required'),
         ];
 
         $this->validate($request, $rules, $customMessages);
@@ -44,25 +44,27 @@ class CouponController extends Controller
         $coupon->status = $request->status;
         $coupon->save();
 
-        $notification= trans('Created Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Created Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
-            'coupon_code'=>'required|unique:coupons,coupon_code,'.$id,
-            'offer_percentage'=>'required|numeric',
-            'min_price'=>'required|numeric',
-            'expired_date'=>'required',
+            'coupon_code' => 'required|unique:coupons,coupon_code,'.$id,
+            'offer_percentage' => 'required|numeric',
+            'min_price' => 'required|numeric',
+            'expired_date' => 'required',
         ];
         $customMessages = [
-            'coupon_code.required' => trans('Coupon code is required'),
-            'coupon_code.unique' => trans('Coupon already exist'),
-            'offer_percentage.required' => trans('Offer percentage is required'),
-            'expired_date.required' => trans('Expired date is required'),
-            'min_price.required' => trans('Minimum price is required'),
+            'coupon_code.required' => __('Coupon code is required'),
+            'coupon_code.unique' => __('Coupon already exist'),
+            'offer_percentage.required' => __('Offer percentage is required'),
+            'expired_date.required' => __('Expired date is required'),
+            'min_price.required' => __('Minimum price is required'),
         ];
 
         $this->validate($request, $rules, $customMessages);
@@ -75,23 +77,27 @@ class CouponController extends Controller
         $coupon->status = $request->status;
         $coupon->save();
 
-        $notification= trans('Updated Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Updated Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
 
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $coupon = Coupon::find($id);
         $coupon->delete();
 
-        $notification= trans('Deleted Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Deleted Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
 
     }
 
-    public function coupon_history(){
+    public function coupon_history()
+    {
 
         $coupon_histories = CouponHistory::where(['author_id' => 0])->latest()->get();
 

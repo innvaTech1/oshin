@@ -14,7 +14,7 @@ use Modules\Customer\app\Http\Controllers\CustomerController;
 |
 */
 
-Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::controller(CustomerController::class)->group(function () {
 
         Route::get('all-customers', 'index')->name('all-customers');
@@ -32,9 +32,6 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin
         Route::post('send-bulk-mail-to-all', 'send_bulk_mail_to_all')->name('send-bulk-mail-to-all');
         Route::delete('customer-delete/{id}', 'destroy')->name('customer-delete');
 
-
-
     });
-
 
 });

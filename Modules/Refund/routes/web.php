@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Refund\app\Http\Controllers\RefundController;
 use Modules\Refund\app\Http\Controllers\Admin\RefundController as AdminRefundController;
-
+use Modules\Refund\app\Http\Controllers\RefundController;
 
 Route::group(['middleware' => ['auth:web']], function () {
 
@@ -11,8 +10,7 @@ Route::group(['middleware' => ['auth:web']], function () {
 
 });
 
-
-Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
 
     Route::controller(AdminRefundController::class)->group(function () {
 

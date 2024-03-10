@@ -6,6 +6,9 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.languages.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Manage Language') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
@@ -45,8 +48,8 @@
                                         <div class="offset-md-3 col-md-6">
                                             <div class="form-group">
                                                 <label for="code">{{ __('Code') }}</label>
-                                                <select class="form-control" name="code" id="code">
-                                                    <option>Select language</option>
+                                                <select class="form-control select2" name="code" id="code">
+                                                    <option value="">{{ __('Select language') }}</option>
                                                     @foreach ($all_languages as $language)
                                                         <option value="{{ $language->code }}" @selected(old('code') == $language->code)>
                                                             {{ $language->name }}</option>

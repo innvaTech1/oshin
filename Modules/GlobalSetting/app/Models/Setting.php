@@ -2,9 +2,8 @@
 
 namespace Modules\GlobalSetting\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\GlobalSetting\Database\factories\SettingFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
@@ -14,9 +13,4 @@ class Setting extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
-
-    protected static function newFactory(): SettingFactory
-    {
-
-    }
 }

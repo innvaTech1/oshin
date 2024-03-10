@@ -3,10 +3,10 @@
 namespace Modules\Language\app\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Modules\Language\App\Traits\TranslateableModelsTrait;
 
@@ -18,8 +18,8 @@ class CreateNewTranslatedDataJob implements ShouldQueue
         protected $defaultCode,
         protected $newCode,
         protected $translateableModel
-        )
-    {}
+    ) {
+    }
 
     public function handle(): void
     {
@@ -28,12 +28,12 @@ class CreateNewTranslatedDataJob implements ShouldQueue
         $ignoredColumns = $this->getIgnoredColumsArray();
 
         foreach ($oldModels as $oldModel) {
-            if (!$this->translateableModel::where(['id' => $oldModel->id, 'lang_code' => $this->newCode])->exists()) {
+            if (! $this->translateableModel::where(['id' => $oldModel->id, 'lang_code' => $this->newCode])->exists()) {
                 $newModel = new $this->translateableModel();
                 $newModel->lang_code = $this->newCode;
 
                 foreach ($oldModel->toArray() as $key => $value) {
-                    if (!in_array($key, $ignoredColumns)) {
+                    if (! in_array($key, $ignoredColumns)) {
                         $newModel->$key = $value;
                     }
                 }

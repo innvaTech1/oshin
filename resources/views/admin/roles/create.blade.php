@@ -6,11 +6,15 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.role.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Create Role') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
-                    <div class="breadcrumb-item active"><a href="{{ route('admin.role.index') }}">{{ __('Manage Roles') }}</a>
+                    <div class="breadcrumb-item active"><a
+                            href="{{ route('admin.role.index') }}">{{ __('Manage Roles') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('Create Role') }}</div>
                 </div>
@@ -63,7 +67,7 @@
                                                                         <input class="custom-control-input" type="checkbox"
                                                                             id="{{ $i }}management"
                                                                             onclick="CheckPermissionByGroup('role-{{ $i }}-management-checkbox',this)"
-                                                                            value="2">
+                                                                            value="2" name="permession_group">
                                                                         <label for="{{ $i }}management"
                                                                             class="custom-control-label text-capitalize">{{ $group->name }}</label>
                                                                     </div>
@@ -79,10 +83,11 @@
                                                                             <input name="permissions[]"
                                                                                 class="custom-control-input" type="checkbox"
                                                                                 id="permission_checkbox_{{ $permission->id }}"
-                                                                                value="{{ $permission->name }}">
+                                                                                value="{{ $permission->name }}"
+                                                                                data-role-id="{{ $i }}">
                                                                             <label
                                                                                 for="permission_checkbox_{{ $permission->id }}"
-                                                                                class="custom-control-label">{{ $permission->name }}</label>
+                                                                                class="custom-control-label">{{ implode(' ', array_map('ucfirst', explode('.', $permission->name))) }}</label>
                                                                         </div>
                                                                         @php $j++; @endphp
                                                                     @endforeach
@@ -114,25 +119,40 @@
 @push('js')
     <script>
         "use strict"
-        $('#permission_all').on('click', function() {
-            if ($(this).is(':checked')) {
-                $('input[type=checkbox]').prop('checked', true);
-            } else {
-                $('input[type=checkbox]').prop('checked', false);
-            }
+
+        function permission_all_checked() {
+            var allCheckboxesChecked = $('input[type=checkbox]').not('#permission_all').length ===
+                $('input[type=checkbox]:checked').not('#permission_all').length;
+            $('#permission_all').prop('checked', allCheckboxesChecked);
+        }
+
+        $('input[name^="permession_group"]').on('change', function() {
+            permission_all_checked();
         });
 
-        "use strict"
+        $('#permission_all').on('click', function() {
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+        });
 
         function CheckPermissionByGroup(classname, checkthis) {
             const groupIdName = $("#" + checkthis.id);
             const classCheckBox = $('.' + classname + ' input');
-            if (groupIdName.is(':checked')) {
-                classCheckBox.prop('checked', true);
-            } else {
-                classCheckBox.prop('checked', false);
-            }
+
+            classCheckBox.prop('checked', groupIdName.prop('checked'));
         }
+
+        $('input[name^="permissions"]').on('change', function() {
+            const roleId = $(this).data('role-id');
+            const groupCheckbox = $('#' + roleId + 'management');
+            const groupPermissions = $('input[name^="permissions"][data-role-id="' + roleId + '"]');
+
+            const checkedPermissionsCount = groupPermissions.filter(':checked').length;
+            const totalPermissionsCount = groupPermissions.length;
+
+            groupCheckbox.prop('checked', checkedPermissionsCount === totalPermissionsCount);
+
+            permission_all_checked();
+        });
     </script>
 @endpush
 @push('css')

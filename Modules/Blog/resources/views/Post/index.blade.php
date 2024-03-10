@@ -15,6 +15,90 @@
             </div>
             <div class="section-body">
                 <div class="mt-4 row">
+                    {{-- Search filter --}}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="{{ route('admin.blogs.index') }}" method="GET" onchange="this.submit()"
+                                    class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2 form-group">
+                                            <input type="text" name="keyword" value="{{ request()->get('keyword') }}"
+                                                class="form-control" placeholder="{{ __('Search') }}">
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="show_homepage" id="show_homepage" class="form-control">
+                                                <option value="">{{ __('Show Homepage') }}</option>
+                                                <option value="1"
+                                                    {{ request('show_homepage') == '1' ? 'selected' : '' }}>
+                                                    {{ __('Yes') }}
+                                                </option>
+                                                <option value="0"
+                                                    {{ request('is_popular') == '0' ? 'selected' : '' }}>
+                                                    {{ __('No') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="is_popular" id="is_popular" class="form-control">
+                                                <option value="">{{ __('Select Popular') }}</option>
+                                                <option value="1"
+                                                    {{ request('is_popular') == '1' ? 'selected' : '' }}>
+                                                    {{ __('Yes') }}
+                                                </option>
+                                                <option value="0"
+                                                    {{ request('is_popular') == '0' ? 'selected' : '' }}>
+                                                    {{ __('No') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="">{{ __('Select Status') }}</option>
+                                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>
+                                                    {{ __('Active') }}
+                                                </option>
+                                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
+                                                    {{ __('In-Active') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="order_by" id="order_by" class="form-control">
+                                                <option value="">{{ __('Order By') }}</option>
+                                                <option value="1" {{ request('order_by') == '1' ? 'selected' : '' }}>
+                                                    {{ __('ASC') }}
+                                                </option>
+                                                <option value="0" {{ request('order_by') == '0' ? 'selected' : '' }}>
+                                                    {{ __('DESC') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="par-page" id="par-page" class="form-control">
+                                                <option value="">{{ __('Per Page') }}</option>
+                                                <option value="10" {{ '10' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('10') }}
+                                                </option>
+                                                <option value="50" {{ '50' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('50') }}
+                                                </option>
+                                                <option value="100"
+                                                    {{ '100' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('100') }}
+                                                </option>
+                                                <option value="all"
+                                                    {{ 'all' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('All') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
@@ -84,9 +168,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="float-right">
-                                    {{ $posts->links() }}
-                                </div>
+                                @if (request()->get('par-page') !== 'all')
+                                    <div class="float-right">
+                                        {{ $posts->onEachSide(0)->links() }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

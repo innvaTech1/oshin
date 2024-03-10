@@ -44,7 +44,9 @@ class SupportTicketController extends Controller
             foreach ($documents as $document) {
                 $exist_file_name = $document->file_name;
                 if ($exist_file_name) {
-                    if (File::exists(public_path('uploads/custom-images') . '/' . $exist_file_name)) unlink(public_path('uploads/custom-images') . '/' . $exist_file_name);
+                    if (File::exists(public_path('uploads/custom-images').'/'.$exist_file_name)) {
+                        unlink(public_path('uploads/custom-images').'/'.$exist_file_name);
+                    }
                 }
 
                 $document->delete();
@@ -62,8 +64,9 @@ class SupportTicketController extends Controller
         $ticket->status = 'closed';
         $ticket->save();
 
-        $notification = trans('Closed Successfully');
-        $notification = array('messege' => $notification, 'alert-type' => 'success');
+        $notification = __('Closed Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return $this->redirectWithMessage(RedirectType::UPDATE->value, null, [], $notification);
     }
 
@@ -74,12 +77,12 @@ class SupportTicketController extends Controller
             'ticket_id' => 'required',
             'message' => 'required',
             'user_id' => 'required',
-            'documents' => 'max:2048'
+            'documents' => 'max:2048',
         ];
         $customMessages = [
-            'message.required' => trans('Message is required'),
-            'ticket_id.required' => trans('Ticket is required'),
-            'user_id.required' => trans('User is required'),
+            'message.required' => __('Message is required'),
+            'ticket_id.required' => __('Ticket is required'),
+            'user_id.required' => __('User is required'),
         ];
         $this->validate($request, $rules, $customMessages);
 
@@ -97,7 +100,7 @@ class SupportTicketController extends Controller
 
             foreach ($request->documents as $index => $request_file) {
                 $extention = $request_file->getClientOriginalExtension();
-                $file_name = 'support-file-' . time() . $index . '.' . $extention;
+                $file_name = 'support-file-'.time().$index.'.'.$extention;
                 $destinationPath = public_path('uploads/custom-images/');
                 $request_file->move($destinationPath, $file_name);
 
@@ -116,8 +119,9 @@ class SupportTicketController extends Controller
             $ticket->save();
         }
 
-        $notification = trans('Message Send Successfully');
-        $notification = array('messege' => $notification, 'alert-type' => 'success');
+        $notification = __('Message Send Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return $this->redirectWithMessage(RedirectType::UPDATE->value, null, [], $notification);
     }
 }

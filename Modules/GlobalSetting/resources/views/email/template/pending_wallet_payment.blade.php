@@ -11,8 +11,7 @@
             </div>
 
             <div class="section-body">
-                <a href="{{ route('admin.email-configuration', ['type' => 'email_template']) }}" class="btn btn-primary"><i
-                        class="fas fa-list"></i>
+                <a href="{{ route('admin.email-configuration') }}" class="btn btn-primary"><i class="fas fa-list"></i>
                     {{ __('Email Template') }}</a>
                 <div class="row mt-4">
                     <div class="col">

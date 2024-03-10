@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\Currency\app\Models\MultiCurrency;
 
 return new class extends Migration
 {
@@ -24,19 +23,6 @@ return new class extends Migration
             $table->string('status')->defualt('active');
             $table->timestamps();
         });
-
-        if(!MultiCurrency::first()){
-            $currency = new MultiCurrency();
-            $currency->currency_name = '$-USD';
-            $currency->country_code = 'USD';
-            $currency->currency_code = 'USD';
-            $currency->currency_icon = '$';
-            $currency->is_default = 'yes';
-            $currency->currency_rate = 1;
-            $currency->currency_position = 'before_price';
-            $currency->status = 'active';
-            $currency->save();
-        }
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace Modules\LiveChat\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\LiveChat\Database\factories\MessageFactory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\LiveChat\Database\factories\MessageFactory;
 
 class Message extends Model
 {
@@ -21,9 +21,8 @@ class Message extends Model
         //return MessageFactory::new();
     }
 
-    public function receiver(){
-        return $this->belongsTo(User::class, 'receiver_id')->select('id','name','image');
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id')->select('id', 'name', 'image');
     }
-
-
 }

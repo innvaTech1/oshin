@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{ __('Contact Message') }}</title>
+    <title>{{ __('Contact Message') }}</title>
 @endsection
 @section('admin-content')
     <div class="main-content">
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive table-invoice">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('SN') }}</th>
@@ -26,19 +26,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($messages as $index => $message)
+                                            @forelse ($messages as $index => $message)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ html_decode($message->name) }}</td>
-                                                    <td><a href="mailto:{{ html_decode($message->email) }}">{{ html_decode($message->email) }}</a></td>
+                                                    <td><a
+                                                            href="mailto:{{ html_decode($message->email) }}">{{ html_decode($message->email) }}</a>
+                                                    </td>
                                                     <td>{{ $message->created_at->format('h:iA, d M Y') }}</td>
                                                     <td>
-                                                        <a href="{{ route('admin.contact-message', $message->id) }}" class="btn btn-success btn-sm" ><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                        <a onclick="deleteData({{ $message->id }})" href="javascript:;" data-toggle="modal"
-                                                            data-target="#deleteModal" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                        <a href="{{ route('admin.contact-message', $message->id) }}"
+                                                            class="btn btn-success btn-sm"><i class="fa fa-eye"
+                                                                aria-hidden="true"></i></a>
+                                                        <a onclick="deleteData({{ $message->id }})" href="javascript:;"
+                                                            data-toggle="modal" data-target="#deleteModal"
+                                                            class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <x-empty-table :name="__('')" route="" create="no"
+                                                    :message="__('No data found!')" colspan="5"></x-empty-table>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -54,7 +62,7 @@
     @push('js')
         <script>
             function deleteData(id) {
-                $("#deleteForm").attr("action", '{{ url("/admin/contact-message-delete/") }}' + "/" + id)
+                $("#deleteForm").attr("action", '{{ url('/admin/contact-message-delete/') }}' + "/" + id)
             }
         </script>
     @endpush

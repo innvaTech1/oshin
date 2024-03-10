@@ -3,12 +3,11 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\HomeController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\frontend\ProductController;
 use App\Http\Controllers\frontend\WishlistController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', function () {
@@ -31,8 +30,6 @@ Route::delete('/wishlist/delete/{id}', [WishlistController::class, 'destroy'])->
 Route::get('/cart', [CartController::class, 'index'])->middleware('auth')->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
 Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cart.delete');
-
-
 
 // Route::get('/checkout', function () {
 //     return view('frontend.checkout');
@@ -72,11 +69,17 @@ Route::get('/dashboard', function () {
     return view('frontend.dashboard.dashboard');
 })->name('userDashboard');
 
-// ADMIN
-Route::get('/admin/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//maintenance mode route
+Route::get('/maintenance-mode', function () {
+    $setting = Illuminate\Support\Facades\Cache::get('setting', null);
+    if (!$setting?->maintenance_mode) {
+        return redirect()->route('home');
+    }
 
+    return view('maintenance');
+})->name('maintenance.mode');
+
+//Profile route
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

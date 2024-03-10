@@ -14,16 +14,14 @@ class SeoInfoSeeder extends Seeder
     {
         $item1 = new SeoSetting();
         $item1->page_name = 'Home Page';
-        $item1->seo_title = 'Home || ecommerceUS';
-        $item1->seo_description = 'Home || ecommerceUS';
+        $item1->seo_title = 'Home || WebSolutionUS';
+        $item1->seo_description = 'Home || WebSolutionUS';
         $item1->save();
 
         $item2 = new SeoSetting();
-        $item2->page_name = 'Home Page';
-        $item2->seo_title = 'Home || ecommerceUS';
-        $item2->seo_description = 'Home || ecommerceUS';
+        $item2->page_name = 'About Page';
+        $item2->seo_title = 'About || WebSolutionUS';
+        $item2->seo_description = 'About || WebSolutionUS';
         $item2->save();
-
-
     }
 }

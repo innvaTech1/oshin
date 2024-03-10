@@ -3,32 +3,32 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserForgetPassword extends Mailable
-{
+class UserForgetPassword extends Mailable {
     use Queueable, SerializesModels;
 
     public $mail_subject;
-    public $mail_message;
-    public $from_user;
 
-    public function __construct($mail_message, $mail_subject, $from_user)
-    {
+    public $mail_message;
+
+    public $from_user;
+    public $mail_template_path;
+
+    public function __construct( $mail_message, $mail_subject, $from_user, $mail_template_path ) {
         $this->mail_subject = $mail_subject;
         $this->mail_message = $mail_message;
         $this->from_user = $from_user;
+        $this->mail_template_path = $mail_template_path;
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
+    public function envelope(): Envelope {
         return new Envelope(
             subject: $this->mail_subject,
         );
@@ -37,10 +37,9 @@ class UserForgetPassword extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
+    public function content(): Content {
         return new Content(
-            view: 'auth.forget_password_mail',
+            view: $this->mail_template_path . '.forget_password_mail',
         );
     }
 
@@ -49,8 +48,7 @@ class UserForgetPassword extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
-    {
+    public function attachments(): array {
         return [];
     }
 }

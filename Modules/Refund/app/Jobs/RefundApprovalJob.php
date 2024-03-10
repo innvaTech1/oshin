@@ -2,21 +2,23 @@
 
 namespace Modules\Refund\app\Jobs;
 
+use App\Traits\GetGlobalInformationTrait;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Traits\GetGlobalInformationTrait;
-use Mail, Exception;
-use  Modules\Refund\app\Emails\RefundApprovalMail;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Mail;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
+use Modules\Refund\app\Emails\RefundApprovalMail;
 
 class RefundApprovalJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, GetGlobalInformationTrait;
+    use Dispatchable, GetGlobalInformationTrait, InteractsWithQueue, Queueable, SerializesModels;
 
     private $mail_refund_amount;
+
     private $mail_user;
 
     public function __construct($mail_refund_amount, $mail_user)
@@ -24,7 +26,6 @@ class RefundApprovalJob implements ShouldQueue
         $this->mail_refund_amount = $mail_refund_amount;
         $this->mail_user = $mail_user;
     }
-
 
     public function handle(): void
     {
@@ -36,8 +37,9 @@ class RefundApprovalJob implements ShouldQueue
         $message = str_replace('{{user_name}}', $this->mail_user->name, $message);
         $message = str_replace('{{refund_amount}}', $this->mail_refund_amount, $message);
 
-        try{
+        try {
             Mail::to($this->mail_user->email)->send(new RefundApprovalMail($subject, $message));
-        }catch(Exception $ex){}
+        } catch (Exception $ex) {
+        }
     }
 }

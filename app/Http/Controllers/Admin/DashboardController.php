@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Language\app\Models\Language;
 
 class DashboardController extends Controller
 {
-
-    public function dashboard(){
+    public function dashboard()
+    {
         return view('admin.dashboard');
     }
 
@@ -26,14 +25,16 @@ class DashboardController extends Controller
             session()->put('text_direction', $lang->direction);
 
             $notification = __('Language Changed Successfully');
-            $notification = array('messege' => $notification, 'alert-type' => 'success');
+            $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
             return redirect()->back()->with($notification);
         }
 
         session()->put('lang', config('app.locale'));
 
         $notification = __('Language Changed Successfully');
-        $notification = array('messege' => $notification, 'alert-type' => 'success');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
     }
 }

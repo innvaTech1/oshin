@@ -50,8 +50,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
-
     public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');
@@ -73,7 +71,7 @@ class User extends Authenticatable
     {
         $contactUsers = User::whereIn('id', $this->messagesSent()->pluck('receiver_id'))
             ->orWhereIn('id', $this->messagesReceived()->pluck('sender_id'))
-            ->select('id','name','email','image')
+            ->select('id', 'name', 'email', 'image')
             ->get();
 
         $contactUsersWithUnseenMessages = [];
@@ -85,12 +83,12 @@ class User extends Authenticatable
                 ->count();
 
             $lastMessage = Message::where(function ($query) use ($contactUser) {
-                    $query->where('sender_id', $this->id)->where('receiver_id', $contactUser->id);
-                })->orWhere(function ($query) use ($contactUser) {
-                    $query->where('sender_id', $contactUser->id)->where('receiver_id', $this->id);
-                })->latest('created_at')->first();
+                $query->where('sender_id', $this->id)->where('receiver_id', $contactUser->id);
+            })->orWhere(function ($query) use ($contactUser) {
+                $query->where('sender_id', $contactUser->id)->where('receiver_id', $this->id);
+            })->latest('created_at')->first();
 
-            $contactUsersWithUnseenMessages[] = (object)[
+            $contactUsersWithUnseenMessages[] = (object) [
                 'id' => $contactUser->id,
                 'name' => $contactUser->name,
                 'email' => $contactUser->email,
@@ -130,15 +128,5 @@ class User extends Authenticatable
     public function socialite()
     {
         return $this->hasMany(SocialiteCredential::class, 'user_id');
-    }
-
-    public function wishlistItems()
-    {
-        return $this->hasMany(Wishlist::class,'user_id');
-    }
-
-    public function carts()
-    {
-        return $this->hasMany(Cart::class,'user_id');
     }
 }

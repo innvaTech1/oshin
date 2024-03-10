@@ -15,19 +15,21 @@ use Modules\Testimonial\app\Models\Testimonial;
 
 class TestimonialController extends Controller
 {
-    use RedirectHelperTrait, GenerateTranslationTrait;
+    use GenerateTranslationTrait, RedirectHelperTrait;
 
     public function index()
     {
         abort_unless(checkAdminHasPermission('testimonial.view'), 403);
         Paginator::useBootstrap();
         $testimonials = Testimonial::with('translation')->paginate(15);
+
         return view('testimonial::index', compact('testimonials'));
     }
 
     public function create()
     {
         abort_unless(checkAdminHasPermission('testimonial.create'), 403);
+
         return view('testimonial::create');
     }
 
@@ -58,6 +60,7 @@ class TestimonialController extends Controller
     public function show($id)
     {
         abort_unless(checkAdminHasPermission('testimonial.view'), 403);
+
         return view('testimonial::show');
     }
 
@@ -69,6 +72,7 @@ class TestimonialController extends Controller
 
         $testimonial = Testimonial::findOrFail($id);
         $languages = allLanguages();
+
         return view('testimonial::edit', compact('testimonial', 'code', 'languages'));
     }
 
@@ -108,7 +112,9 @@ class TestimonialController extends Controller
         });
 
         if ($testimonial->image) {
-            if (File::exists(public_path($testimonial->image))) @unlink(public_path($testimonial->image));
+            if (File::exists(public_path($testimonial->image))) {
+                @unlink(public_path($testimonial->image));
+            }
         }
         $testimonial->delete();
 
@@ -122,7 +128,7 @@ class TestimonialController extends Controller
         $status = $testimonial->status == 1 ? 0 : 1;
         $testimonial->update(['status' => $status]);
 
-        $notification = trans('admin_validation.Updated Successfully');
+        $notification = __('Updated Successfully');
 
         return response()->json([
             'success' => true,

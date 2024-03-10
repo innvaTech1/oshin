@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{ $title }}</title>
+    <title>{{ $title }}</title>
 @endsection
 @section('admin-content')
     <div class="main-content">
@@ -26,10 +26,12 @@
                                             <th>{{ __('Action') }}</th>
                                         </tr>
 
-                                        @foreach ($orders as $index => $order)
+                                        @forelse ($orders as $index => $order)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td><a href="{{ route('admin.customer-show', $order->user_id) }}">{{ $order?->user?->name }}</a></td>
+                                                <td><a
+                                                        href="{{ route('admin.customer-show', $order->user_id) }}">{{ $order?->user?->name }}</a>
+                                                </td>
                                                 <td>#{{ $order->order_id }}</td>
                                                 <td>{{ currency($order->total_amount) }}</td>
 
@@ -54,17 +56,19 @@
 
 
                                                 <td>
-                                                    <a href="{{ route('admin.order', $order->order_id) }}" class="btn btn-primary btn-sm"><i
-                                                        class="fa fa-eye"></i></a>
+                                                    <a href="{{ route('admin.order', $order->order_id) }}"
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
 
-                                                    <a href="" data-url="{{ route('admin.subscription-plan.destroy', $order->id) }}"
-                                                    class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
+                                                    <a href=""
+                                                        data-url="{{ route('admin.subscription-plan.destroy', $order->id) }}"
+                                                        class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
 
                                                 </td>
                                             </tr>
-                                        @endforeach
-
-
+                                        @empty
+                                            <x-empty-table :name="__('Customer')" route="" create="no" :message="__('No data found!')"
+                                                colspan="7"></x-empty-table>
+                                        @endforelse
                                     </table>
                                 </div>
                             </div>
@@ -80,7 +84,7 @@
         <div class="modal-dialog" role="document">
             <form action="" method="POST">
                 @csrf
-                @method("DELETE")
+                @method('DELETE')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('Delete Plan') }}</h5>
@@ -115,7 +119,4 @@
             })
         </script>
     @endpush
-
 @endsection
-
-

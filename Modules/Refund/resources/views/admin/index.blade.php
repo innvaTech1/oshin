@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{ $title }}</title>
+    <title>{{ $title }}</title>
 @endsection
 @section('admin-content')
     <div class="main-content">
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <th>{{ __('SN') }}</th>
                                             <th>{{ __('User') }}</th>
@@ -24,11 +24,15 @@
                                             <th>{{ __('Action') }}</th>
                                         </thead>
 
-                                        @foreach ($refund_requests as $index => $refund_request)
+                                        @forelse ($refund_requests as $index => $refund_request)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td><a href="{{ route('admin.customer-show', $refund_request->user_id) }}">{{ $refund_request?->user?->name }}</a></td>
-                                                <td>#<a target="_blank" href="{{ route('admin.order', $refund_request?->order?->order_id) }}">{{ $refund_request?->order?->order_id }}</a> </td>
+                                                <td><a
+                                                        href="{{ route('admin.customer-show', $refund_request->user_id) }}">{{ $refund_request?->user?->name }}</a>
+                                                </td>
+                                                <td>#<a target="_blank"
+                                                        href="{{ route('admin.order', $refund_request?->order?->order_id) }}">{{ $refund_request?->order?->order_id }}</a>
+                                                </td>
 
 
                                                 <td>
@@ -42,17 +46,19 @@
                                                 </td>
 
                                                 <td>
-                                                    <a href="{{ route('admin.show-refund-request', $refund_request->id) }}" class="btn btn-primary btn-sm"><i
-                                                        class="fa fa-eye"></i></a>
+                                                    <a href="{{ route('admin.show-refund-request', $refund_request->id) }}"
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
 
-                                                    <a href="" data-url="{{ route('admin.delete-refund-request', $refund_request->id) }}"
-                                                    class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
+                                                    <a href=""
+                                                        data-url="{{ route('admin.delete-refund-request', $refund_request->id) }}"
+                                                        class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
 
                                                 </td>
                                             </tr>
-                                        @endforeach
-
-
+                                        @empty
+                                            <x-empty-table :name="__('Customer')" route="" create="no" :message="__('No data found!')"
+                                                colspan="5"></x-empty-table>
+                                        @endforelse
                                     </table>
                                 </div>
                             </div>
@@ -68,7 +74,7 @@
         <div class="modal-dialog" role="document">
             <form action="" method="POST">
                 @csrf
-                @method("DELETE")
+                @method('DELETE')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('Delete refund request') }}</h5>
@@ -103,7 +109,4 @@
             })
         </script>
     @endpush
-
 @endsection
-
-

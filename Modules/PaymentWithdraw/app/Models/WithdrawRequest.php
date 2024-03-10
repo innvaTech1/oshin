@@ -2,10 +2,10 @@
 
 namespace Modules\PaymentWithdraw\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\PaymentWithdraw\Database\factories\WithdrawRequestFactory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\PaymentWithdraw\Database\factories\WithdrawRequestFactory;
 
 class WithdrawRequest extends Model
 {
@@ -21,7 +21,8 @@ class WithdrawRequest extends Model
         //return WithdrawRequestFactory::new();
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class)->select('id', 'name', 'email', 'image');
     }
 }

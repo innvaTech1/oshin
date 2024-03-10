@@ -3,15 +3,10 @@
 namespace Modules\ClubPoint\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\Auth;
 use Modules\ClubPoint\app\Models\ClubPointHistory;
-use Modules\Wallet\app\Models\WalletHistory;
 use Modules\GlobalSetting\app\Models\Setting;
-
-use Auth;
+use Modules\Wallet\app\Models\WalletHistory;
 
 class ClubPointController extends Controller
 {
@@ -26,7 +21,6 @@ class ClubPointController extends Controller
         return view('clubpoint::index', ['histories' => $histories, 'wallet_balance' => $wallet_balance]);
     }
 
-
     public function clubpoint_convert($id)
     {
         $user = Auth::guard('web')->user();
@@ -35,12 +29,12 @@ class ClubPointController extends Controller
 
         $history = ClubPointHistory::findOrFail($id);
 
-        $convert_amount = (int)($history->club_point / $club_point_rate->value);
+        $convert_amount = (int) ($history->club_point / $club_point_rate->value);
 
         $json_module_data = file_get_contents(base_path('modules_statuses.json'));
         $module_status = json_decode($json_module_data);
 
-        if($module_status->ClubPoint){
+        if ($module_status->ClubPoint) {
             $new_wallet = new WalletHistory();
             $new_wallet->user_id = $user->id;
             $new_wallet->amount = $convert_amount;
@@ -50,7 +44,7 @@ class ClubPointController extends Controller
             $new_wallet->save();
 
             $wallet_balance = $user->wallet_balance;
-            $wallet_balance +=  $convert_amount;
+            $wallet_balance += $convert_amount;
             $user->wallet_balance = $wallet_balance;
             $user->save();
         }
@@ -60,6 +54,4 @@ class ClubPointController extends Controller
 
         return back();
     }
-
-
 }

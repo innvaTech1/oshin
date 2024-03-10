@@ -1,6 +1,7 @@
-
-<li class="nav-item dropdown {{ Route::is('admin.all-customers') || Route::is('admin.active-customers') || Route::is('admin.non-verified-customers') || Route::is('admin.banned-customers') || Route::is('admin.customer-show') || Route::is('admin.send-bulk-mail') ? 'active' : '' }}">
-    <a href="javascript:void()" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>{{ __('Manage Customers') }}</span></a>
+<li
+    class="nav-item dropdown {{ Route::is('admin.all-customers') || Route::is('admin.active-customers') || Route::is('admin.non-verified-customers') || Route::is('admin.banned-customers') || Route::is('admin.customer-show') || Route::is('admin.send-bulk-mail') ? 'active' : '' }}">
+    <a href="javascript:void()" class="nav-link has-dropdown"><i
+            class="fas fa-users"></i><span>{{ __('Manage Customers') }}</span></a>
 
     <ul class="dropdown-menu">
         <li class="{{ Route::is('admin.all-customers') ? 'active' : '' }}">
@@ -39,4 +40,3 @@
 
     </ul>
 </li>
-

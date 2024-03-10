@@ -41,11 +41,11 @@
                     </div>
                 </div>
 
-                {{-- @if ($setting->recaptcha_status == 'active')
+                @if ($setting->recaptcha_status == 'active')
                     <div class="form-group inflanar-form-input mg-top-20">
                         <div class="g-recaptcha" data-sitekey="{{ $setting->recaptcha_site_key }}"></div>
                     </div>
-                @endif --}}
+                @endif
 
                 <!-- Login Button Group -->
                 <div class="form-group mg-top-40">
@@ -56,12 +56,12 @@
                     <!-- Login Button Group -->
                     <div class="inflanar-signin__button--group">
 
-                        {{-- <a href="{{ route('login-google') }}" class="inflanar-btn inflanar-btn__other" type="button"><div class="inflanar-signin__btn-icon"><img src="{{ asset('frontend/img/in-google-logo.png') }}" alt="Sign In with Google"></div>{{__('admin.Sign In with Google')}}</a>
+                        {{-- <a href="{{ route('login-google') }}" class="inflanar-btn inflanar-btn__other" type="button"><div class="inflanar-signin__btn-icon"><img src="{{ asset('frontend/img/in-google-logo.png') }}" alt="Sign In with Google"></div>{{__('Sign In with Google')}}</a>
 
-                    <a href="{{ route('login-facebook') }}" class="inflanar-btn inflanar-btn__other" type="button"><div class="inflanar-signin__btn-icon"><img src="{{ asset('frontend/img/in-facebook-logo.png') }}"></div>{{__('admin.Sign In with Facebook')}}</a> --}}
+                    <a href="{{ route('login-facebook') }}" class="inflanar-btn inflanar-btn__other" type="button"><div class="inflanar-signin__btn-icon"><img src="{{ asset('frontend/img/in-facebook-logo.png') }}"></div>{{__('Sign In with Facebook')}}</a> --}}
                     </div>
-                    <p class="inflanar-signin__text mg-top-20">{{ __('admin.Don’t have an account ?') }} <a
-                            href="{{ route('register') }}">{{ __('admin.Create Account') }}</a></p>
+                    <p class="inflanar-signin__text mg-top-20">{{ __('Don’t have an account ?') }} <a
+                            href="{{ route('register') }}">{{ __('Create Account') }}</a></p>
                 </div>
             </div>
         </div>

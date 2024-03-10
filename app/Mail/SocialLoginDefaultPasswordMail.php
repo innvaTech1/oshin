@@ -4,18 +4,18 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SocialLoginDefaultPasswordMail extends Mailable implements ShouldQueue
+class SocialLoginDefaultPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public function __construct(private User $user, private string $password)
-    {}
+    {
+    }
 
     /**
      * Get the message envelope.

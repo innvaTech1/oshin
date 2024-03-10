@@ -38,6 +38,7 @@ return new class extends Migration
             $table->double('min_sell_price', 28, 2)->default(0);
             $table->double('max_sell_price', 28, 2)->default(0);
             $table->unsignedBigInteger('total_sale')->default(0);
+            $table->Integer("min_order_qty")->nullable();
             $table->Integer("max_order_qty")->nullable();
             $table->string("meta_title", 255)->nullable();
             $table->longText("meta_description")->nullable();

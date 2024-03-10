@@ -3,9 +3,8 @@
 namespace Modules\SupportTicket\app\Models;
 
 use App\Models\Admin;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\SupportTicket\Database\factories\TicketMessageFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class TicketMessage extends Model
 {
@@ -15,6 +14,7 @@ class TicketMessage extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = ['unseen_admin'];
+
     public function admin()
     {
         return $this->belongsTo(Admin::class)->select('id', 'name');

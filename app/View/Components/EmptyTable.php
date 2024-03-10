@@ -11,11 +11,11 @@ class EmptyTable extends Component
     public function __construct(
         public string $name,
         public string $route,
-        public string $create = 'no',
-        public string $message = 'No Data Found!',
+        public string $create,
+        public string $message,
         public string $colspan,
-        )
-    {}
+    ) {
+    }
 
     public function render(): View|Closure|string
     {

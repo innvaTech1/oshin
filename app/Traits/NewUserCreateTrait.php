@@ -2,18 +2,18 @@
 
 namespace App\Traits;
 
-use Exception;
-use App\Models\User;
 use App\Enums\UserStatus;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SocialLoginDefaultPasswordMail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 trait NewUserCreateTrait
 {
-    private function createNewUser($user = null, $callbackUser, $provider_name)
+    use MailSenderTrait;
+
+    private function createNewUser($callbackUser, $provider_name, $user)
     {
         if (!$user) {
             $password = Str::random(10);
@@ -28,10 +28,12 @@ trait NewUserCreateTrait
                 'verification_token' => Str::random(100),
             ]);
             try {
-                Mail::to($callbackUser->email)->send(new SocialLoginDefaultPasswordMail($user, $password));
+                $this->socialLoginDefaultPasswordJob($callbackUser, $user, $password);
             } catch (Exception $e) {
                 session(['error' => $e->getMessage()]);
-                Log::error($e);
+                if (app()->isLocal()) {
+                    Log::error($e);
+                }
             }
         }
 
@@ -41,7 +43,6 @@ trait NewUserCreateTrait
             'access_token' => $callbackUser->token ?? null,
             'refresh_token' => $callbackUser->refreshToken ?? null,
         ]);
-
 
         return $socialite;
     }

@@ -2,8 +2,8 @@
 
 namespace Modules\GlobalSetting\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\GlobalSetting\Database\factories\EmailTemplateFactory;
 
 class EmailTemplate extends Model
@@ -14,7 +14,7 @@ class EmailTemplate extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
-    
+
     protected static function newFactory(): EmailTemplateFactory
     {
         //return EmailTemplateFactory::new();

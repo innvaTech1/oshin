@@ -3,17 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends Authenticatable
-{
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+class Admin extends Authenticatable {
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +21,7 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'forget_password_token',
     ];
 
     /**
@@ -45,34 +43,34 @@ class Admin extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public static function getPermissionGroup() {
+        $permission_group = DB::table( 'permissions' )
+            ->select( 'group_name as name' )
+            ->groupBy( 'group_name' )
+            ->get();
 
-    public static function getPermissionGroup()
-    {
-        $permission_group = DB::table('permissions')
-        ->select('group_name as name')
-        ->groupBy('group_name')
-        ->get();
         return $permission_group;
     }
 
-    public static function getpermissionsByGroupName($group_name)
-    {
-        $permissions = DB::table('permissions')
-        ->select('name', 'id')
-            ->where('group_name', $group_name)
+    public static function getpermissionsByGroupName( $group_name ) {
+        $permissions = DB::table( 'permissions' )
+            ->select( 'name', 'id' )
+            ->where( 'group_name', $group_name )
             ->get();
+
         return $permissions;
     }
 
-    public static function roleHasPermission($role, $permissions)
-    {
+    public static function roleHasPermission( $role, $permissions ) {
         $hasPermission = true;
-        foreach ($permissions as $permission) {
-            if (!$role->hasPermissionTo($permission->name)) {
+        foreach ( $permissions as $permission ) {
+            if ( !$role->hasPermissionTo( $permission->name ) ) {
                 $hasPermission = false;
+
                 return $hasPermission;
             }
         }
+
         return $hasPermission;
     }
 }

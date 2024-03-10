@@ -10,22 +10,23 @@ use Modules\Blog\app\Models\BlogComment;
 
 class BlogCommentController extends Controller
 {
-
     use RedirectHelperTrait;
+
     public function index()
     {
         abort_unless(checkAdminHasPermission('blog.comment.view'), 403);
         Paginator::useBootstrap();
 
         $comments = BlogComment::latest()->paginate(15);
+
         return view('blog::Comment.index', compact('comments'));
     }
-
 
     public function show($id)
     {
         abort_unless(checkAdminHasPermission('blog.comment.view'), 403);
         $comments = BlogComment::where('blog_id', $id)->paginate(20);
+
         return view('blog::Comment.show', compact('comments'));
     }
 
@@ -41,11 +42,11 @@ class BlogCommentController extends Controller
     {
         abort_unless(checkAdminHasPermission('blog.comment.update'), 403);
         $blogCategory = BlogComment::find($id);
-        if($blogCategory){
+        if ($blogCategory) {
             $status = $blogCategory->status == 1 ? 0 : 1;
             $blogCategory->update(['status' => $status]);
 
-            $notification = trans('admin_validation.Updated Successfully');
+            $notification = __('Updated Successfully');
 
             return response()->json([
                 'success' => true,
@@ -55,7 +56,7 @@ class BlogCommentController extends Controller
 
         return response()->json([
             'success' => false,
-            'message' => trans('Failed!'),
+            'message' => __('Failed!'),
         ]);
     }
 }

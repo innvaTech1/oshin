@@ -20,8 +20,8 @@ class LanguageRequest extends FormRequest
 
         if ($this->isMethod('put')) {
             $rules['icon'] = 'nullable|image|max:512';
-            $rules['name'] = 'required|string|max:255|unique:languages,name,' . $this->language->id;
-            $rules['code'] = 'required|string|max:4|unique:languages,code,' . $this->language->id;
+            $rules['name'] = 'required|string|max:255|unique:languages,name,'.$this->language->id;
+            $rules['code'] = 'required|string|max:4|unique:languages,code,'.$this->language->id;
         }
 
         if ($this->isMethod('post')) {
@@ -38,18 +38,18 @@ class LanguageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => trans('The language name is required.'),
-            'name.string' => trans('The name must be a string.'),
-            'name.unique' => trans('The name must be unique.'),
-            'name.max' => trans('The name may not be greater than 255 characters.'),
-            'code.required' => trans('The language code is required.'),
-            'direction.required' => trans('The language direction is required.'),
-            'code.string' => trans('The code must be a string.'),
-            'code.unique' => trans('The code must be unique.'),
-            'code.max' => trans('The language code may not be greater than 4 characters.'),
-            'icon.required' => trans('The icon is required.'),
-            'icon.image' => trans('The icon must be a valid image file.'),
-            'icon.max' => trans('The icon may not be greater than 512 kilobytes in size.'),
+            'name.required' => __('The language name is required.'),
+            'name.string' => __('The name must be a string.'),
+            'name.unique' => __('The name must be unique.'),
+            'name.max' => __('The name may not be greater than 255 characters.'),
+            'code.required' => __('The language code is required.'),
+            'direction.required' => __('The language direction is required.'),
+            'code.string' => __('The code must be a string.'),
+            'code.unique' => __('The code must be unique.'),
+            'code.max' => __('The language code may not be greater than 4 characters.'),
+            'icon.required' => __('The icon is required.'),
+            'icon.image' => __('The icon must be a valid image file.'),
+            'icon.max' => __('The icon may not be greater than 512 kilobytes in size.'),
         ];
     }
 }

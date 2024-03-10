@@ -12,7 +12,7 @@ class EmailTemplateSeeder extends Seeder
      */
     public function run(): void
     {
-        $templates = array(
+        $templates = [
             [
                 'name' => 'password_reset',
                 'subject' => 'Password Reset',
@@ -52,7 +52,7 @@ class EmailTemplateSeeder extends Seeder
             [
                 'name' => 'new_refund',
                 'subject' => 'New Refund Request',
-                'message' => '<p>Hello ecommerceus, </p>
+                'message' => '<p>Hello websolutionus, </p>
 
                 <p>Mr. {{user_name}} has send a new refund request to you.</p>',
             ],
@@ -71,12 +71,12 @@ class EmailTemplateSeeder extends Seeder
                 'message' => '<p>Dear {{user_name}},</p>
                 <p>We are happy to say that, we have send a withdraw amount to your provided bank information.</p>
                 <p>Thanks &amp; Regards</p>
-                <p>ecommerceUs</p>',
-            ]
+                <p>WebSolutionUs</p>',
+            ],
 
-            );
+        ];
 
-        foreach($templates as $index => $template){
+        foreach ($templates as $index => $template) {
             $new_template = new EmailTemplate();
             $new_template->name = $template['name'];
             $new_template->subject = $template['subject'];

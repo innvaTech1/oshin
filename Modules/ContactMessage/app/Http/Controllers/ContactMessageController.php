@@ -3,33 +3,30 @@
 namespace Modules\ContactMessage\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Modules\ContactMessage\app\Models\ContactMessage;
 use App\Rules\CustomRecaptcha;
-use Modules\ContactMessage\app\Jobs\ContactMessageSendJob;
 use Cache;
+use Illuminate\Http\Request;
+use Modules\ContactMessage\app\Jobs\ContactMessageSendJob;
+use Modules\ContactMessage\app\Models\ContactMessage;
 
 class ContactMessageController extends Controller
 {
-
     public function store(Request $request)
     {
         $setting = Cache::get('setting');
 
         $request->validate([
-            'name'=>'required',
-            'email'=>'required',
-            'subject'=>'required',
-            'message'=>'required',
-            'g-recaptcha-response'=> $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : ''
-        ],[
-            'name.required' => trans('Name is required'),
-            'email.required' => trans('Email is required'),
-            'subject.required' => trans('Subject is required'),
-            'message.required' => trans('Message is required'),
-            'g-recaptcha-response.required' => trans('Please complete the recaptcha to submit the form'),
+            'name' => 'required',
+            'email' => 'required',
+            'subject' => 'required',
+            'message' => 'required',
+            'g-recaptcha-response' => $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : '',
+        ], [
+            'name.required' => __('Name is required'),
+            'email.required' => __('Email is required'),
+            'subject.required' => __('Subject is required'),
+            'message.required' => __('Message is required'),
+            'g-recaptcha-response.required' => __('Please complete the recaptcha to submit the form'),
         ]);
 
         $new_message = new ContactMessage();
@@ -42,7 +39,6 @@ class ContactMessageController extends Controller
 
         dispatch(new ContactMessageSendJob($new_message));
 
-        return response()->json(['message' => trans('Message send successfull')]);
+        return response()->json(['message' => __('Message send successfull')]);
     }
-
 }

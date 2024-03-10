@@ -1,10 +1,10 @@
 <?php
 
 namespace Modules\LiveChat\app\Events;
-use Illuminate\Broadcasting\Channel;
+
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class LiveChatEvent implements ShouldBroadcast
 {
@@ -25,10 +25,11 @@ class LiveChatEvent implements ShouldBroadcast
         return new PrivateChannel('livechat.'.$this->event_message->receiver_id);
     }
 
-    public function broadcastWith () {
+    public function broadcastWith()
+    {
         return [
             'message_id' => $this->event_message->id,
-            'sender_id' => $this->event_message->sender_id
+            'sender_id' => $this->event_message->sender_id,
         ];
     }
 
