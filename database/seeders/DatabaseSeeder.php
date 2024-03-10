@@ -11,10 +11,7 @@ use Modules\GlobalSetting\database\seeders\CustomPaginationSeeder;
 use Modules\GlobalSetting\database\seeders\EmailTemplateSeeder;
 use Modules\GlobalSetting\database\seeders\GlobalSettingInfoSeeder;
 use Modules\GlobalSetting\database\seeders\SeoInfoSeeder;
-use Modules\Installer\database\seeders\InstallerDatabaseSeeder;
 use Modules\Language\database\seeders\LanguageSeeder;
-use Modules\MenuBuilder\database\seeders\MenuBuilderDatabaseSeeder;
-use Modules\PageBuilder\database\seeders\PageBuilderDatabaseSeeder;
 use Modules\PaymentGateway\database\seeders\PaymentGatewaySeeder;
 
 class DatabaseSeeder extends Seeder
@@ -36,9 +33,6 @@ class DatabaseSeeder extends Seeder
                 SeoInfoSeeder::class,
                 RolePermissionSeeder::class,
                 AdminInfoSeeder::class,
-                PageBuilderDatabaseSeeder::class,
-                MenuBuilderDatabaseSeeder::class,
-                InstallerDatabaseSeeder::class,
             ]);
         } else {
             $this->call([
@@ -52,9 +46,6 @@ class DatabaseSeeder extends Seeder
                 SeoInfoSeeder::class,
                 RolePermissionSeeder::class,
                 AdminInfoSeeder::class,
-                PageBuilderDatabaseSeeder::class,
-                MenuBuilderDatabaseSeeder::class,
-                InstallerDatabaseSeeder::class,
             ]);
         }
 
