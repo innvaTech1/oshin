@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="form-group col-12">
                                             <label>{{ __('Description') }}</label>
-                                            <textarea name="description" id="" cols="30" rows="10" class="form-control"></textarea>
+                                            <textarea name="description" id="description" cols="30" rows="10" class="form-control" style="height:50px"></textarea>
                                         </div>
                                         <div class="form-group col-12">
                                             <label>{{ __('Status') }} </label>
@@ -114,6 +114,9 @@
                     type: 'GET',
                     success: function(response) {
                         $('#name').val(response.name);
+                        $('#description').val(response.description);
+                        $('input[name="status"][value="' + response.status + '"]').prop(
+                            'checked', true);
                         let url = "{{ route('admin.unit.update', ':id') }}";
                         url = url.replace(':id', response.id);
                         $('#form').attr('action', url);
