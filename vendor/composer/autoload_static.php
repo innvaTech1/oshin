@@ -161,6 +161,11 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
             'Laravel\\Prompts\\' => 16,
             'Laravel\\Breeze\\' => 15,
         ),
+        'J' => 
+        array (
+            'Jenssegers\\Agent\\' => 17,
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -550,6 +555,14 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
+        'Jenssegers\\Agent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -681,6 +694,13 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -794,6 +814,7 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'App\\Services\\ProductService' => __DIR__ . '/../..' . '/app/Services/ProductService.php',
         'App\\Services\\UnitTypeService' => __DIR__ . '/../..' . '/app/Services/UnitTypeService.php',
         'App\\Traits\\GetGlobalInformationTrait' => __DIR__ . '/../..' . '/app/Traits/GetGlobalInformationTrait.php',
+        'App\\Traits\\LogActivity' => __DIR__ . '/../..' . '/app/Traits/LogActivity.php',
         'App\\Traits\\MailSenderTrait' => __DIR__ . '/../..' . '/app/Traits/MailSenderTrait.php',
         'App\\Traits\\NewUserCreateTrait' => __DIR__ . '/../..' . '/app/Traits/NewUserCreateTrait.php',
         'App\\Traits\\RedirectHelperTrait' => __DIR__ . '/../..' . '/app/Traits/RedirectHelperTrait.php',
@@ -1067,6 +1088,7 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
         'DeepCopy\\TypeFilter\\TypeFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
         'DeepCopy\\TypeMatcher\\TypeMatcher' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Dflydev\\DotAccessData\\Data' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Data.php',
         'Dflydev\\DotAccessData\\DataInterface' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/DataInterface.php',
         'Dflydev\\DotAccessData\\Exception\\DataException' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Exception/DataException.php',
@@ -3729,6 +3751,14 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
+        'Jenssegers\\Agent\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Agent.php',
+        'Jenssegers\\Agent\\AgentServiceProvider' => __DIR__ . '/..' . '/jenssegers/agent/src/AgentServiceProvider.php',
+        'Jenssegers\\Agent\\Facades\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Facades/Agent.php',
         'Laravel\\Breeze\\BreezeServiceProvider' => __DIR__ . '/..' . '/laravel/breeze/src/BreezeServiceProvider.php',
         'Laravel\\Breeze\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallCommand.php',
         'Laravel\\Breeze\\Console\\InstallsApiStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsApiStack.php',
@@ -4249,6 +4279,7 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'Mews\\Purifier\\Facades\\Purifier' => __DIR__ . '/..' . '/mews/purifier/src/Facades/Purifier.php',
         'Mews\\Purifier\\Purifier' => __DIR__ . '/..' . '/mews/purifier/src/Purifier.php',
         'Mews\\Purifier\\PurifierServiceProvider' => __DIR__ . '/..' . '/mews/purifier/src/PurifierServiceProvider.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',
         'Mockery\\Adapter\\Phpunit\\MockeryTestCase' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryTestCase.php',
@@ -4464,23 +4495,6 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'Modules\\Order\\app\\Providers\\OrderServiceProvider' => __DIR__ . '/../..' . '/Modules/Order/app/Providers/OrderServiceProvider.php',
         'Modules\\Order\\app\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/Order/app/Providers/RouteServiceProvider.php',
         'Modules\\Order\\database\\seeders\\OrderDatabaseSeeder' => __DIR__ . '/../..' . '/Modules/Order/database/seeders/OrderDatabaseSeeder.php',
-        'Modules\\OurTeam\\app\\Http\\Controllers\\OurTeamController' => __DIR__ . '/../..' . '/Modules/OurTeam/app/Http/Controllers/OurTeamController.php',
-        'Modules\\OurTeam\\app\\Models\\OurTeam' => __DIR__ . '/../..' . '/Modules/OurTeam/app/Models/OurTeam.php',
-        'Modules\\OurTeam\\app\\Providers\\OurTeamServiceProvider' => __DIR__ . '/../..' . '/Modules/OurTeam/app/Providers/OurTeamServiceProvider.php',
-        'Modules\\OurTeam\\app\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/OurTeam/app/Providers/RouteServiceProvider.php',
-        'Modules\\OurTeam\\database\\seeders\\OurTeamDatabaseSeeder' => __DIR__ . '/../..' . '/Modules/OurTeam/database/seeders/OurTeamDatabaseSeeder.php',
-        'Modules\\PageBuilder\\app\\Http\\Controllers\\CustomizeablePageController' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Http/Controllers/CustomizeablePageController.php',
-        'Modules\\PageBuilder\\app\\Http\\Controllers\\CustomizeablePageItemController' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Http/Controllers/CustomizeablePageItemController.php',
-        'Modules\\PageBuilder\\app\\Http\\Requests\\PageRequest' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Http/Requests/PageRequest.php',
-        'Modules\\PageBuilder\\app\\Models\\CustomizeablePage' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Models/CustomizeablePage.php',
-        'Modules\\PageBuilder\\app\\Models\\CustomizeablePageItem' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Models/CustomizeablePageItem.php',
-        'Modules\\PageBuilder\\app\\Models\\PageItemComponents' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Models/PageItemComponents.php',
-        'Modules\\PageBuilder\\app\\Providers\\PageBuilderServiceProvider' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Providers/PageBuilderServiceProvider.php',
-        'Modules\\PageBuilder\\app\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/PageBuilder/app/Providers/RouteServiceProvider.php',
-        'Modules\\PageBuilder\\database\\seeders\\CustomizeablePageItemSeeder' => __DIR__ . '/../..' . '/Modules/PageBuilder/database/seeders/CustomizeablePageItemSeeder.php',
-        'Modules\\PageBuilder\\database\\seeders\\CustomizeablePageSeeder' => __DIR__ . '/../..' . '/Modules/PageBuilder/database/seeders/CustomizeablePageSeeder.php',
-        'Modules\\PageBuilder\\database\\seeders\\PageBuilderDatabaseSeeder' => __DIR__ . '/../..' . '/Modules/PageBuilder/database/seeders/PageBuilderDatabaseSeeder.php',
-        'Modules\\PageBuilder\\database\\seeders\\PageItemComponentsSeeder' => __DIR__ . '/../..' . '/Modules/PageBuilder/database/seeders/PageItemComponentsSeeder.php',
         'Modules\\PaymentGateway\\app\\Http\\Controllers\\AddonPaymentController' => __DIR__ . '/../..' . '/Modules/PaymentGateway/app/Http/Controllers/AddonPaymentController.php',
         'Modules\\PaymentGateway\\app\\Http\\Controllers\\PaymentGatewayController' => __DIR__ . '/../..' . '/Modules/PaymentGateway/app/Http/Controllers/PaymentGatewayController.php',
         'Modules\\PaymentGateway\\app\\Models\\PaymentGateway' => __DIR__ . '/../..' . '/Modules/PaymentGateway/app/Models/PaymentGateway.php',
@@ -4509,15 +4523,6 @@ class ComposerStaticInit51d6b950fe58d93b171127c1dcad9e30
         'Modules\\Refund\\app\\Providers\\RefundServiceProvider' => __DIR__ . '/../..' . '/Modules/Refund/app/Providers/RefundServiceProvider.php',
         'Modules\\Refund\\app\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/Refund/app/Providers/RouteServiceProvider.php',
         'Modules\\Refund\\database\\seeders\\RefundDatabaseSeeder' => __DIR__ . '/../..' . '/Modules/Refund/database/seeders/RefundDatabaseSeeder.php',
-        'Modules\\Subscription\\app\\Http\\Controllers\\Admin\\PurchaseController' => __DIR__ . '/../..' . '/Modules/Subscription/app/Http/Controllers/Admin/PurchaseController.php',
-        'Modules\\Subscription\\app\\Http\\Controllers\\Admin\\SubscriptionPlanController' => __DIR__ . '/../..' . '/Modules/Subscription/app/Http/Controllers/Admin/SubscriptionPlanController.php',
-        'Modules\\Subscription\\app\\Http\\Controllers\\PaymentController' => __DIR__ . '/../..' . '/Modules/Subscription/app/Http/Controllers/PaymentController.php',
-        'Modules\\Subscription\\app\\Http\\Controllers\\SubscriptionController' => __DIR__ . '/../..' . '/Modules/Subscription/app/Http/Controllers/SubscriptionController.php',
-        'Modules\\Subscription\\app\\Models\\SubscriptionHistory' => __DIR__ . '/../..' . '/Modules/Subscription/app/Models/SubscriptionHistory.php',
-        'Modules\\Subscription\\app\\Models\\SubscriptionPlan' => __DIR__ . '/../..' . '/Modules/Subscription/app/Models/SubscriptionPlan.php',
-        'Modules\\Subscription\\app\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/Subscription/app/Providers/RouteServiceProvider.php',
-        'Modules\\Subscription\\app\\Providers\\SubscriptionServiceProvider' => __DIR__ . '/../..' . '/Modules/Subscription/app/Providers/SubscriptionServiceProvider.php',
-        'Modules\\Subscription\\database\\seeders\\SubscriptionDatabaseSeeder' => __DIR__ . '/../..' . '/Modules/Subscription/database/seeders/SubscriptionDatabaseSeeder.php',
         'Modules\\SupportTicket\\app\\Http\\Controllers\\SupportTicketController' => __DIR__ . '/../..' . '/Modules/SupportTicket/app/Http/Controllers/SupportTicketController.php',
         'Modules\\SupportTicket\\app\\Http\\Controllers\\TicketController' => __DIR__ . '/../..' . '/Modules/SupportTicket/app/Http/Controllers/TicketController.php',
         'Modules\\SupportTicket\\app\\Models\\MessageDocument' => __DIR__ . '/../..' . '/Modules/SupportTicket/app/Models/MessageDocument.php',
