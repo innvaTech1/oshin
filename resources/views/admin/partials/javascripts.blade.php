@@ -44,3 +44,11 @@
         </script>
     @endforeach
 @endif
+
+<script>
+    function makeSlug(selector, target) {
+        var name = $(selector).val();
+        var slug = name.toLowerCase().replace(/^-+|-+$/g, '').replace(/\s/g, '-').replace(/\-\-+/g, '-');
+        $(target).val(slug);
+    }
+</script>

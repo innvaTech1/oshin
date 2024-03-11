@@ -139,6 +139,8 @@
                 </div>
         </section>
     </div>
+
+    @include('components.admin.preloader')
 @endsection
 
 @push('js')
@@ -155,6 +157,7 @@
                 }
             });
             $('.edit-btn').click(function(e) {
+                $('.preloader_area').removeClass('d-none');
                 e.preventDefault();
                 const url = $(this).attr('href');
                 $.ajax({
@@ -181,13 +184,18 @@
                         }
                         let url = "{{ route('admin.category.update', ':id') }}";
                         url = url.replace(':id', response.id);
-                        console.log(url);
                         $('#form').attr('action', url);
                         const categoryId = "<input type='hidden' name='category_id' value='" +
                             response.id + "'>";
                         const method = "<input type='hidden' name='_method' value='PUT'>";
                         $('#form').append(categoryId);
                         $('#form').append(method);
+
+                        $('.preloader_area').addClass('d-none');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        $('.preloader_area').addClass('d-none');
                     }
                 });
             })

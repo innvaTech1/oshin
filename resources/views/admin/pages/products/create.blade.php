@@ -94,7 +94,8 @@
 
                                         <div class="form-group col-9">
                                             <label>{{ __('Attribute') }} </label>
-                                            <select name="attribute_id[]" id="" class="form-control select2" mulitple>
+                                            <select name="attribute_id[]" id="" class="form-control select2"
+                                                mulitple>
                                                 <option value="" disabled>Select</option>
                                                 @foreach ($data['attributes'] as $attribute)
                                                     <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
