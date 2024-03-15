@@ -116,4 +116,10 @@ class AttributeRepository
         }
         return $response;
     }
+
+    public function getValues($ids)
+    {
+        // attributes with values
+        return Attribute::whereIn('id', $ids)->with('values')->get();
+    }
 }

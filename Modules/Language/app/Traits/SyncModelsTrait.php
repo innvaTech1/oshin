@@ -8,7 +8,7 @@ use Modules\Language\app\Jobs\CreateNewTranslatedDataJob;
 use Modules\Language\app\Jobs\DeleteTranslationDataJob;
 use Modules\Language\app\Jobs\UpdateTranslationCodeJob;
 use Modules\Language\app\Models\Language;
-use Modules\Language\App\Traits\TranslateableModelsTrait;
+use Modules\Language\app\Traits\TranslateableModelsTrait;
 
 trait SyncModelsTrait
 {
@@ -47,11 +47,11 @@ trait SyncModelsTrait
             $countCreatedModels = 0;
             $oldModels = $translateAbleModel::where('lang_code', $defaultCode)->get();
             foreach ($oldModels as $oldModel) {
-                if (! $translateAbleModel::where(['id' => $oldModel->id, 'lang_code' => $newCode])->exists()) {
+                if (!$translateAbleModel::where(['id' => $oldModel->id, 'lang_code' => $newCode])->exists()) {
                     $newModel = new $translateAbleModel();
                     $newModel->lang_code = $newCode;
                     foreach ($oldModel->toArray() as $key => $value) {
-                        if (! in_array($key, $ignoredColumns)) {
+                        if (!in_array($key, $ignoredColumns)) {
                             $newModel->$key = $value;
                         }
                     }

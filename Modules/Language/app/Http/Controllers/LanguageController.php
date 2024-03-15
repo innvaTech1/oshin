@@ -14,8 +14,8 @@ use Modules\Language\app\Enums\AllCountriesDetailsEnum;
 use Modules\Language\app\Enums\SyncLanguageType;
 use Modules\Language\app\Http\Requests\LanguageRequest;
 use Modules\Language\app\Models\Language;
-use Modules\Language\App\Traits\LanguageTrait;
-use Modules\Language\App\Traits\SyncModelsTrait;
+use Modules\Language\app\Traits\LanguageTrait;
+use Modules\Language\app\Traits\SyncModelsTrait;
 
 class LanguageController extends Controller
 {
@@ -55,10 +55,10 @@ class LanguageController extends Controller
             $code = $language->code;
             $parentDir = dirname(app_path());
 
-            $sourcePath = $parentDir.'/lang/en.json';
-            $destinationPath = $parentDir."/lang/{$code}.json";
+            $sourcePath = $parentDir . '/lang/en.json';
+            $destinationPath = $parentDir . "/lang/{$code}.json";
 
-            if (File::exists($sourcePath) && ! File::exists($destinationPath)) {
+            if (File::exists($sourcePath) && !File::exists($destinationPath)) {
                 $jsonData = File::get($sourcePath);
                 File::put($destinationPath, $jsonData);
             }
@@ -96,16 +96,16 @@ class LanguageController extends Controller
         if ($language && ($oldCode !== $code) && ($code !== 'en')) {
             $parentDir = dirname(app_path());
 
-            $sourcePath = $parentDir.'/lang/en.json';
-            $destinationPath = $parentDir."/lang/{$code}.json";
+            $sourcePath = $parentDir . '/lang/en.json';
+            $destinationPath = $parentDir . "/lang/{$code}.json";
 
-            if (File::exists($sourcePath) && ! File::exists($destinationPath)) {
+            if (File::exists($sourcePath) && !File::exists($destinationPath)) {
                 $jsonData = File::get($sourcePath);
                 File::put($destinationPath, $jsonData);
             }
 
             if ($oldCode !== $code && $code !== 'en') {
-                $destinationPath = $parentDir."/lang/{$oldCode}.json";
+                $destinationPath = $parentDir . "/lang/{$oldCode}.json";
                 try {
                     File::delete($destinationPath);
                 } catch (\Throwable $th) {
@@ -147,7 +147,7 @@ class LanguageController extends Controller
         }
 
         if ($code !== 'en' && $deleted = $language->delete()) {
-            $destinationPath = dirname(app_path())."/lang/{$code}.json";
+            $destinationPath = dirname(app_path()) . "/lang/{$code}.json";
             File::delete($destinationPath);
         }
 

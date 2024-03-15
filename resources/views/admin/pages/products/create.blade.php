@@ -23,7 +23,7 @@
                                             <h3 class="section-title">{{ __('Product Information') }}</h3>
                                         </div>
                                         <div class="form-group col-12">
-                                            <label class="d-block">Type</label>
+                                            <label class="d-block">{{ __('Type') }}</label>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Single" value="single"
                                                     name="type" checked>
@@ -44,7 +44,7 @@
                                             <label>{{ __('Product SKU') }}</label>
                                             <input type="text" id="productSku" class="form-control" name="product_sku">
                                         </div>
-                                        <div class="form-group col-4 product-variant d-none">
+                                        <div class="form-group col-4 for-variant d-none">
                                             <label>{{ __('Variant SKU Prefix') }} <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" id="variant_sku_prefix" class="form-control"
@@ -93,20 +93,25 @@
                                         </div>
 
                                         <div class="form-group col-9">
+                                            <label>{{ __('Tags') }} </label>
+                                            <input type="text" class="form-control inputtags" name="tags">
+                                        </div>
+                                        <div class="form-group col-12 for-variant d-none">
                                             <label>{{ __('Attribute') }} </label>
-                                            <select name="attribute_id[]" id="" class="form-control select2"
-                                                mulitple>
+                                            <select name="attribute_id[]" id="attribute_id" class="form-control select2"
+                                                multiple>
                                                 <option value="" disabled>Select</option>
                                                 @foreach ($data['attributes'] as $attribute)
                                                     <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-
+                                        <div class="col-12 row attributes_values">
+                                        </div>
                                         <div class="form-group col-12">
                                             <label class="custom-switch mt-2" style="padding-left: 0px !important;">
-                                                <input type="checkbox" name="is_physical" id="is_physical" value="1"
-                                                    checked class="custom-switch-input">
+                                                <input type="checkbox" name="is_physical" id="is_physical"
+                                                    value="1" checked class="custom-switch-input">
                                                 <span class="custom-switch-indicator"></span>
                                                 <span
                                                     class="custom-switch-description">{{ __('Is physical Product?') }}</span>
@@ -139,6 +144,7 @@
                                                 <label>{{ __('Additional Shipping Charge') }} </label>
                                                 <input type="text" class="form-control" name="length">
                                             </div>
+
                                         </div>
                                         <div class="col-12">
                                             <h3 class="section-title">{{ __('Price Info And Stock') }}</h3>
@@ -279,6 +285,8 @@
                     </div>
                 </form>
         </section>
+
+        @include('components.admin.preloader')
     </div>
 
     {{-- Media Modal Show --}}
@@ -307,10 +315,20 @@
             $('[name="type"]').on('change', function() {
                 if ($(this).val() == 'single') {
                     $('.product-single').removeClass('d-none');
-                    $('.product-variant').addClass('d-none');
+                    $('.for-variant').addClass('d-none')
+
+                    // disabled all input select tag inside for variant class
+                    $('.for-variant input, .for-variant select').prop('disabled', true);
+
+                    // enable all input select tag inside .product-single class
+                    $('.product-single input, .product-single select').prop('disabled', false);
                 } else {
                     $('.product-single').addClass('d-none');
-                    $('.product-variant').removeClass('d-none');
+                    $('.for-variant').removeClass('d-none');
+                    $('.for-variant input, .for-variant select').prop('disabled', false);
+
+                    // disable all input select tag inside .product-single class
+                    $('.product-single input, .product-single select').prop('disabled', true);
                 }
             });
 
@@ -338,6 +356,51 @@
                     $('.partial_amount').addClass('d-none');
                 }
             });
+
+            $('#attribute_id').on('change', function() {
+                var attribute_id = $(this).val();
+                $('.preloader_area').removeClass('d-none')
+                // get attributes values
+                $.ajax({
+                    url: "{{ route('admin.attribute.values') }}",
+                    type: "POST",
+                    data: {
+                        attribute_id: attribute_id
+                    },
+                    success: function(response) {
+                        $('.attributes_values').html('');
+                        $.each(response, function(index, attribute) {
+                            let html = `
+                            <div class="col-4 mb-2">
+                                <input type="text" name='choice[]' value="${attribute.name}" class="form-control" readonly>
+                            </div>
+                            <div class="col-8 mb-2">
+                                <select name="choice_options_${attribute.id}[]" class="form-control select2" multiple>
+                        `;
+
+                            $.each(attribute.values, function(index, value) {
+                                html +=
+                                    `<option value="${value.id}">${value.value}</option>`;
+                            });
+
+                            html += `
+                                </select>
+                            </div>
+                        `;
+
+                            // Append the generated HTML to a container
+                            $('.attributes_values').append(html);
+                        });
+
+                        // After appending all select elements, initialize Select2
+                        $('.select2').select2();
+
+
+                        $('.preloader_area').addClass('d-none')
+                    }
+                })
+
+            })
         })
     </script>
 

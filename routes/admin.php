@@ -56,6 +56,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             // Brands
             Route::resource('brand', BrandController::class);
             Route::resource('attribute', AttributeController::class);
+            Route::post('attribute/values', [AttributeController::class, 'attributeValues'])->name('attribute.values');
             Route::resource('unit', UnitTypeController::class);
 
         });

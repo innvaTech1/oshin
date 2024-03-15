@@ -93,4 +93,12 @@ class AttributeController extends Controller
     {
 
     }
+
+    /**
+     * Get attribute values
+     */
+    public function attributeValues(Request $request)
+    {
+        return $this->attributeService->getValues($request->attribute_id);
+    }
 }
