@@ -42,7 +42,11 @@
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $brand->name }}</td>
-                                                    <td><img src="{{ asset($brand->logo) }}" alt=""></td>
+                                                    <td>
+                                                        <figure class="avatar mr-2 avatar-xl">
+                                                            <img src="{{ $brand->logo }}" alt="...">
+                                                        </figure>
+                                                    </td>
                                                     <td>{{ $brand->status }}</td>
                                                     <td>{{ $brand->featured }}</td>
                                                     <td>

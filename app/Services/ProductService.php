@@ -27,4 +27,9 @@ class ProductService
     {
         return $this->productRepository->getAllSKU();
     }
+    public function create($data)
+    {
+
+        return $this->productRepository->create($data);
+    }
 }

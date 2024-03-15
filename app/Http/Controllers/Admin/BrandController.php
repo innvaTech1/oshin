@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\RedirectType;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandRequest;
 use App\Models\Brand;
+use App\Services\BrandService;
+use App\Traits\LogActivity;
+use App\Traits\RedirectHelperTrait;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
+    use RedirectHelperTrait;
+    protected $brandService;
+
+    public function __construct(BrandService $brandService)
+    {
+        $this->brandService = $brandService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,9 +40,28 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
-        //
+        try {
+            $this->brandService->save($request->except("_token"));
+            LogActivity::successLog('Brand Added.');
+            $this->redirectWithMessage(RedirectType::CREATE->value, 'admin.brand.index', [], ['messege' => 'Brand Added Successfully', 'alert-type' => 'success']);
+            if (isset($request->form_type)) {
+                if ($request->form_type == 'modal_form') {
+                    $brands = $this->brandService->getActiveAll();
+                    return view('product::products.components._brand_list_select', compact('brands'));
+                } else {
+                    return redirect()->route('admin.brand.index');
+                }
+            } else {
+                return redirect()->route('admin.brand.index');
+            }
+        } catch (\Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wront', 'alert-type' => 'error']);
+            return back();
+        }
+
     }
 
     /**

@@ -59,7 +59,7 @@
                                             <label>{{ __('Category') }} <span class="text-danger">*</span></label>
                                             <select name="category_ids[]" id="" class="form-control select2"
                                                 multiple>
-                                                <option value="" disabled>Select</option>
+                                                <option value="" disabled>{{ __('Select') }}</option>
                                                 @foreach ($data['categories'] as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
@@ -68,7 +68,7 @@
                                         <div class="form-group col-4">
                                             <label>{{ __('Brand') }} </label>
                                             <select name="brand_id" id="" class="form-control select2">
-                                                <option value="" disabled selected>Select</option>
+                                                <option value="" disabled selected>{{ __('Select') }}</option>
                                                 @foreach ($data['brands'] as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                 @endforeach
@@ -77,7 +77,7 @@
                                         <div class="form-group col-4">
                                             <label>{{ __('Unit') }} <span class="text-danger">*</span></label>
                                             <select name="unit_id" id="" class="form-control select2">
-                                                <option value="" disabled selected>Select</option>
+                                                <option value="" disabled selected>{{ __('Select') }}</option>
                                                 @foreach ($data['units'] as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                 @endforeach
@@ -100,7 +100,7 @@
                                             <label>{{ __('Attribute') }} </label>
                                             <select name="attribute_id[]" id="attribute_id" class="form-control select2"
                                                 multiple>
-                                                <option value="" disabled>Select</option>
+                                                <option value="" disabled>{{ __('Select') }}</option>
                                                 @foreach ($data['attributes'] as $attribute)
                                                     <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                                 @endforeach

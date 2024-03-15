@@ -40,8 +40,6 @@ class BrandRepository
     public function create(array $data)
     {
         $brand = new Brand();
-        $data['slug'] = strtolower(str_replace(' ', '-', $data['name']));
-
         $data['featured'] = isset($data['featured']) ? true : false;
         $brand->fill($data)->save();
         return true;

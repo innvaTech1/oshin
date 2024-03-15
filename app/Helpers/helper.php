@@ -11,8 +11,8 @@ use Modules\Language\app\Models\Language;
 function file_upload($request_file, $old_file, $file_path)
 {
     $extention = $request_file->getClientOriginalExtension();
-    $file_name = 'wsus-img'.date('-Y-m-d-h-i-s-').rand(999, 9999).'.'.$extention;
-    $file_name = $file_path.$file_name;
+    $file_name = 'wsus-img' . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extention;
+    $file_name = $file_path . $file_name;
     $request_file->move(public_path($file_path), $file_name);
 
     if ($old_file) {
@@ -25,17 +25,17 @@ function file_upload($request_file, $old_file, $file_path)
     return $file_name;
 }
 // file upload method
-if (! function_exists('allLanguages')) {
+if (!function_exists('allLanguages')) {
     function allLanguages()
     {
         return Language::all();
     }
 }
 
-if (! function_exists('getSessionLanguage')) {
+if (!function_exists('getSessionLanguage')) {
     function getSessionLanguage(): string
     {
-        if (! session()->has('lang')) {
+        if (!session()->has('lang')) {
             session()->put('lang', config('app.locale'));
             session()->forget('text_direction');
             session()->put('text_direction', 'ltr');
@@ -71,15 +71,15 @@ function currency($price)
     $price = number_format($price, 2, '.', ',');
 
     if ($currency_position == 'before_price') {
-        $price = $currency_icon.$price;
+        $price = $currency_icon . $price;
     } elseif ($currency_position == 'before_price_with_space') {
-        $price = $currency_icon.' '.$price;
+        $price = $currency_icon . ' ' . $price;
     } elseif ($currency_position == 'after_price') {
-        $price = $price.$currency_icon;
+        $price = $price . $currency_icon;
     } elseif ($currency_position == 'after_price_with_space') {
-        $price = $price.' '.$currency_icon;
+        $price = $price . ' ' . $currency_icon;
     } else {
-        $price = $currency_icon.$price;
+        $price = $currency_icon . $price;
     }
 
     return $price;
@@ -95,19 +95,19 @@ function html_decode($text)
     return $after_decode;
 }
 
-if (! function_exists('checkAdminHasPermission')) {
+if (!function_exists('checkAdminHasPermission')) {
     function checkAdminHasPermission($permission): bool
     {
         return Auth::guard('admin')->user()->can($permission) ? true : false;
     }
 }
 
-if (! function_exists('getSettingStatus')) {
+if (!function_exists('getSettingStatus')) {
     function getSettingStatus($key)
     {
         if (Cache::has('setting')) {
             $setting = Cache::get('setting');
-            if (! is_null($key)) {
+            if (!is_null($key)) {
                 return $setting->$key == 'active' ? true : false;
             }
         } else {
