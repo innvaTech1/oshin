@@ -45,10 +45,10 @@ class AttributeController extends Controller
             $this->attributeService->save($request->except("_token"));
             LogActivity::successLog('Attribute Added.');
 
-            return $this->redirectWithSession(RedirectType::CREATE->value, "admin.attribute.index");
+            return $this->redirectWithMessage(RedirectType::CREATE->value, "admin.attribute.index");
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            return $this->redirectWithSession(RedirectType::ERROR->value);
+            return $this->redirectWithMessage(RedirectType::ERROR->value);
         }
 
     }
@@ -66,7 +66,8 @@ class AttributeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $attribute = $this->attributeService->findById($id);
+        return response()->json($attribute);
     }
 
     /**
@@ -77,10 +78,10 @@ class AttributeController extends Controller
         try {
             $this->attributeService->update($request->except("_token"), $id);
             LogActivity::successLog('Attribute Updated.');
-            return $this->redirectWithSession(RedirectType::UPDATE->value, "admin.attribute.index");
+            return $this->redirectWithMessage(RedirectType::UPDATE->value, "admin.attribute.index");
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            return $this->redirectWithSession(RedirectType::ERROR->value);
+            return $this->redirectWithMessage(RedirectType::ERROR->value);
         }
 
     }
