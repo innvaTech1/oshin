@@ -50,8 +50,10 @@ class BrandRepository
     }
     public function update(array $data, $id)
     {
+        if ($data['logo'] == null) {
+            unset($data['logo']);
+        }
         $brand = Brand::findOrFail($id);
-        $data['slug'] = slugCreate($data['name']);
         $data['featured'] = isset($data['featured']) ? true : false;
         $brand->fill($data)->save();
     }

@@ -22,8 +22,8 @@ class BrandRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "logo" => $this->brand ? "nullable|numeric" : "required|numeric",
             "name" => "required|string|max:255|unique:brands,name," . $this->brand,
-            "logo" => "required|numeric",
             "description" => "nullable|string",
             "link" => "nullable|string|max:255",
             "status" => "required|in:1,0",

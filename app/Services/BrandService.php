@@ -33,4 +33,8 @@ class BrandService
     {
         return $this->brandRepository->getActiveAll();
     }
+    public function findById($data)
+    {
+        return $this->brandRepository->find($data);
+    }
 }
