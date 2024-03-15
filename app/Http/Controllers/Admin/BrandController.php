@@ -58,7 +58,7 @@ class BrandController extends Controller
             }
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wront', 'alert-type' => 'error']);
+            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wrong', 'alert-type' => 'error']);
             return back();
         }
 
@@ -100,7 +100,7 @@ class BrandController extends Controller
             return redirect()->route('admin.brand.index');
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wront', 'alert-type' => 'error']);
+            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wrong', 'alert-type' => 'error']);
             return back();
         }
     }
@@ -110,6 +110,19 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $result = $this->brandService->deleteById($id);
+            LogActivity::successLog('Brand Deleted.');
+            if ($result == "possible") {
+                $this->redirectWithMessage(RedirectType::DELETE->value, 'admin.brand.index', [], ['messege' => 'Brand Deleted Successfully', 'alert-type' => 'success']);
+            } else {
+                $this->redirectWithMessage(RedirectType::DELETE->value, 'admin.brand.index', [], ['messege' => 'Brand can not be deleted', 'alert-type' => 'error']);
+            }
+            return redirect()->route('admin.brand.index');
+        } catch (\Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            $this->redirectWithMessage(RedirectType::ERROR->value, 'admin.brand.index', [], ['messege' => 'Something Went Wrong', 'alert-type' => 'error']);
+            return back();
+        }
     }
 }

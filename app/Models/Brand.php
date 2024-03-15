@@ -50,6 +50,12 @@ class Brand extends Model
         return $this->belongsTo(Media::class, 'logo', 'id');
     }
 
+    public function getLogoPathAttribute()
+    {
+        $media = Media::where('id', $this->attributes['logo'])->first();
+        return $media->path;
+    }
+
     public function getLogoAttribute()
     {
         $media = Media::where('id', $this->attributes['logo'])->first();

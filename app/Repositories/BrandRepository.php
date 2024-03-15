@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Brand;
-use App\Models\UsedMedia;
-use App\Traits\ImageStore;
 use Maatwebsite\Excel\Facades\Excel;
+use Modules\Media\app\Models\Media;
 
 class BrandRepository
 {
@@ -60,12 +59,17 @@ class BrandRepository
     public function delete($id)
     {
         $brand = Brand::findOrFail($id);
-        if (count($brand->products) > 0 || count($brand->MenuElements) > 0 || count($brand->MenuBottomPanel) > 0 || count($brand->Silders) > 0 ||
-            count($brand->homepageCustomBrands) > 0) {
+        if ($brand->products?->count() > 0 || $brand->MenuElements?->count() > 0 || $brand->Silders?->count() > 0) {
             return "not_possible";
         } else {
-            ImageStore::deleteImage($brand->logo);
-            UsedMedia::where('usable_id', $brand->id)->where('usable_type', get_class($brand))->where('used_for', 'brand_image')->delete();
+            $media = Media::where('path', $brand->logo_path)->first();
+            // delete from file
+            @unlink(public_path($media->path));
+
+            // delete from database
+            if ($media) {
+                $media->delete();
+            }
             $brand->delete();
             return 'possible';
         }
