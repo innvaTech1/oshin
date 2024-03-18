@@ -32,18 +32,23 @@
                 <div class="col-xxl-9">
                     <div class="cart-table">
                         <div class="table-responsive-xl">
-                            @if ($cart->isEmpty())
+                            @if (auth()->guest() && empty(session()->get('cart')))
+                                <h2 style="color: #FF9999; border: 2px solid #FF9999; padding: 10px;">No products in cart.
+                                    <a href="{{ route('home') }}">Click here </a>to add products to your cart.
+                                </h2>
+                            @elseif (auth()->check() && $cart->isEmpty())
                                 <h2 style="color: #FF9999; border: 2px solid #FF9999; padding: 10px;">No products in cart.
                                     <a href="{{ route('home') }}">Click here </a>to add products to your cart.
                                 </h2>
                             @endif
+
                             <table class="table">
                                 <tbody>
                                     @foreach ($cart as $item)
-                                        <tr class="product-box-contain">
+                                        <tr class="product-box-contain" data-cart-delete="{{ $item->id }}">
                                             <td class="product-detail">
                                                 <div class="product border-0">
-                                                    <a href="{{ route('productDetails', ['id' => $item->product->id, 'slug' => $item->product->slug]) }}"
+                                                    <a href="{{ route('productDetails', ['slug' => $item->product->slug]) }}"
                                                         class="product-image">
                                                         <img src="{{ asset($item->product->thumbnail_image_source) }}"
                                                             class="img-fluid blur-up lazyload" alt="img">
@@ -152,7 +157,7 @@
                         <div class="button-group cart-button">
                             <ul>
                                 <li>
-                                    <button onclick="location.href = '{{ route('home') }}';"
+                                    <button onclick="location.href = '{{ route('checkout') }}';"
                                         class="btn btn-animation proceed-btn fw-bold">Process To Checkout</button>
                                 </li>
 
@@ -212,11 +217,17 @@
         $('.close_button').on('click', function(e) {
             e.preventDefault();
             var cartId = $(this).data('cart-id');
+
             $.ajax({
                 url: '/cart/delete/' + cartId, // URL to send the POST request
                 type: 'DELETE',
                 success: function(response) {
                     toastr.success(response.message);
+                    $('li[data-cart-delete="' + cartId + '"]').remove();
+                    var cartCount = $('#cart-count').text();
+                    if (cartCount > 0) {
+                        $('#cart-count').text(cartCount - 1);
+                    }
                 },
                 error: function(error) {
                     // Handle error response, e.g., show an error message

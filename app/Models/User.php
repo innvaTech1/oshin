@@ -8,6 +8,7 @@ use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\LiveChat\app\Models\Message;
 
@@ -50,7 +51,33 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected static function booted()
+    {
+        if (Auth::check()) {
+            $cartItems = session()->get('cart', []);
 
+            if (!empty($cartItems)) {
+                foreach ($cartItems as $productId => $item) {
+                    $existingCartItem = Cart::where('user_id', Auth::id())
+                        ->where('product_id', $productId)
+                        ->first();
+                    if ($existingCartItem) {
+                        $existingCartItem->quantity += $item['quantity'];
+                        $existingCartItem->save();
+                    } else {
+                        $cart = new Cart();
+                        $cart->user_id = Auth::id();
+                        $cart->product_id = $productId;
+                        $cart->quantity = $item['quantity'];
+                        $cart->total_amount = rand(100, 1000);
+                        $cart->save();
+                    }
+                }
+
+                session()->forget('cart');
+            }
+        }
+    }
 
     public function messagesSent()
     {
@@ -73,7 +100,7 @@ class User extends Authenticatable
     {
         $contactUsers = User::whereIn('id', $this->messagesSent()->pluck('receiver_id'))
             ->orWhereIn('id', $this->messagesReceived()->pluck('sender_id'))
-            ->select('id','name','email','image')
+            ->select('id', 'name', 'email', 'image')
             ->get();
 
         $contactUsersWithUnseenMessages = [];
@@ -85,10 +112,10 @@ class User extends Authenticatable
                 ->count();
 
             $lastMessage = Message::where(function ($query) use ($contactUser) {
-                    $query->where('sender_id', $this->id)->where('receiver_id', $contactUser->id);
-                })->orWhere(function ($query) use ($contactUser) {
-                    $query->where('sender_id', $contactUser->id)->where('receiver_id', $this->id);
-                })->latest('created_at')->first();
+                $query->where('sender_id', $this->id)->where('receiver_id', $contactUser->id);
+            })->orWhere(function ($query) use ($contactUser) {
+                $query->where('sender_id', $contactUser->id)->where('receiver_id', $this->id);
+            })->latest('created_at')->first();
 
             $contactUsersWithUnseenMessages[] = (object)[
                 'id' => $contactUser->id,
@@ -134,11 +161,11 @@ class User extends Authenticatable
 
     public function wishlistItems()
     {
-        return $this->hasMany(Wishlist::class,'user_id');
+        return $this->hasMany(Wishlist::class, 'user_id');
     }
 
     public function carts()
     {
-        return $this->hasMany(Cart::class,'user_id');
+        return $this->hasMany(Cart::class, 'user_id');
     }
 }

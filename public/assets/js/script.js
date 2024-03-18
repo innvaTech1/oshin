@@ -315,7 +315,7 @@ $(window).on("load resize", function () {
    ==========================*/
 const loaderEl = document.getElementsByClassName("fullpage-loader")[0];
 document.addEventListener("readystatechange", (event) => {
-    const readyState = "interactive";
+    const readyState = "interactive"; //"complete"
 
     if (document.readyState == readyState) {
         loaderEl.classList.add("fullpage-loader--invisible");

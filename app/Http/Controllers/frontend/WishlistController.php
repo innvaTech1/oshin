@@ -17,10 +17,8 @@ class WishlistController extends Controller
     public function index()
     {
         $items = Wishlist::with(['product' => function ($query) {
-            $query->select('id', 'slug', 'thumbnail_image_source', 'product_name', 'specification', 'model_number')
-                ->with(['cart' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }]);
+            $query->select('id', 'slug', 'thumbnail_image_source', 'product_name', 'description', 'model_number')
+                ->with('cart');
         }])->where('user_id', Auth::id())->get();
 
 
