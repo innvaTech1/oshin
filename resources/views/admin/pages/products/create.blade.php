@@ -26,18 +26,19 @@
                                             <label class="d-block">{{ __('Type') }}</label>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Single" value="single"
-                                                    name="type" checked>
+                                                    name="product_type" checked>
                                                 <label class="form-check-label" for="Single">{{ __('Single') }}</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Variant"
-                                                    value="variant" name="type">
+                                                    value="variant" name="product_type">
                                                 <label class="form-check-label" for="Variant">{{ __('Variant') }}</label>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label>{{ __('Name') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="name" class="form-control" name="name">
+                                            <label>{{ __('Product Name') }} <span class="text-danger">*</span></label>
+                                            <input type="text" id="product_name" class="form-control"
+                                                name="product_name">
                                         </div>
 
                                         <div class="form-group col-6 product-single">
@@ -51,7 +52,7 @@
                                                 name="variant_sku_prefix">
                                         </div>
                                         <div class="form-group col-4">
-                                            <label>{{ __('Model Number') }} <span class="text-danger">*</span></label>
+                                            <label>{{ __('Model Number') }}</label>
                                             <input type="text" id="model_number" class="form-control"
                                                 name="model_number">
                                         </div>
@@ -85,15 +86,15 @@
                                         </div>
                                         <div class="form-group col-3">
                                             <label>{{ __('Minimum Order Qty') }} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="min_order_qty">
+                                            <input type="text" class="form-control" name="minimum_order_qty">
                                         </div>
                                         <div class="form-group col-3">
-                                            <label>{{ __('Maximum Order Qty') }} <span class="text-danger">*</span></label>
+                                            <label>{{ __('Maximum Order Qty') }}</label>
                                             <input type="text" class="form-control" name="max_order_qty">
                                         </div>
 
                                         <div class="form-group col-9">
-                                            <label>{{ __('Tags') }} </label>
+                                            <label>{{ __('Tags') }} <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control inputtags" name="tags">
                                         </div>
                                         <div class="form-group col-12 for-variant d-none">
@@ -150,11 +151,11 @@
                                             <h3 class="section-title">{{ __('Price Info And Stock') }}</h3>
                                         </div>
                                         <div class="form-group col-6 col-md-6 product-single">
-                                            <label>{{ __('Selling Price') }} </label>
+                                            <label>{{ __('Selling Price') }} <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="selling_price">
                                         </div>
                                         <div class="form-group col-6 col-md-2">
-                                            <label>{{ __('Discount') }} </label>
+                                            <label>{{ __('Discount') }} <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="discount">
                                         </div>
                                         <div class="form-group col-6 col-md-4">
@@ -248,7 +249,8 @@
                                         {{-- Media File input --}}
                                         @if (Module::isEnabled('Media'))
                                             <div class="form-group col-md-12">
-                                                <x-media::media-input name="image[]" multiple="yes" classes="col-12 " />
+                                                <x-media::media-input name="image[]" multiple="yes" classes="col-12 "
+                                                    label_text="Product Image" />
                                             </div>
                                         @endif
                                         <div class="col-12">
@@ -312,7 +314,7 @@
                 $(this).parent().parent().remove();
             });
 
-            $('[name="type"]').on('change', function() {
+            $('[name="product_type"]').on('change', function() {
                 if ($(this).val() == 'single') {
                     $('.product-single').removeClass('d-none');
                     $('.for-variant').addClass('d-none')

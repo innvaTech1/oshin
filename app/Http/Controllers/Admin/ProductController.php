@@ -37,7 +37,6 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        dd($request->all());
         DB::beginTransaction();
         try {
             $this->productService->create($request->except("_token"));

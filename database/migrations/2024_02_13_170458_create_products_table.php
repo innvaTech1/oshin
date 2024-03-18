@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("product_name")->nullable();
             $table->string("slug", 255)->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger("product_type")->nullable()->comment('1 => single_product, 2 => variant_product');
+            $table->tinyInteger("product_type")->nullable()->comment('1 => single_product, 2 => variant_product');
             $table->unsignedBigInteger("unit_type_id")->nullable();
             $table->unsignedBigInteger("brand_id")->nullable();
             $table->string("thumbnail_image_source", 255)->nullable();

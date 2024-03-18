@@ -6,8 +6,11 @@ use App\Models\CategoryProduct;
 use App\Models\DigitalFile;
 use App\Models\Product;
 use App\Models\ProductGalaryImage;
+use App\Models\ProductRelatedSale;
 use App\Models\ProductSku;
 use App\Models\ProductTag;
+use App\Models\ProductVariations;
+use App\Models\SellerProduct;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -58,17 +61,17 @@ class ProductRepository
     }
     public function create(array $data)
     {
-        $host = activeFileStorage();
-        $product = new Product();
-        $user = auth('admin')->user()->roles[0]->name;
 
-        if ($user == 'Super Admin' || $user == 'Admin' || $user == 'Staff') {
+        $product = new Product();
+        $user = auth('admin')->user()->roles->first();
+        if ($user->name == 'Super Admin' || $user->name == 'Admin' || $user->name == 'Staff') {
             $data['is_approved'] = 1;
-            $data['requested_by'] = $user->role_id;
+            $data['requested_by'] = $user->id;
         } else {
             $data['is_approved'] = 0;
-            $data['requested_by'] = $user->role_id;
+            $data['requested_by'] = $user->id;
         }
+
         if ($data['is_physical'] == 0) {
             $data['is_physical'] = 0;
             $data['shipping_type'] = 1;
@@ -86,6 +89,7 @@ class ProductRepository
 
         $data['slug'] = productSlug($data['product_name']);
 
+        dd($data);
         $product->fill($data)->save();
 
         // send notification from seller request
@@ -145,7 +149,7 @@ class ProductRepository
             }
 
             $product_sku->additional_shipping = $data['additional_shipping'];
-            $product_sku->status = ($user == 'Super Admin' || $user == 'Admin' || $user == 'Staff') ? $data['status'] : 0;
+            $product_sku->status = ($user->name == 'Super Admin' || $user->name == 'Admin' || $user->name == 'Staff') ? $data['status'] : 0;
             $product_sku->product_stock = $stock;
             $product_sku->save();
             if ($data['is_physical'] == 0 && isset($data['file_source'])) {
@@ -155,7 +159,7 @@ class ProductRepository
                 ]);
             }
         }
-        if ($data['product_type'] == 2) {
+        if ($data['product_type'] == 'variant') {
             foreach ($data['track_sku'] as $key => $variant_sku) {
                 $product_sku = new ProductSku;
                 $product_sku->product_id = $product->id;
@@ -214,7 +218,7 @@ class ProductRepository
                 $attribute_id = explode('-', $data['str_attribute_id'][0]);
                 $attribute_value_id = explode('-', $data['str_id'][$key]);
                 foreach ($attribute_value_id as $k => $value) {
-                    $product_variation = new ProductVariations;
+                    $product_variation = new ProductVariations();
                     $product_variation->product_id = $product->id;
                     $product_variation->product_sku_id = $product_sku->id;
                     $product_variation->attribute_id = $attribute_id[$k];
@@ -229,24 +233,6 @@ class ProductRepository
                 ProductRelatedSale::create([
                     'product_id' => $product->id,
                     'related_sale_product_id' => $item,
-                ]);
-            }
-        }
-        if (isset($data['upsale_product_hidden_name'])) {
-            $up_sale = json_decode($data['upsale_product_hidden_name']);
-            foreach ($up_sale as $key => $item) {
-                ProductUpSale::create([
-                    'product_id' => $product->id,
-                    'up_sale_product_id' => $item,
-                ]);
-            }
-        }
-        if (isset($data['crosssale_product_hidden_name'])) {
-            $cross_sale = json_decode($data['crosssale_product_hidden_name']);
-            foreach ($cross_sale as $key => $item) {
-                ProductCrossSale::create([
-                    'product_id' => $product->id,
-                    'cross_sale_product_id' => $item,
                 ]);
             }
         }
