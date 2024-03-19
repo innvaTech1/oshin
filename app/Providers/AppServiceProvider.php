@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Modules\GlobalSetting\app\Models\Setting;
 
-use Cache, Session;
 use Modules\Currency\app\Models\MultiCurrency;
 
 
