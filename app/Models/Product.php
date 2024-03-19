@@ -50,7 +50,7 @@ class Product extends Model
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_products')->withPivot('category_id', 'product_id');
+        return $this->belongsToMany(Category::class, 'category_products');
     }
     private function createSlug($name, $model = null)
     {
@@ -118,10 +118,25 @@ class Product extends Model
 
     public function wishlists()
     {
-        return $this->hasMany(Wishlist::class,'product_id');
+        return $this->hasMany(Wishlist::class, 'product_id');
+    }
+
+    public function getWishlistsAttribute()
+    {
+        if (auth()->check() && $this->relationLoaded('wishlists')) {
+            return $this->getRelation('wishlists')->where('user_id', auth()->id());
+        }
+        return [];
     }
     public function cart()
     {
-        return $this->hasOne(Cart::class,'product_id');
+        return $this->hasMany(Cart::class, 'product_id');
+    }
+    public function getCartAttribute()
+    {
+        if (auth()->check() && $this->relationLoaded('cart')) {
+                return  $this->getRelation('cart')->where('user_id', auth()->id());
+        }
+        return [];
     }
 }

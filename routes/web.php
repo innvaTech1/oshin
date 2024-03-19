@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\CheckOutController;
+use App\Http\Controllers\frontend\CompareController;
 use App\Http\Controllers\frontend\HomeController;
+
+use App\Http\Controllers\frontend\ProductCategoryController;
+
 use App\Http\Controllers\frontend\ProductController;
 use App\Http\Controllers\frontend\WishlistController;
 use App\Http\Controllers\PaymentController;
@@ -14,17 +19,33 @@ Route::get('/search', function () {
     return view('frontend.search');
 })->name('search');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('productDetails');
-Route::get('/category', function () {
-    return view('frontend.category');
-})->name('category');
+Route::get('/products', [ProductCategoryController::class, 'index'])->name('products');
+Route::get('/products/filter', [ProductCategoryController::class, 'filterProducts'])->name('filterProducts');
+
+//COMPARE
+Route::get('/compare',[CompareController::class,'index'])->name('compare');
+Route::post('/compare',[CompareController::class,'store'])->name('compare.add');
+Route::delete('/compare/delete/{id}',[CompareController::class,'destroy'])->name('compare.delete');
+
 // Route::get('/contactus', function () {
 //     return view('frontend.contactUs');
 // })->name('contactus');
+
+// CART
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'store'])->name('cart.add');
+Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.delete');
 
 // WISHLIST ROUTES
 Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('auth')->name('wishlist');
 Route::post('/wishlist/add', [WishlistController::class, 'store'])->middleware('auth')->name('wishlist.add');
 Route::delete('/wishlist/delete/{id}', [WishlistController::class, 'destroy'])->middleware('auth')->name('wishlist.delete');
+
+
+
+// CART
+Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
+
 
 // CART
 Route::get('/cart', [CartController::class, 'index'])->middleware('auth')->name('cart.index');
@@ -34,15 +55,14 @@ Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->middlewa
 // Route::get('/checkout', function () {
 //     return view('frontend.checkout');
 // })->name('checkout');
+
 // Route::get('/order-success', function () {
 //     return view('frontend.orderSuccess');
 // })->name('orederSuccess');
 // Route::get('/order-tracking', function () {
 //     return view('frontend.orderTracking');
 // })->name('orederTracking');
-// Route::get('/compare', function () {
-//     return view('frontend.compare');
-// })->name('compare');
+
 // Route::get('/aboutus', function () {
 //     return view('frontend.aboutus');
 // })->name('aboutus');

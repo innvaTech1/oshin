@@ -11,7 +11,7 @@
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
+                                    <a href="{{ route('home') }}">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
@@ -528,47 +528,14 @@
                             </div>
 
                             <ul class="summery-contain">
-                                <li>
-                                    <img src="../assets/images/vegetable/product/1.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Bell pepper <span>X 1</span></h4>
-                                    <h4 class="price">$32.34</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/2.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Eggplant <span>X 3</span></h4>
-                                    <h4 class="price">$12.23</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/3.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Onion <span>X 2</span></h4>
-                                    <h4 class="price">$18.27</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/4.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Potato <span>X 1</span></h4>
-                                    <h4 class="price">$26.90</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/5.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Baby Chili <span>X 1</span></h4>
-                                    <h4 class="price">$19.28</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/6.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Broccoli <span>X 2</span></h4>
-                                    <h4 class="price">$29.69</h4>
-                                </li>
+                                @foreach ($cart as $item)
+                                    <li>
+                                        <img src="{{ asset($item->product->thumbnail_image_source) }}"
+                                            class="img-fluid blur-up lazyloaded checkout-image" alt="">
+                                        <h4>{{ $item->product->product_name }} <span>X {{ $item->quantity }}</span></h4>
+                                        <h4 class="price">$32.34</h4>
+                                    </li>
+                                @endforeach
                             </ul>
 
                             <ul class="summery-total">
@@ -612,10 +579,10 @@
 
                             <ul class="offer-detail">
                                 <li>
-                                    <p>Combo: BB Royal Almond/Badam Californian, Extra Bold 100 gm...</p>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, corrupti.</p>
                                 </li>
                                 <li>
-                                    <p>combo: Royal Cashew Californian, Extra Bold 100 gm + BB Royal Honey 500 gm</p>
+                                    <p>combo: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab, cum.</p>
                                 </li>
                             </ul>
                         </div>
@@ -664,8 +631,7 @@
 
                     <form>
                         <div class="form-floating mb-4 theme-form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="address"
-                                style="height: 100px"></textarea>
+                            <textarea class="form-control" placeholder="Leave a comment here" id="address" style="height: 100px"></textarea>
                             <label for="address">Enter Address</label>
                         </div>
                     </form>

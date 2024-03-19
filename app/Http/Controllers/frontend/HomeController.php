@@ -19,10 +19,10 @@ class HomeController extends Controller
         $categories = Category::select('id', 'name', 'slug', 'image')->get();
 
         if (Auth::check() == true) {
-            $products = Product::select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
-                ->with(['brand', 'wishlists' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
+            $products = Product::with(['brand', 'wishlists' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])
+                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
                 ->where('is_approved', true)
                 ->whereNotIn('id', function ($query) {
                     $query->select('product_id')
@@ -33,10 +33,10 @@ class HomeController extends Controller
                 ->take(8)
                 ->get();
 
-            $top_products = Product::select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating', 'total_sale')
-                ->with(['brand', 'wishlists' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
+            $top_products = Product::with(['brand', 'wishlists' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])
+                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating', 'total_sale')
                 ->where('is_approved', true)
                 ->whereNotIn('id', function ($query) {
                     $query->select('product_id')
@@ -47,8 +47,9 @@ class HomeController extends Controller
                 ->take(20)
                 ->get();
         } else {
-            $products = Product::select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
-                ->where('is_approved', true)->with('brand')
+            $products = Product::with('brand')
+                ->where('is_approved', true)
+                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
                 ->inRandomOrder()
                 ->take(8)
                 ->get()->each(function ($product) {
@@ -56,8 +57,8 @@ class HomeController extends Controller
                 });
 
             // Set wishlists relationship to null explicitly
-            $top_products = Product::select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating', 'total_sale')
-                ->where('is_approved', true)
+            $top_products = Product::where('is_approved', true)
+                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating', 'total_sale')
                 ->orderBy('total_sale', 'desc')
                 ->take(20)
                 ->get()

@@ -51,7 +51,7 @@
                                 <div class="product-detail">
                                     <span class="span-name">{{ $item->product->product_name }}</span>
                                     <a href="product-left-thumbnail.html">
-                                        <h5 class="name">{{ $item->product->specification }}</h5>
+                                        <h5 class="name">{{ $item->product->description }}</h5>
                                     </a>
                                     <h6 class="unit mt-1">{{ $item->product->model_number }}</h6>
                                     <h5 class="price">
@@ -66,20 +66,23 @@
                                                 <i class="fa-solid fa-plus"></i>
                                             </span>
                                         </button>
-                                        <div class="cart_qty qty-box @if ($item->product->cart?->quantity) open @endif">
+                                        <div data-removed-from-cart="{{ !empty($item->product->cart) && isset($item->product->cart[0]['id']) ? $item->product->cart[0]['id'] : '' }}"
+                                            class="cart_qty qty-box @if (!empty($item->product->cart) && isset($item->product->cart[0]['quantity'])) open @endif">
                                             <div class="input-group bg-white">
                                                 <button type="button" class="qty-left-minus bg-gray" data-type="minus"
                                                     data-field="" data-product-id="{{ $item->product->id }}">
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                                 <input class="form-control input-number qty-input" type="text"
-                                                    name="quantity" value="{{ $item->product->cart->quantity ?? 0 }}">
+                                                    name="quantity"
+                                                    value="{{ !empty($item->product->cart) && isset($item->product->cart[0]['quantity']) ? $item->product->cart[0]['quantity'] : 0 }}">
                                                 <button type="button" class="qty-right-plus bg-gray" data-type="plus"
                                                     data-field="" data-product-id="{{ $item->product->id }}">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -117,42 +120,6 @@
                         toastr.error(error.responseJSON.message);
                     }
                 });
-            });
-
-            // add to cart
-            $('.btn-add-cart').on('click', function(e) {
-                e.preventDefault();
-                // Get the product ID from the data-product-id attribute
-                var productId = $(this).data('product-id');
-                // Get the quantity from the input field
-                var quantity = $('input[name="quantity"]').val();
-                // Perform an AJAX POST request
-                callAddToCart(productId, quantity, 'ADD');
-            });
-
-            // Increase quantity
-            $('.qty-right-plus').on('click', function(e) {
-                e.preventDefault();
-                var productId = $(this).data('product-id');
-                var input = $(this).prev('input[name="quantity"]');
-                var newValue = parseInt(input.val()) + 1;
-                input.val(newValue);
-                // Perform an AJAX POST request
-                callAddToCart(productId, newValue, 'INC');
-
-            });
-
-            // Decrease quantity
-            $('.qty-left-minus').on('click', function(e) {
-                e.preventDefault();
-                var productId = $(this).data('product-id');
-                var input = $(this).next('input[name="quantity"]');
-                var newValue = parseInt(input.val()) - 1;
-                if (newValue >= 0) {
-                    input.val(newValue);
-                    // Perform an AJAX POST request
-                    callAddToCart(productId, newValue, 'DEC');
-                }
             });
         });
     </script>

@@ -1,8 +1,8 @@
 @extends('frontend.layouts.master')
-@section('title','Cart')
+@section('title', 'Compare')
 @section('content')
-<!-- Breadcrumb Section Start -->
-<section class="breadcrumb-section pt-0">
+    <!-- Breadcrumb Section Start -->
+    {{-- <section class="breadcrumb-section pt-0">
     <div class="container-fluid-lg">
         <div class="row">
             <div class="col-12">
@@ -23,241 +23,177 @@
             </div>
         </div>
     </div>
-</section>
-<!-- Breadcrumb Section End -->
+</section> --}}
+    <!-- Breadcrumb Section End -->
 
-<!-- Compare Section Start -->
-<section class="compare-section section-b-space">
-    <div class="container-fluid-lg">
-        <div class="row">
-            <div class="col-12">
-                <div class="table-responsive">
-                    <table class="table compare-table">
-                        <tbody>
-                            <tr>
-                                <th>Product</th>
-                                <td>
-                                    <a class="text-title" href="product-left-thumbnail.html">Daily Shine Shampoo</a>
-                                </td>
-                                <td>
-                                    <a class="text-title" href="product-left-thumbnail.html">Intence Repair
-                                        Shampoo</a>
-                                </td>
-                                <td>
-                                    <a class="text-title" href="product-left-thumbnail.html">Anti Dandruff
-                                        Solution</a>
-                                </td>
-                                <td>
-                                    <a class="text-title" href="product-left-thumbnail.html">Repair & Shine
-                                        Shampoo</a>
-                                </td>
-                            </tr>
+    <!-- Compare Section Start -->
+    <section class="compare-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-12">
+                    @if (count($products) == 0)
+                        {!! '<div class="alert alert-danger text-center" role="alert"> No products to compare. </div>' !!}
+                    @else
+                        <div class="table-responsive">
+                            <table class="table compare-table">
+                                <tbody>
+                                    <tr>
+                                        <th>Product</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                <a class="text-title" href="{{ route('productDetails', $product->slug) }}">
+                                                    {{ $product->product_name }}
+                                                </a>
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Images</th>
-                                <td>
-                                    <a href="product-left-thumbnail.html" class="compare-image">
-                                        <img src="../assets/images/inner-page/compare/1.png"
-                                            class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="product-left-thumbnail.html" class="compare-image">
-                                        <img src="../assets/images/inner-page/compare/2.png"
-                                            class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="product-left-thumbnail.html" class="compare-image">
-                                        <img src="../assets/images/inner-page/compare/3.png"
-                                            class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="product-left-thumbnail.html" class="compare-image">
-                                        <img src="../assets/images/inner-page/compare/4.png"
-                                            class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <th>Images</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                <a href="{{ route('productDetails', $product->slug) }}"
+                                                    class="compare-image">
+                                                    <img src="{{ asset($product->thumbnail_image_source) }}"
+                                                        class="img-fluid blur-up lazyload" alt="{{ $product->slug }}">
+                                                </a>
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Hair Type</th>
-                                <td class="text-content">Normal</td>
-                                <td class="text-content">Oily</td>
-                                <td class="text-content">Dry</td>
-                                <td class="text-content">Normal</td>
-                            </tr>
+                                    <tr>
+                                        <th>Brand</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                {{ $product->brand->name }}
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Item Form</th>
-                                <td class="text-content">Gel</td>
-                                <td class="text-content">Liquid</td>
-                                <td class="text-content">Gel</td>
-                                <td class="text-content">Gel</td>
-                            </tr>
+                                    <tr>
+                                        <th>Description</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                {{ $product->description }}
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Price</th>
-                                <td class="price text-content">$20.23</td>
-                                <td class="price text-content">$26.90</td>
-                                <td class="price text-content">$12.23</td>
-                                <td class="price text-content">$15.85</td>
-                            </tr>
+                                    <tr>
+                                        <th>Specification</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                {{ $product->specification }}
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Availability</th>
-                                <td class="text-content">In Stock</td>
-                                <td class="text-content">In Stock</td>
-                                <td class="text-content">In Stock</td>
-                                <td class="text-content">In Stock</td>
-                            </tr>
+                                    <tr>
+                                        <th>Price</th>
+                                        @foreach ($products as $product)
+                                            <td class="price text-content product_row_{{ $product->id }}">
+                                                $ {{ $product->max_sell_price }}
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Rating</th>
-                                <td>
-                                    <div class="compare-rating">
-                                        <ul class="rating">
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                        </ul>
-                                        <span class="text-content">(20 Raring)</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="compare-rating">
-                                        <ul class="rating">
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                        </ul>
-                                        <span class="text-content">(25 Raring)</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="compare-rating">
-                                        <ul class="rating">
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                        </ul>
-                                        <span class="text-content">(50 Raring)</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="compare-rating">
-                                        <ul class="rating">
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star" class="fill"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                            <li>
-                                                <i data-feather="star"></i>
-                                            </li>
-                                        </ul>
-                                        <span class="text-content">(30 Raring)</span>
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <th>Weight</th>
-                                <td class="text-content">5.00kg</td>
-                                <td class="text-content">1.00kg</td>
-                                <td class="text-content">0.75kg</td>
-                                <td class="text-content">0.50kg</td>
-                            </tr>
+                                    <tr>
+                                        <th>Rating</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                <div class="compare-rating">
+                                                    <ul class="rating">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= $product->avg_rating)
+                                                                <li><i data-feather="star" class="fill"></i></li>
+                                                            @else
+                                                                <li><i data-feather="star"></i></li>
+                                                            @endif
+                                                        @endfor
+                                                    </ul>
+                                                    {{-- <span class="text-content">(20 Raring)</span> --}}
+                                                </div>
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th>Purchase</th>
-                                <td>
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-animation btn-sm w-100">Add To Cart</button>
-                                </td>
-                                <td>
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-animation btn-sm w-100">Add To Cart</button>
-                                </td>
-                                <td>
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-animation btn-sm w-100">Add To Cart</button>
-                                </td>
-                                <td>
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-animation btn-sm w-100">Add To Cart</button>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <th>Purchase</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                <button data-product-id='{{ $product->id }}'
+                                                    class="btn btn-animation btn-sm w-100 compare-btn-add-cart"
+                                                    @if (
+                                                        (!empty($product->cart) && isset($product->cart[0])) ||
+                                                            (session()->has('cart') && isset(session('cart')[$product->id]))) disabled @endif>
+                                                    @if (
+                                                        (!empty($product->cart) && isset($product->cart[0])) ||
+                                                            (session()->has('cart') && isset(session('cart')[$product->id])))
+                                                        Already in cart
+                                                    @else
+                                                        Add to cart
+                                                    @endif
+                                                </button>
+                                            </td>
+                                        @endforeach
+                                    </tr>
 
-                            <tr>
-                                <th></th>
-                                <td>
-                                    <a href="javascript:void(00" class="text-content remove_column"><i
-                                            class="fa-solid fa-trash-can me-2"></i> Remove</a>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(00" class="text-content remove_column"><i
-                                            class="fa-solid fa-trash-can me-2"></i> Remove</a>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(00" class="text-content remove_column"><i
-                                            class="fa-solid fa-trash-can me-2"></i> Remove</a>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(00" class="text-content remove_column"><i
-                                            class="fa-solid fa-trash-can me-2"></i> Remove</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <tr>
+                                        <th>Remore from compare</th>
+                                        @foreach ($products as $product)
+                                            <td class="product_row_{{ $product->id }}">
+                                                <a data-product-id='{{ $product->id }}' href="javascript:void(0)"
+                                                    class="text-content remove_column"><i
+                                                        class="fa-solid fa-trash-can me-2"></i> Remove</a>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- Compare Section End -->
+    </section>
+    <!-- Compare Section End -->
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.remove_column').click(function(e) {
+                e.preventDefault();
+                var productId = $(this).data('product-id');
+                var _count = parseInt($('.compare-count').text());
+                $.ajax({
+                    url: '/compare/delete/' + productId,
+                    method: 'DELETE',
+                    success: function(response) {
+                        toastr.success(response.message);
+                        if (_count > 0) {
+                            $('.compare-count').text(_count - 1);
+                        }
+                        setTimeout(() => {
+                            $('.product_row_' + productId).remove();
+                            if ($('.compare-table tbody tr td').length == 0) {
+                                $('.compare-section .container-fluid-lg').html(
+                                    '<div class="alert alert-danger text-center" role="alert"> No products to compare. </div>'
+                                    );
+                            }
+                        }, 100);
+                    },
+                    error: function(error) {
+                        toastr.error(error.responseJSON.message);
+                    }
+                });
+            });
+
+            // add product to cart
+            $('.compare-btn-add-cart').on('click', function() {
+                var productId = $(this).data('product-id');
+                callAddToCart(productId, 1, 'ADD');
+            });
+        });
+    </script>
 @endsection
