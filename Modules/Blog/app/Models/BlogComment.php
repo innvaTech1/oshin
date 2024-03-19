@@ -2,10 +2,9 @@
 
 namespace Modules\Blog\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Blog\Database\factories\BlogCommentFactory;
 
 class BlogComment extends Model
 {
@@ -19,7 +18,7 @@ class BlogComment extends Model
         'name',
         'blog_id',
         'email',
-        'status'
+        'status',
     ];
 
     public function post(): ?BelongsTo

@@ -1,10 +1,11 @@
+<li class="menu-header">Settings</li>
 <li class="{{ Route::is('admin.general-setting') ? 'active' : '' }}"><a class="nav-link"
         href="{{ route('admin.general-setting') }}"><i class="fas fa-cog"></i>
-        <span>{{ __('General Setting') }}</span></a></li>
+        <span>{{ __('General Settings') }}</span></a></li>
 
 <li class="{{ Route::is('admin.crediential-setting') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('admin.crediential-setting') }}"><i class="fas fa-key"></i>
-        <span>{{ __('Crediential Setting') }}</span>
+        <span>{{ __('Credential Settings') }}</span>
     </a>
 </li>
 
@@ -13,13 +14,17 @@
         <span>{{ __('Email Configuration') }}</span>
     </a>
 </li>
-@include('currency::sidebar')
+
+@if (Module::isEnabled('Language') && checkAdminHasPermission('language.view'))
+    @include('language::sidebar')
+@endif
 
 <li class="{{ Route::is('admin.seo-setting') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('admin.seo-setting') }}"><i class="fas fa-search"></i>
         <span>{{ __('SEO Setup') }}</span>
     </a>
 </li>
+<li class="menu-header">{{ __('Extra Settings') }}</li>
 <li class="{{ Route::is('admin.custom-code') ? 'active' : '' }}"><a class="nav-link"
         href="{{ route('admin.custom-code') }}"><i class="fas fa-code"></i>
         <span>{{ __('Custom CSS & JS') }}</span></a></li>

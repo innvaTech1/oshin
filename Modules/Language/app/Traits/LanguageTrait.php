@@ -12,7 +12,7 @@ trait LanguageTrait
             $files = scandir($folderPath);
             foreach ($files as $file) {
                 if ($file != '.' && $file != '..') {
-                    $this->deleteFolder($folderPath . '/' . $file);
+                    $this->deleteFolder($folderPath.'/'.$file);
                 }
             }
             rmdir($folderPath);
@@ -26,15 +26,12 @@ trait LanguageTrait
         $originalFileContent = file_get_contents(base_path("lang/{$code}/{$file}.php"));
 
         try {
-            file_put_contents(base_path("lang/{$code}/{$file}.php"), "");
+            file_put_contents(base_path("lang/{$code}/{$file}.php"), '');
             $dataArray = var_export($dataArray, true);
             file_put_contents(base_path("lang/{$code}/{$file}.php"), "<?php\n return {$dataArray};\n ?>");
         } catch (Exception $e) {
             file_put_contents(base_path("lang/{$code}/{$file}.php"), $originalFileContent);
         }
 
-        return;
     }
-
-
 }

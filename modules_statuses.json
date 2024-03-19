@@ -5,9 +5,6 @@
     "Currency": true,
     "BasicPayment": true,
     "PaymentGateway": true,
-    "MenuBuilder": true,
-    "Subscription": true,
-    "PageBuilder": true,
     "Customer": true,
     "SupportTicket": true,
     "NewsLetter": true,
@@ -19,7 +16,7 @@
     "Wallet": true,
     "ClubPoint": true,
     "PaymentWithdraw": true,
-    "OurTeam": true,
     "Testimonial": true,
-    "Faq": true
+    "Faq": true,
+    "Media": true
 }

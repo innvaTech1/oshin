@@ -49,7 +49,7 @@
                                     <i class="fas fa-key"></i>
                                 </div>
                                 <div class="card-body">
-                                    <h4>{{ __('Crediential Setting') }}</h4>
+                                    <h4>{{ __('Credential Settings') }}</h4>
                                     <a href="{{ route('admin.crediential-setting') }}"
                                         class="card-cta">{{ __('Change Setting') }} <i
                                             class="fas fa-chevron-right"></i></a>

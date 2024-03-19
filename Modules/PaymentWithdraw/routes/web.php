@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\PaymentWithdraw\app\Http\Controllers\PaymentWithdrawController;
 use Modules\PaymentWithdraw\app\Http\Controllers\Admin\WithdrawMethodController as WithdrawMethodController;
+use Modules\PaymentWithdraw\app\Http\Controllers\PaymentWithdrawController;
 
-
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin'] ], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::resource('withdraw-method', WithdrawMethodController::class)->names('withdraw-method');
 
     Route::get('withdraw-list', [WithdrawMethodController::class, 'withdraw_list'])->name('withdraw-list');
@@ -15,8 +14,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
     Route::delete('delete-withdraw/{id}', [WithdrawMethodController::class, 'destroy_withdraw'])->name('delete-withdraw');
 });
 
-Route::group(['middleware' => ['auth:web'] ], function () {
+Route::group(['middleware' => ['auth:web']], function () {
     Route::resource('payment-withdraw', PaymentWithdrawController::class)->names('payment-withdraw');
 });
-
-

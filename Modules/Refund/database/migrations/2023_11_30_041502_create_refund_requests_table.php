@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('order_id');
-            $table->decimal('refund_amount', 8,2)->default(0.00);
+            $table->decimal('refund_amount', 8, 2)->default(0.00);
             $table->text('reasone');
             $table->text('account_information');
-            $table->enum('status', ['pending','rejected','success'])->default('pending');
+            $table->enum('status', ['pending', 'rejected', 'success'])->default('pending');
             $table->timestamps();
         });
     }

@@ -44,5 +44,9 @@ class AttributeService
     {
         return $this->attributeRepository->find($id);
     }
+    public function getValues($ids)
+    {
+        return $this->attributeRepository->getValues($ids);
+    }
 
 }

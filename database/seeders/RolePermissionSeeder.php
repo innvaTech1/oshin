@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -22,7 +22,7 @@ class RolePermissionSeeder extends Seeder
                 'group_name' => 'dashboard',
                 'permissions' => [
                     'dashboard.view',
-                ]
+                ],
             ],
             [
                 'group_name' => 'admin profile',
@@ -31,7 +31,7 @@ class RolePermissionSeeder extends Seeder
                     'admin.profile.edit',
                     'admin.profile.update',
                     'admin.profile.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'admin',
@@ -42,7 +42,7 @@ class RolePermissionSeeder extends Seeder
                     'admin.edit',
                     'admin.update',
                     'admin.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'blog category',
@@ -53,8 +53,8 @@ class RolePermissionSeeder extends Seeder
                     'blog.category.store',
                     'blog.category.edit',
                     'blog.category.update',
-                    'blog.category.delete'
-                ]
+                    'blog.category.delete',
+                ],
             ],
             [
                 'group_name' => 'blog',
@@ -65,16 +65,16 @@ class RolePermissionSeeder extends Seeder
                     'blog.store',
                     'blog.edit',
                     'blog.update',
-                    'blog.delete'
-                ]
+                    'blog.delete',
+                ],
             ],
             [
                 'group_name' => 'blog Comment',
                 'permissions' => [
                     'blog.comment.view',
                     'blog.comment.update',
-                    'blog.comment.delete'
-                ]
+                    'blog.comment.delete',
+                ],
             ],
             [
                 'group_name' => 'role',
@@ -86,28 +86,28 @@ class RolePermissionSeeder extends Seeder
                     'role.edit',
                     'role.update',
                     'role.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'settings',
                 'permissions' => [
                     'setting.view',
                     'setting.update',
-                ]
+                ],
             ],
             [
                 'group_name' => 'basic payment',
                 'permissions' => [
                     'basic.payment.view',
                     'basic.payment.update',
-                ]
+                ],
             ],
             [
                 'group_name' => 'contect message',
                 'permissions' => [
                     'contect.message.view',
                     'contect.message.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'currency',
@@ -118,7 +118,18 @@ class RolePermissionSeeder extends Seeder
                     'currency.edit',
                     'currency.update',
                     'currency.delete',
-                ]
+                ],
+            ],
+            [
+                'group_name' => 'media',
+                'permissions' => [
+                    'media.view',
+                    'media.create',
+                    'media.store',
+                    'media.edit',
+                    'media.update',
+                    'media.delete',
+                ],
             ],
             [
                 'group_name' => 'customer',
@@ -130,7 +141,7 @@ class RolePermissionSeeder extends Seeder
                     'customer.edit',
                     'customer.update',
                     'customer.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'language',
@@ -143,7 +154,7 @@ class RolePermissionSeeder extends Seeder
                     'language.delete',
                     'language.translate',
                     'language.single.translate',
-                ]
+                ],
             ],
             [
                 'group_name' => 'menu builder',
@@ -154,7 +165,7 @@ class RolePermissionSeeder extends Seeder
                     'menu.edit',
                     'menu.update',
                     'menu.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'page builder',
@@ -166,7 +177,7 @@ class RolePermissionSeeder extends Seeder
                     'page.component.add',
                     'page.update',
                     'page.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'subscription',
@@ -177,14 +188,14 @@ class RolePermissionSeeder extends Seeder
                     'subscription.edit',
                     'subscription.update',
                     'subscription.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'payment',
                 'permissions' => [
                     'payment.view',
                     'payment.update',
-                ]
+                ],
             ],
             [
                 'group_name' => 'support ticket',
@@ -193,7 +204,7 @@ class RolePermissionSeeder extends Seeder
                     'support.ticket.manage',
                     'support.ticket.delete',
                     'support.ticket.close',
-                ]
+                ],
             ],
             [
                 'group_name' => 'newsletter',
@@ -201,7 +212,7 @@ class RolePermissionSeeder extends Seeder
                     'newsletter.view',
                     'newsletter.mail',
                     'newsletter.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'testimonial',
@@ -212,10 +223,10 @@ class RolePermissionSeeder extends Seeder
                     'testimonial.store',
                     'testimonial.edit',
                     'testimonial.update',
-                    'testimonial.delete'
-                  ]
-              ],
-          [
+                    'testimonial.delete',
+                ],
+            ],
+            [
                 'group_name' => 'faq',
                 'permissions' => [
                     'faq.view',
@@ -224,9 +235,9 @@ class RolePermissionSeeder extends Seeder
                     'faq.store',
                     'faq.edit',
                     'faq.update',
-                    'faq.delete'
-                ]
-            ]
+                    'faq.delete',
+                ],
+            ],
         ];
 
         for ($i = 0; $i < count($permissions); $i++) {
@@ -236,7 +247,7 @@ class RolePermissionSeeder extends Seeder
                 $permission = Permission::create([
                     'name' => $permissions[$i]['permissions'][$j],
                     'group_name' => $permissionGroup,
-                    'guard_name' => 'admin'
+                    'guard_name' => 'admin',
                 ]);
 
                 $roleSuperAdmin->givePermissionTo($permission);

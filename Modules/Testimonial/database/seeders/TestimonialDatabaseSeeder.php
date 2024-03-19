@@ -2,8 +2,8 @@
 
 namespace Modules\Testimonial\database\seeders;
 
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 use Modules\Testimonial\app\Models\Testimonial;
 use Modules\Testimonial\app\Models\TestimonialTranslation;
 

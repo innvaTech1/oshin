@@ -2,10 +2,10 @@
 
 namespace Modules\Wallet\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Wallet\Database\factories\WalletHistoryFactory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Wallet\Database\factories\WalletHistoryFactory;
 
 class WalletHistory extends Model
 {
@@ -21,8 +21,8 @@ class WalletHistory extends Model
         //return WalletHistoryFactory::new();
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class)->select('id', 'name', 'email', 'image');
     }
-
 }

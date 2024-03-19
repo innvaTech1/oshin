@@ -6,16 +6,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RoleFormRequest extends FormRequest
 {
-    public function authorize():bool
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules():array
+    public function rules(): array
     {
         if ($this->method() == 'POST') {
             return [
-                'name' => "required|unique:roles,name",
+                'name' => 'required|unique:roles,name',
             ];
         } else {
             return [
@@ -24,7 +24,7 @@ class RoleFormRequest extends FormRequest
         }
     }
 
-    public function messages():array
+    public function messages(): array
     {
         return [
             'name.required' => __('The role name field is required!'),

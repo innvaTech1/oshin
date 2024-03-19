@@ -2,10 +2,10 @@
 
 namespace Modules\Order\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Order\Database\factories\OrderFactory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Order\Database\factories\OrderFactory;
 
 class Order extends Model
 {
@@ -21,7 +21,8 @@ class Order extends Model
         //return OrderFactory::new();
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class)->select('id', 'name', 'email', 'image');
     }
 }

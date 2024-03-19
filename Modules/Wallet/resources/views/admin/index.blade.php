@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{ $title }}</title>
+    <title>{{ $title }}</title>
 @endsection
 @section('admin-content')
     <div class="main-content">
@@ -11,67 +11,67 @@
 
             <div class="row">
                 <div class="col-md-3">
-                  <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="far fa-newspaper"></i>
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="far fa-newspaper"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>{{ __('Total Deposit') }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ currency($wallet_histories->sum('amount')) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-wrap">
-                      <div class="card-header">
-                        <h4>{{ __('Total Deposit') }}</h4>
-                      </div>
-                      <div class="card-body">
-                        {{ currency($wallet_histories->sum('amount')) }}
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="col-md-3">
-                  <div class="card card-statistic-1">
-                    <div class="card-icon bg-success">
-                      <i class="far fa-newspaper"></i>
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="far fa-newspaper"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>{{ __('Success Deposit') }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ currency($wallet_histories->where('payment_status', 'success')->sum('amount')) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-wrap">
-                      <div class="card-header">
-                        <h4>{{ __('Success Deposit') }}</h4>
-                      </div>
-                      <div class="card-body">
-                        {{ currency($wallet_histories->where('payment_status', 'success')->sum('amount')) }}
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="col-md-3">
-                  <div class="card card-statistic-1">
-                    <div class="card-icon bg-danger">
-                      <i class="far fa-newspaper"></i>
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-danger">
+                            <i class="far fa-newspaper"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>{{ __('Pending Deposit') }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ currency($wallet_histories->where('payment_status', 'pending')->sum('amount')) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-wrap">
-                      <div class="card-header">
-                        <h4>{{ __('Pending Deposit') }}</h4>
-                      </div>
-                      <div class="card-body">
-                        {{ currency($wallet_histories->where('payment_status', 'pending')->sum('amount')) }}
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="col-md-3">
-                  <div class="card card-statistic-1">
-                    <div class="card-icon bg-warning">
-                      <i class="far fa-newspaper"></i>
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-warning">
+                            <i class="far fa-newspaper"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>{{ __('Rejected Deposit') }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ currency($wallet_histories->where('payment_status', 'rejected')->sum('amount')) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-wrap">
-                      <div class="card-header">
-                        <h4>{{ __('Rejected Deposit') }}</h4>
-                      </div>
-                      <div class="card-body">
-                        {{ currency($wallet_histories->where('payment_status', 'rejected')->sum('amount')) }}
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
 
@@ -79,7 +79,7 @@
 
 
 
-              </div>
+            </div>
 
             <div class="section-body">
                 <div class="row">
@@ -87,7 +87,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <th>{{ __('SN') }}</th>
                                             <th>{{ __('User') }}</th>
@@ -98,10 +98,12 @@
                                             <th>{{ __('Action') }}</th>
                                         </thead>
 
-                                        @foreach ($wallet_histories as $index => $wallet_history)
+                                        @forelse ($wallet_histories as $index => $wallet_history)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td><a href="{{ route('admin.customer-show', $wallet_history->user_id) }}">{{ $wallet_history?->user?->name }}</a></td>
+                                                <td><a
+                                                        href="{{ route('admin.customer-show', $wallet_history->user_id) }}">{{ $wallet_history?->user?->name }}</a>
+                                                </td>
 
                                                 <td>{{ $wallet_history->payment_gateway }}</td>
 
@@ -120,15 +122,19 @@
                                                 <td>{{ $wallet_history->created_at->format('H:iA, d M Y') }}</td>
 
                                                 <td>
-                                                    <a href="{{ route('admin.show-wallet-history', $wallet_history->id) }}" class="btn btn-primary btn-sm"><i
-                                                        class="fa fa-eye"></i></a>
+                                                    <a href="{{ route('admin.show-wallet-history', $wallet_history->id) }}"
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
 
-                                                    <a href="" data-url="{{ route('admin.delete-wallet-history', $wallet_history->id) }}"
-                                                    class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
+                                                    <a href=""
+                                                        data-url="{{ route('admin.delete-wallet-history', $wallet_history->id) }}"
+                                                        class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></a>
 
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <x-empty-table :name="__('')" route="" create="no" :message="__('No data found!')"
+                                                colspan="7"></x-empty-table>
+                                        @endforelse
 
 
                                     </table>
@@ -146,7 +152,7 @@
         <div class="modal-dialog" role="document">
             <form action="" method="POST">
                 @csrf
-                @method("DELETE")
+                @method('DELETE')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('Delete refund request') }}</h5>
@@ -181,7 +187,4 @@
             })
         </script>
     @endpush
-
 @endsection
-
-

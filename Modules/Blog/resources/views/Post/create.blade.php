@@ -167,8 +167,8 @@
             input_field: "#image-upload",
             preview_box: "#image-preview",
             label_field: "#image-label",
-            label_default: "{{ __('Choose Icon') }}",
-            label_selected: "{{ __('Change Icon') }}",
+            label_default: "{{ __('Choose Image') }}",
+            label_selected: "{{ __('Change Image') }}",
             no_label: false,
             success_callback: null
         });

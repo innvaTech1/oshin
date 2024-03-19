@@ -6,7 +6,17 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.settings') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Currency List') }}</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                    </div>
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.settings') }}">{{ __('Settings') }}</a>
+                    </div>
+                    <div class="breadcrumb-item">{{ __('Currency List') }}</div>
+                </div>
             </div>
             <div class="section-body">
                 <a href="{{ route('admin.currency.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
@@ -16,7 +26,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive table-invoice">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('SN') }}</th>
@@ -31,7 +41,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($currencies as $index => $currency)
+                                            @forelse ($currencies as $index => $currency)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $currency->currency_name }}</td>
@@ -68,7 +78,10 @@
                                                         @endif
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <x-empty-table :name="__('Currency')" route="admin.currency.create"
+                                                    create="yes" :message="__('No data found!')" colspan="9"></x-empty-table>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

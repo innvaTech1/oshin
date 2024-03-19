@@ -20,6 +20,7 @@ class SetLocaleMiddleware
         if (Session::has('lang')) {
             App::setlocale(Session::get('lang'));
         }
+
         return $next($request);
     }
 }

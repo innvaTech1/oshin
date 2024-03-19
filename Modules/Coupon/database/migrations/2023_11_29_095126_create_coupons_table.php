@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('author_id')->default(0);
             $table->string('coupon_code');
-            $table->decimal('offer_percentage', 8,2);
+            $table->decimal('offer_percentage', 8, 2);
             $table->string('expired_date');
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

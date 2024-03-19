@@ -13,7 +13,7 @@
                     data-key="{{ $razorpay_credentials->razorpay_key }}"
                     data-currency="{{ $razorpay_credentials->currency_code }}"
                     data-amount= "{{ $razorpay_credentials->payable_with_charge * 100 }}"
-                    data-buttontext="{{ __('admin.Pay') }}"
+                    data-buttontext="{{ __('Pay') }}"
                     data-name="{{ $razorpay_credentials->razorpay_name }}"
                     data-description="{{ $razorpay_credentials->razorpay_description }}"
                     data-image="{{ asset($razorpay_credentials->razorpay_image) }}"

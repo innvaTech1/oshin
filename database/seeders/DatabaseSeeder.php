@@ -11,8 +11,6 @@ use Modules\GlobalSetting\database\seeders\EmailTemplateSeeder;
 use Modules\GlobalSetting\database\seeders\GlobalSettingInfoSeeder;
 use Modules\GlobalSetting\database\seeders\SeoInfoSeeder;
 use Modules\Language\database\seeders\LanguageSeeder;
-use Modules\MenuBuilder\database\seeders\MenuBuilderDatabaseSeeder;
-use Modules\PageBuilder\database\seeders\PageBuilderDatabaseSeeder;
 use Modules\PaymentGateway\database\seeders\PaymentGatewaySeeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,19 +22,25 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             LanguageSeeder::class,
+            CurrencySeeder::class,
             GlobalSettingInfoSeeder::class,
             BasicPaymentInfoSeeder::class,
+            PaymentGatewaySeeder::class,
             CustomPaginationSeeder::class,
             EmailTemplateSeeder::class,
-            PageBuilderDatabaseSeeder::class,
-            MenuBuilderDatabaseSeeder::class,
-            CurrencySeeder::class,
-            PaymentGatewaySeeder::class,
             SeoInfoSeeder::class,
             RolePermissionSeeder::class,
             AdminInfoSeeder::class,
-            CategorySeeder::class,
-            BrandSeeder::class,
         ]);
+
+        // if(app()->isLocal()){
+        //     $this->call([
+        //     ]);
+        // }
+
+        // if(app()->isProduction()){
+        //     $this->call([
+        //     ]);
+        // }
     }
 }

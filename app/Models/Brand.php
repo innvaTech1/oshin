@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Modules\Media\app\Models\Media;
 
 class Brand extends Model
 {
@@ -44,6 +43,23 @@ class Brand extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'brand_id', 'id');
+    }
+
+    public function logo()
+    {
+        return $this->belongsTo(Media::class, 'logo', 'id');
+    }
+
+    public function getLogoPathAttribute()
+    {
+        $media = Media::where('id', $this->attributes['logo'])->first();
+        return $media->path;
+    }
+
+    public function getLogoAttribute()
+    {
+        $media = Media::where('id', $this->attributes['logo'])->first();
+        return asset($media->path);
     }
 
     // public function sellerProductsAll()

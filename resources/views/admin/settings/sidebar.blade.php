@@ -1,11 +1,13 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('admin.dashboard') }}">{{ $setting->app_name ?? '' }}</a>
+            <a href="{{ route('admin.dashboard') }}"><img class="w-75" src="{{ asset($setting->logo) ?? '' }}"
+                alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('admin.dashboard') }}">{{ $setting->app_name ?? '' }}</a>
+            <a href="{{ route('admin.dashboard') }}"><img src="{{ asset($setting->favicon) ?? '' }}"
+                alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <ul class="sidebar-menu">
@@ -19,10 +21,6 @@
 
             @if (Module::isEnabled('GlobalSetting') && checkAdminHasPermission('setting.view'))
                 @include('globalsetting::sidebar')
-            @endif
-
-            @if (Module::isEnabled('Language') && checkAdminHasPermission('language.view'))
-                @include('language::sidebar')
             @endif
 
             @adminCan(['basic.payment.view', 'payment.view'])
@@ -45,8 +43,12 @@
                 </li>
             @endadminCan
 
+            @include('currency::sidebar')
+
             @adminCan(['role.view', 'admin.view'])
-                <li class="nav-item dropdown {{ Route::is('admin.admin.*') || Route::is('admin.role.*') ? 'active' : '' }}">
+                <li class="menu-header">{{ __('Administration Settings') }}</li>
+                <li
+                    class="nav-item dropdown {{ Route::is('admin.admin.*') || Route::is('admin.role.*') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown"><i
                             class="fas fa-shield-alt"></i><span>{{ __('Admin & Roles') }}</span></a>
                     <ul class="dropdown-menu">
@@ -64,6 +66,16 @@
                 </li>
             @endadminCan
         </ul>
+
+        <div class="py-3 text-center">
+            <div class="btn-group">
+                <button class="btn btn-primary logout_btn" disabled>{{ __('version') }}
+                    {{ $setting->version ?? '' }}</button>
+                <button class="btn btn-danger"
+                    onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();"><i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
 
     </aside>
 </div>

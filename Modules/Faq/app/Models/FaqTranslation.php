@@ -2,8 +2,8 @@
 
 namespace Modules\Faq\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FaqTranslation extends Model
@@ -20,7 +20,7 @@ class FaqTranslation extends Model
         'answer',
     ];
 
-    public function faq():?BelongsTo
+    public function faq(): ?BelongsTo
     {
         return $this->belongsTo(Faq::class);
     }

@@ -27,7 +27,7 @@
 
                                         <div class="form-group col-12">
                                             <label>{{ __('Description') }}</label>
-                                            <textarea name="description" id="" cols="30" rows="10" class="form-control"></textarea>
+                                            <textarea name="description" id="description" cols="30" rows="10" class="form-control" style="height:50px"></textarea>
                                         </div>
 
                                         <div class="form-group col-12">
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-admin.save-button :text="__('admin.Save')" />
+                                            <x-admin.save-button :text="__('Save')" />
                                         </div>
                                     </div>
                                 </form>
@@ -118,6 +118,8 @@
                 </div>
         </section>
     </div>
+
+    @include('components.admin.preloader')
 @endsection
 
 @push('js')
@@ -132,6 +134,8 @@
                 }
             });
             $('.edit-btn').click(function(e) {
+
+                $('.preloader_area').removeClass('d-none');
                 e.preventDefault();
                 const url = $(this).attr('href');
                 $.ajax({
@@ -139,23 +143,26 @@
                     type: 'GET',
                     success: function(response) {
                         $('#name').val(response.name);
-                        $('#slug').val(response.slug);
-                        $('#commission_rate').val(response.commission_rate);
-                        if (response.searchable == 1) {
-                            $("[name='searchable'][value='1']").prop('checked', true);
-                        } else {
-                            $("[name='searchable'][value='0']").prop('checked', true);
-                        }
+                        $('#description').val(response.description);
+
+                        console.log(response)
                         if (response.status == 1) {
                             $("[name='status'][value='1']").prop('checked', true);
                         } else {
                             $("[name='status'][value='0']").prop('checked', true);
                         }
-                        if (response.parent_id) {
-                            $("[name='attribute']").prop('checked', true);
-                            $('.parent').removeClass('d-none');
-                            $('.select2').val(response.parent_id).trigger('change');
-                        }
+
+                        $('.variant-table').html('');
+
+                        response.values.forEach(function(variant) {
+                            $('.variant-table').append(
+                                '<tr><td><input type="text" name="variant_values[]" class="form-control" value="' +
+                                variant.value +
+                                '"></td><td><button class="bariant-trash btn btn-danger"><i class="fas fa-trash"></i></button></td></tr>'
+                            );
+                        });
+
+
                         let url = "{{ route('admin.attribute.update', ':id') }}";
                         url = url.replace(':id', response.id);
                         console.log(url);
@@ -165,6 +172,11 @@
                         const method = "<input type='hidden' name='_method' value='PUT'>";
                         $('#form').append(attributeId);
                         $('#form').append(method);
+                        $('.preloader_area').addClass('d-none');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        $('.preloader_area').addClass('d-none');
                     }
                 });
             })

@@ -3,30 +3,32 @@
 namespace Modules\Faq\app\Http\Controllers;
 
 use App\Enums\RedirectType;
-use Modules\Faq\app\Models\Faq;
-use App\Traits\RedirectHelperTrait;
 use App\Http\Controllers\Controller;
+use App\Traits\RedirectHelperTrait;
 use Illuminate\Pagination\Paginator;
-use Modules\Language\app\Models\Language;
 use Modules\Faq\app\Http\Requests\FaqRequest;
+use Modules\Faq\app\Models\Faq;
 use Modules\Language\app\Enums\TranslationModels;
+use Modules\Language\app\Models\Language;
 use Modules\Language\app\Traits\GenerateTranslationTrait;
 
 class FaqController extends Controller
 {
-    use RedirectHelperTrait, GenerateTranslationTrait;
+    use GenerateTranslationTrait, RedirectHelperTrait;
 
     public function index()
     {
         abort_unless(checkAdminHasPermission('faq.view'), 403);
         Paginator::useBootstrap();
         $faqs = Faq::with('translation')->paginate(15);
+
         return view('faq::index', compact('faqs'));
     }
 
     public function create()
     {
         abort_unless(checkAdminHasPermission('faq.create'), 403);
+
         return view('faq::create');
     }
 
@@ -51,6 +53,7 @@ class FaqController extends Controller
     public function show($id)
     {
         abort_unless(checkAdminHasPermission('faq.view'), 403);
+
         return view('faq::show');
     }
 
@@ -64,6 +67,7 @@ class FaqController extends Controller
 
         $faq = Faq::with('translation')->findOrFail($id);
         $languages = allLanguages();
+
         return view('faq::edit', compact('faq', 'code', 'languages'));
     }
 
@@ -110,7 +114,7 @@ class FaqController extends Controller
         $status = $faq->status == 1 ? 0 : 1;
         $faq->update(['status' => $status]);
 
-        $notification = trans('admin_validation.Updated Successfully');
+        $notification = __('Updated Successfully');
 
         return response()->json([
             'success' => true,

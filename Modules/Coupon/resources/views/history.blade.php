@@ -15,7 +15,7 @@
                         <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive table-invoice">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('SN') }}</th>
@@ -25,7 +25,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($coupon_histories as $index => $coupon_history)
+                                            @forelse ($coupon_histories as $index => $coupon_history)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $coupon_history->coupon_code }}</td>
@@ -37,7 +37,10 @@
                                                     <td>{{ date('H:iA, d M Y', strtotime($coupon_history->created_at)) }}
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <x-empty-table :name="__('Coupon')" route="admin.coupon.index" create="no"
+                                                    :message="__('No data found!')" colspan="7"></x-empty-table>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

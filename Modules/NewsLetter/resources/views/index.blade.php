@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive table-invoice">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('SN') }}</th>
@@ -26,7 +26,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($newsletters as $index => $item)
+                                            @forelse ($newsletters as $index => $item)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ html_decode($item->email) }}</td>
@@ -37,7 +37,10 @@
                                                             class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <x-empty-table :name="__('')" route="" create="no"
+                                                    :message="__('No data found!')" colspan="4"></x-empty-table>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

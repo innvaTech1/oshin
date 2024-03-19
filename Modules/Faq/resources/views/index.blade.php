@@ -8,8 +8,7 @@
             <div class="section-header">
                 <h1>{{ __('FAQS') }}</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a
-                            href="{{ route('admin.dashboard') }}">{{ __('admin.Dashboard') }}</a>
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('FAQS') }}</div>
                 </div>
@@ -48,10 +47,9 @@
                                                     <td>
                                                         <input onchange="changeStatus({{ $faq->id }})"
                                                             id="status_toggle" type="checkbox"
-                                                            {{ $faq->status ? 'checked' : '' }}
-                                                            data-toggle="toggle" data-on="{{ __('Active') }}"
-                                                            data-off="{{ __('Inactive') }}" data-onstyle="success"
-                                                            data-offstyle="danger">
+                                                            {{ $faq->status ? 'checked' : '' }} data-toggle="toggle"
+                                                            data-on="{{ __('Active') }}" data-off="{{ __('Inactive') }}"
+                                                            data-onstyle="success" data-offstyle="danger">
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.faq.edit', ['faq' => $faq->id, 'code' => getSessionLanguage()]) }}"

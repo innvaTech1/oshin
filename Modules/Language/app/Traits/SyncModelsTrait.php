@@ -1,18 +1,19 @@
 <?php
+
 namespace Modules\Language\app\Traits;
 
 use Illuminate\Support\Facades\Log;
-use Modules\Language\app\Models\Language;
 use Modules\Language\app\Enums\SyncLanguageType;
-use Modules\Language\app\Jobs\{
-    CreateNewTranslatedDataJob,
-    DeleteTranslationDataJob,
-    UpdateTranslationCodeJob
-};
+use Modules\Language\app\Jobs\CreateNewTranslatedDataJob;
+use Modules\Language\app\Jobs\DeleteTranslationDataJob;
+use Modules\Language\app\Jobs\UpdateTranslationCodeJob;
+use Modules\Language\app\Models\Language;
+use Modules\Language\app\Traits\TranslateableModelsTrait;
 
 trait SyncModelsTrait
 {
     use TranslateableModelsTrait;
+
     private function syncModels(string $type, bool $shouldQueue, string $code, ?string $oldCode = null)
     {
         $defaultCode = Language::first()->code;
@@ -20,16 +21,19 @@ trait SyncModelsTrait
             if ($shouldQueue) {
                 return $this->createModelsFromQueue($defaultCode, $code);
             }
+
             return $this->createModels($defaultCode, $code);
         } elseif ($type == SyncLanguageType::UPDATE->value) {
             if ($shouldQueue) {
                 return $this->updateModelsFromQueue($oldCode, $code);
             }
+
             return $this->updateModels($oldCode, $code);
         } elseif ($type == SyncLanguageType::DELETE->value) {
             if ($shouldQueue) {
                 return $this->deleteModelsFromQueue($code);
             }
+
             return $this->deleteModels($code);
         }
     }
@@ -60,6 +64,7 @@ trait SyncModelsTrait
 
         return true;
     }
+
     private function createModelsFromQueue($defaultCode, $newCode)
     {
         $models = $this->getTranslateableModelsArray();
@@ -70,6 +75,7 @@ trait SyncModelsTrait
 
         return true;
     }
+
     private function updateModels($oldCode, $newCode)
     {
         $models = $this->getTranslateableModelsArray();
@@ -98,6 +104,7 @@ trait SyncModelsTrait
 
         return true;
     }
+
     private function deleteModels($code)
     {
         $models = $this->getTranslateableModelsArray();

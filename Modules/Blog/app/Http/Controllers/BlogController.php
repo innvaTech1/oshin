@@ -7,13 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Traits\RedirectHelperTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Modules\Blog\app\Http\Requests\PostRequest;
 use Modules\Blog\app\Models\Blog;
 use Modules\Blog\app\Models\BlogCategory;
-use Modules\Blog\app\Models\BlogTranslation;
 use Modules\Language\app\Enums\TranslationModels;
 use Modules\Language\app\Models\Language;
 use Modules\Language\app\Traits\GenerateTranslationTrait;
@@ -21,10 +19,41 @@ use Modules\Language\app\Traits\GenerateTranslationTrait;
 class BlogController extends Controller
 {
     use GenerateTranslationTrait, RedirectHelperTrait;
-    public function index()
+
+    public function index(Request $request)
     {
         abort_unless(checkAdminHasPermission('blog.view'), 403);
-        $posts = Blog::with('category.translation', 'translation')->latest()->paginate(15);
+        $query = Blog::query();
+
+        $query->when($request->filled('keyword'), function ($qa) use ($request) {
+            $qa->whereHas('translations', function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->keyword . '%');
+                $q->orWhere('description', 'like', '%' . $request->keyword . '%');
+            });
+        });
+
+        $query->when($request->filled('is_popular'), function ($q) use ($request) {
+            $q->where('is_popular', $request->is_popular);
+        });
+
+        $query->when($request->filled('show_homepage'), function ($q) use ($request) {
+            $q->where('show_homepage', $request->show_homepage);
+        });
+
+        $query->when($request->filled('status'), function ($q) use ($request) {
+            $q->where('status', $request->status);
+        });
+
+        $query->when($request->filled('order_by'), function ($q) use ($request) {
+            $q->orderBy('id', $request->order_by == 1 ? 'asc' : 'desc');
+        });
+
+        if ($request->filled('par-page')) {
+            $posts = $request->get('par-page') == 'all' ? $query->get() : $query->paginate($request->get('par-page'))->withQueryString();
+        } else {
+            $posts = $query->paginate()->withQueryString();
+        }
+
         return view('blog::Post.index', compact('posts'));
     }
 
@@ -35,6 +64,7 @@ class BlogController extends Controller
     {
         abort_unless(checkAdminHasPermission('blog.create'), 403);
         $categories = BlogCategory::all();
+
         return view('blog::Post.create', ['categories' => $categories]);
     }
 
@@ -44,7 +74,7 @@ class BlogController extends Controller
         $blog = Blog::create(array_merge(['admin_id' => Auth::guard('admin')->user()->id], $request->validated()));
 
         if ($blog && $request->hasFile('image')) {
-            $file_name = file_upload($request->image, $blog->image, 'uploads/website-images/');
+            $file_name = file_upload($request->image, $blog->image, 'uploads/custom-images/');
             $blog->image = $file_name;
             $blog->save();
         }
@@ -61,7 +91,7 @@ class BlogController extends Controller
             'admin.blogs.edit',
             [
                 'blog' => $blog->id,
-                'code' => allLanguages()->first()->code
+                'code' => allLanguages()->first()->code,
             ]
         );
     }
@@ -69,6 +99,7 @@ class BlogController extends Controller
     public function show($id)
     {
         abort_unless(checkAdminHasPermission('blog.view'), 403);
+
         return view('blog::show');
     }
 
@@ -82,6 +113,7 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         $categories = BlogCategory::all();
         $languages = allLanguages();
+
         return view('blog::Post.edit', compact('blog', 'code', 'categories', 'languages'));
     }
 
@@ -95,12 +127,11 @@ class BlogController extends Controller
 
         $blog = Blog::findOrFail($id);
 
-        if ($blog && $request->hasFile('image')) {
-            $file_name = file_upload($request->image, $blog->image, 'uploads/website-images/');
+        if ($blog && !empty($request->image)) {
+            $file_name = file_upload($request->image, $blog->image, 'uploads/custom-images/');
             $blog->image = $file_name;
             $blog->save();
         }
-
         $blog->update($validatedData);
 
         $this->updateTranslations(
@@ -116,7 +147,6 @@ class BlogController extends Controller
         );
     }
 
-
     public function destroy($id)
     {
         abort_unless(checkAdminHasPermission('blog.delete'), 403);
@@ -129,7 +159,9 @@ class BlogController extends Controller
         });
 
         if ($blog->image) {
-            if (File::exists(public_path($blog->image))) unlink(public_path($blog->image));
+            if (File::exists(public_path($blog->image))) {
+                unlink(public_path($blog->image));
+            }
         }
 
         $blog->delete();
@@ -145,7 +177,7 @@ class BlogController extends Controller
         $status = $blog->status == 1 ? 0 : 1;
         $blog->update(['status' => $status]);
 
-        $notification = trans('admin_validation.Updated Successfully');
+        $notification = __('Updated Successfully');
 
         return response()->json([
             'success' => true,

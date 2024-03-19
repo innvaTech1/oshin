@@ -7,9 +7,14 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.settings') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Manage Admin') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                    </div>
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.settings') }}">{{ __('Settings') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('Manage Admin') }}</div>
                 </div>
@@ -23,14 +28,14 @@
                                 <h4>{{ __('Manage Admin') }}</h4>
                                 <div>
                                     @adminCan('admin.create')
-                                    <a href="{{ route('admin.admin.create') }}" class="btn btn-primary"><i
-                                            class="fa fa-plus"></i> {{ __('Add New') }}</a>
+                                        <a href="{{ route('admin.admin.create') }}" class="btn btn-primary"><i
+                                                class="fa fa-plus"></i> {{ __('Add New') }}</a>
                                     @endadminCan
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('SN') }}</th>
@@ -39,7 +44,7 @@
                                                 <th>{{ __('Roles') }}</th>
                                                 <th>{{ __('Status') }}</th>
                                                 @adminCan('admin.delete')
-                                                <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Action') }}</th>
                                                 @endadminCan
                                             </tr>
                                         </thead>
@@ -72,18 +77,19 @@
                                                         @endif
                                                     </td>
                                                     @adminCan('admin.delete')
-                                                    <td>
-                                                        @adminCan('admin.edit')
-                                                        <a href="{{ route('admin.admin.edit', $admin->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"
-                                                                aria-hidden="true"></i></a>
-                                                        @endadminCan
-                                                        @adminCan('admin.delete')
-                                                        <a href="javascript:;" data-toggle="modal"
-                                                            data-target="#deleteModal" class="btn btn-danger btn-sm"
-                                                            onclick="deleteData({{ $admin->id }})"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></a>
-                                                        @endadminCan
-                                                    </td>
+                                                        <td>
+                                                            @adminCan('admin.edit')
+                                                                <a href="{{ route('admin.admin.edit', $admin->id) }}"
+                                                                    class="btn btn-warning btn-sm"><i class="fa fa-edit"
+                                                                        aria-hidden="true"></i></a>
+                                                            @endadminCan
+                                                            @adminCan('admin.delete')
+                                                                <a href="javascript:;" data-toggle="modal"
+                                                                    data-target="#deleteModal" class="btn btn-danger btn-sm"
+                                                                    onclick="deleteData({{ $admin->id }})"><i
+                                                                        class="fa fa-trash" aria-hidden="true"></i></a>
+                                                            @endadminCan
+                                                        </td>
                                                     @endadminCan
                                                 </tr>
                                             @endforeach

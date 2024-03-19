@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\PaymentGateway\app\Http\Controllers\PaymentGatewayController;
 use Modules\PaymentGateway\app\Http\Controllers\AddonPaymentController;
+use Modules\PaymentGateway\app\Http\Controllers\PaymentGatewayController;
 
-
-Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
 
     Route::controller(PaymentGatewayController::class)->group(function () {
         Route::get('paymentgateway', 'paymentgateway')->name('paymentgateway');
@@ -18,7 +17,7 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin
 
 });
 
-Route::group(['as'=> 'paymentgateway.', 'prefix' => 'paymentgateway'], function () {
+Route::group(['as' => 'paymentgateway.', 'prefix' => 'paymentgateway'], function () {
 
     Route::controller(AddonPaymentController::class)->group(function () {
 

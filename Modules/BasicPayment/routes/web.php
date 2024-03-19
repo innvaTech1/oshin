@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\BasicPayment\app\Http\Controllers\BasicPaymentController;
 use Modules\BasicPayment\app\Http\Controllers\FrontPaymentController;
 
-Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
 
     Route::controller(BasicPaymentController::class)->group(function () {
 
@@ -16,6 +16,4 @@ Route::group(['as'=> 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admin
     });
 });
 
-
 Route::get('basicpayment/paypal-success-payment', [FrontPaymentController::class, 'paypal_success'])->name('basicpayment.paypal-success-payment');
-

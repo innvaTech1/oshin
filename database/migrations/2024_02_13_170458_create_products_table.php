@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("product_name")->nullable();
             $table->string("slug", 255)->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger("product_type")->nullable()->comment('1 => single_product, 2 => variant_product');
+            $table->tinyInteger("product_type")->nullable()->comment('1 => single_product, 2 => variant_product');
             $table->unsignedBigInteger("unit_type_id")->nullable();
             $table->unsignedBigInteger("brand_id")->nullable();
             $table->string("thumbnail_image_source", 255)->nullable();
@@ -38,10 +38,10 @@ return new class extends Migration
             $table->double('min_sell_price', 28, 2)->default(0);
             $table->double('max_sell_price', 28, 2)->default(0);
             $table->unsignedBigInteger('total_sale')->default(0);
+            $table->Integer("min_order_qty")->nullable();
             $table->Integer("max_order_qty")->nullable();
             $table->string("meta_title", 255)->nullable();
             $table->longText("meta_description")->nullable();
-            $table->string("meta_image", 255)->nullable();
             $table->boolean('is_physical')->default(0);
             $table->boolean('is_approved')->default(0);
             $table->unsignedTinyInteger('status')->default(1);

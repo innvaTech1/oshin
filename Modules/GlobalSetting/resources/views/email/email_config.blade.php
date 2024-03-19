@@ -21,24 +21,29 @@
             <div class="section-body">
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-md-3">
                         <div class="card">
                             <div class="card-body">
-                                <ul class="nav nav-pills" id="myTab3" role="tablist">
+                                <ul class="nav nav-pills flex-column" id="emailTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link @if (request()->routeIs('admin.email-configuration') && empty(request()->query('type'))) active show @endif"
-                                            id="home-tab3" data-toggle="tab" href="#setting_tab" role="tab"
-                                            aria-controls="home" aria-selected="true">{{ __('Setting') }}</a>
+                                        <a class="nav-link active show" id="setting-tab" data-toggle="tab"
+                                            href="#setting_tab" role="tab" aria-controls="setting"
+                                            aria-selected="true">{{ __('Setting') }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link @if (request()->routeIs('admin.email-configuration') && request()->query('type') == 'email_template') active show @endif"
-                                            id="profile-tab3" data-toggle="tab" href="#email_template_tab" role="tab"
-                                            aria-controls="profile" aria-selected="false">{{ __('Email Template') }}</a>
+                                        <a class="nav-link" id="email-template-tab" data-toggle="tab"
+                                            href="#email_template_tab" role="tab" aria-controls="email-template"
+                                            aria-selected="false">{{ __('Email Template') }}</a>
                                     </li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
                                 <div class="tab-content" id="myTabContent2">
-                                    <div class="tab-pane fade @if (request()->routeIs('admin.email-configuration') && empty(request()->query('type'))) active show @endif"
-                                        id="setting_tab" role="tabpanel">
+                                    <div class="tab-pane fade active show" id="setting_tab" role="tabpanel">
                                         <form action="{{ route('admin.update-email-configuration') }}" method="POST">
                                             @csrf
                                             @method('PUT')
@@ -132,10 +137,9 @@
                                             <button type="submit" class="btn btn-success">{{ __('Update') }}</button>
                                         </form>
                                     </div>
-                                    <div class="tab-pane fade @if (request()->routeIs('admin.email-configuration') && request()->query('type') == 'email_template') active show @endif"
-                                        id="email_template_tab" role="tabpanel">
+                                    <div class="tab-pane fade" id="email_template_tab" role="tabpanel">
                                         <div class="table-responsive table-invoice">
-                                            <table class="table table-striped" id="dataTable">
+                                            <table class="table table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>{{ __('SN') }}</th>
@@ -170,3 +174,21 @@
         </section>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function() {
+            "use strict";
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#emailTab a[href="#' + activeTab + '"]').tab('show');
+            } else {
+                $('#emailTab a:first').tab('show');
+            }
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                var newTab = $(e.target).attr('href').substring(1);
+                localStorage.setItem('activeTab', newTab);
+            });
+        });
+    </script>
+@endpush

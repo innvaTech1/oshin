@@ -9,14 +9,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\Paginator;
 use Modules\Blog\app\Http\Requests\CategoryRequest;
 use Modules\Blog\app\Models\BlogCategory;
-use Modules\Blog\app\Models\BlogCategoryTranslation;
 use Modules\Language\app\Enums\TranslationModels;
 use Modules\Language\app\Models\Language;
-use Modules\Language\App\Traits\GenerateTranslationTrait;
+use Modules\Language\app\Traits\GenerateTranslationTrait;
 
 class BlogCategoryController extends Controller
 {
-    use RedirectHelperTrait, GenerateTranslationTrait;
+    use GenerateTranslationTrait, RedirectHelperTrait;
 
     public function index()
     {
@@ -32,6 +31,7 @@ class BlogCategoryController extends Controller
     public function create()
     {
         abort_unless(checkAdminHasPermission('blog.category.create'), 403);
+
         return view('blog::Category.create');
     }
 
@@ -58,6 +58,7 @@ class BlogCategoryController extends Controller
     public function show($id)
     {
         abort_unless(checkAdminHasPermission('blog.category.view'), 403);
+
         return view('blog::category.show');
     }
 
@@ -73,6 +74,7 @@ class BlogCategoryController extends Controller
         }
         $category = BlogCategory::findOrFail($id);
         $languages = allLanguages();
+
         return view('blog::category.edit', compact('category', 'code', 'languages'));
     }
 
@@ -98,6 +100,9 @@ class BlogCategoryController extends Controller
     public function destroy(BlogCategory $blogCategory)
     {
         abort_unless(checkAdminHasPermission('blog.category.delete'), 403);
+        if ($blogCategory->posts()->count() > 0) {
+            return $this->redirectWithMessage(RedirectType::ERROR->value);
+        }
         $blogCategory->translations()->each(function ($translation) {
             $translation->category()->dissociate();
             $translation->delete();
@@ -115,7 +120,7 @@ class BlogCategoryController extends Controller
         $status = $blogCategory->status == 1 ? 0 : 1;
         $blogCategory->update(['status' => $status]);
 
-        $notification = trans('admin_validation.Updated Successfully');
+        $notification = __('Updated Successfully');
 
         return response()->json([
             'success' => true,

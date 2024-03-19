@@ -2,10 +2,9 @@
 
 namespace Modules\Blog\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Blog\Database\factories\BlogCategoryTranslationFactory;
 
 class BlogCategoryTranslation extends Model
 {
@@ -18,11 +17,11 @@ class BlogCategoryTranslation extends Model
         'blog_id',
         'lang_code',
         'title',
-        'short_description'
+        'short_description',
     ];
 
     public function category(): ?BelongsTo
     {
-        return $this->belongsTo(BlogCategory::class,'blog_category_id');
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
     }
 }

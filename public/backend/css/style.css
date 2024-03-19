@@ -2523,6 +2523,8 @@ body.sidebar-mini .main-sidebar {
     display: none; }
   body.sidebar-mini .main-sidebar .sidebar-brand-sm {
     display: block; }
+  body.sidebar-mini .main-sidebar .sidebar-brand-sm img {
+    height: 40px; }
   body.sidebar-mini .main-sidebar .sidebar-menu > li {
     padding: 10px; }
     body.sidebar-mini .main-sidebar .sidebar-menu > li.menu-header {

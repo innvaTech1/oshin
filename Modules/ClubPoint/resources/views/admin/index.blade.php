@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-<title>{{ __('Club Point History') }}</title>
+    <title>{{ __('Club Point History') }}</title>
 @endsection
 @section('admin-content')
     <div class="main-content">
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dataTable">
+                                    <table class="table table-striped">
                                         <thead>
                                             <th>{{ __('SN') }}</th>
                                             <th>{{ __('User') }}</th>
@@ -25,10 +25,12 @@
                                             <th>{{ __('Status') }}</th>
                                         </thead>
 
-                                        @foreach ($histories as $index => $history)
+                                        @forelse ($histories as $index => $history)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
-                                                <td><a href="{{ route('admin.customer-show', $history->user_id) }}">{{ $history?->user?->name }}</a></td>
+                                                <td><a
+                                                        href="{{ route('admin.customer-show', $history->user_id) }}">{{ $history?->user?->name }}</a>
+                                                </td>
                                                 <td>#{{ $history?->order?->order_id }}</td>
                                                 <td>{{ $history->club_point }}</td>
                                                 <td>{{ $history->created_at->format('H:iA, d M Y') }}</td>
@@ -42,7 +44,10 @@
                                                 </td>
 
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <x-empty-table :name="__('')" route="" create="no" :message="__('No data found!')"
+                                                colspan="6"></x-empty-table>
+                                        @endforelse
 
 
                                     </table>
@@ -55,7 +60,4 @@
             </div>
         </section>
     </div>
-
 @endsection
-
-

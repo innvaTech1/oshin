@@ -8,7 +8,6 @@ enum TranslationModels: string
      * whenever update new case also update getAll() method
      * to return all values in array
      */
-
     case Blog = "Modules\Blog\app\Models\BlogTranslation";
     case BlogCategory = "Modules\Blog\app\Models\BlogCategoryTranslation";
     case MenuBuilder = "Modules\MenuBuilder\app\Models\MenuTranslation";
@@ -33,7 +32,7 @@ enum TranslationModels: string
             'lang_code',
             'created_at',
             'updated_at',
-            'deleted_at'
+            'deleted_at',
         ];
     }
 }

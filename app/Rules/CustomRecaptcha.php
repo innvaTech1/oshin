@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use Cache;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Cache;
 use ReCaptcha\ReCaptcha;
 
 class CustomRecaptcha implements ValidationRule
@@ -18,10 +18,10 @@ class CustomRecaptcha implements ValidationRule
     {
         $setting = Cache::get('setting');
 
-        $recaptcha=new ReCaptcha($setting->recaptcha_secret_key);
+        $recaptcha = new ReCaptcha($setting->recaptcha_secret_key);
         $response = $recaptcha->verify($value, $_SERVER['REMOTE_ADDR']);
-        if(!$response->isSuccess()){
-            $notify_message = trans('Please complete the recaptcha to submit the form');
+        if (! $response->isSuccess()) {
+            $notify_message = __('Please complete the recaptcha to submit the form');
             $fail($notify_message);
         }
     }

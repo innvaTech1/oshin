@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="form-group col-12">
                                             <label>{{ __('Description') }}</label>
-                                            <textarea name="description" id="" cols="30" rows="10" class="form-control"></textarea>
+                                            <textarea name="description" id="description" cols="30" rows="10" class="form-control" style="height:50px"></textarea>
                                         </div>
                                         <div class="form-group col-12">
                                             <label>{{ __('Status') }} </label>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-admin.save-button :text="__('admin.Save')" />
+                                            <x-admin.save-button :text="__('Save')" />
                                         </div>
                                     </div>
                                 </form>
@@ -96,6 +96,8 @@
                 </div>
         </section>
     </div>
+
+    @include('components.admin.preloader')
 @endsection
 
 @push('js')
@@ -103,39 +105,31 @@
         $(document).ready(function() {
 
             $('.edit-btn').click(function(e) {
+                $('.preloader_area').removeClass('d-none');
                 e.preventDefault();
                 const url = $(this).attr('href');
+                console.log(url);
                 $.ajax({
                     url: url,
                     type: 'GET',
                     success: function(response) {
                         $('#name').val(response.name);
-                        $('#slug').val(response.slug);
-                        $('#commission_rate').val(response.commission_rate);
-                        if (response.searchable == 1) {
-                            $("[name='searchable'][value='1']").prop('checked', true);
-                        } else {
-                            $("[name='searchable'][value='0']").prop('checked', true);
-                        }
-                        if (response.status == 1) {
-                            $("[name='status'][value='1']").prop('checked', true);
-                        } else {
-                            $("[name='status'][value='0']").prop('checked', true);
-                        }
-                        if (response.parent_id) {
-                            $("[name='unit']").prop('checked', true);
-                            $('.parent').removeClass('d-none');
-                            $('.select2').val(response.parent_id).trigger('change');
-                        }
+                        $('#description').val(response.description);
+                        $('input[name="status"][value="' + response.status + '"]').prop(
+                            'checked', true);
                         let url = "{{ route('admin.unit.update', ':id') }}";
                         url = url.replace(':id', response.id);
-                        console.log(url);
                         $('#form').attr('action', url);
                         const unitId = "<input type='hidden' name='unit_id' value='" +
                             response.id + "'>";
                         const method = "<input type='hidden' name='_method' value='PUT'>";
                         $('#form').append(unitId);
                         $('#form').append(method);
+                        $('.preloader_area').addClass('d-none');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        $('.preloader_area').addClass('d-none');
                     }
                 });
             })

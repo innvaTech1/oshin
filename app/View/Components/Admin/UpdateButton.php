@@ -12,7 +12,8 @@ class UpdateButton extends Component
      * Create a new component instance.
      */
     public function __construct(public string $text = 'Update')
-    {}
+    {
+    }
 
     /**
      * Get the view / contents that represent the component.

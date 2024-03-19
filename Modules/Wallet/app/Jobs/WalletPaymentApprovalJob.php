@@ -2,19 +2,20 @@
 
 namespace Modules\Wallet\app\Jobs;
 
+use App\Traits\GetGlobalInformationTrait;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Traits\GetGlobalInformationTrait;
-use Mail, Exception;
-use Modules\Wallet\app\Emails\WalletPaymentApprovalMail;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Mail;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
+use Modules\Wallet\app\Emails\WalletPaymentApprovalMail;
 
 class WalletPaymentApprovalJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, GetGlobalInformationTrait;
+    use Dispatchable, GetGlobalInformationTrait, InteractsWithQueue, Queueable, SerializesModels;
 
     private $mail_user;
 
@@ -22,7 +23,6 @@ class WalletPaymentApprovalJob implements ShouldQueue
     {
         $this->mail_user = $mail_user;
     }
-
 
     public function handle(): void
     {
@@ -33,8 +33,9 @@ class WalletPaymentApprovalJob implements ShouldQueue
         $message = $template->message;
         $message = str_replace('{{user_name}}', $this->mail_user->name, $message);
 
-        try{
+        try {
             Mail::to($this->mail_user->email)->send(new WalletPaymentApprovalMail($subject, $message));
-        }catch(Exception $ex){}
+        } catch (Exception $ex) {
+        }
     }
 }

@@ -6,7 +6,18 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{{ route('admin.currency.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
                 <h1>{{ __('Create Currency') }}</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                    </div>
+                    <div class="breadcrumb-item active"><a
+                            href="{{ route('admin.currency.index') }}">{{ __('Currency List') }}</a>
+                    </div>
+                    <div class="breadcrumb-item">{{ __('Create Currency') }}</div>
+                </div>
             </div>
             <div class="section-body">
                 <a href="{{ route('admin.currency.index') }}" class="btn btn-primary"><i class="fas fa-list"></i>

@@ -2,8 +2,8 @@
 
 namespace Modules\PaymentWithdraw\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\PaymentWithdraw\Database\factories\WithrawMethodFactory;
 
 class WithdrawMethod extends Model

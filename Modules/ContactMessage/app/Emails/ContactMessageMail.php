@@ -5,13 +5,13 @@ namespace Modules\ContactMessage\app\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ContactMessageMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $mail_subject;
+
     public $mail_template;
 
     public function __construct($mail_subject, $mail_template)

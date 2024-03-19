@@ -10,63 +10,70 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller {
-
-    public function __construct() {
-        $this->middleware( 'guest:admin' )->except( 'destroy' );
+class AuthenticatedSessionController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('guest:admin')->except('destroy');
     }
 
     /**
      * Display the login view.
      */
-    public function create(): View {
-        return view( 'admin.auth.login' );
+    public function create(): View
+    {
+        return view('admin.auth.login');
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store( Request $request ) {
+    public function store(Request $request)
+    {
         $rules = [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ];
 
         $customMessages = [
-            'email.required'    => __( 'Email is required' ),
-            'password.required' => __( 'Password is required' ),
+            'email.required' => __('Email is required'),
+            'password.required' => __('Password is required'),
         ];
-        $this->validate( $request, $rules, $customMessages );
+        $this->validate($request, $rules, $customMessages);
 
         $credential = [
-            'email'    => $request->email,
+            'email' => $request->email,
             'password' => $request->password,
         ];
 
-        $admin = Admin::where( 'email', $request->email )->first();
+        $admin = Admin::where('email', $request->email)->first();
 
-        if ( $admin ) {
-            if ( $admin->status == 'active' ) {
-                if ( Hash::check( $request->password, $admin->password ) ) {
-                    if ( Auth::guard( 'admin' )->attempt( $credential, $request->remember ) ) {
-                        $notification = __( 'Login Successfully' );
-                        $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
-                        return redirect()->route( 'admin.dashboard' )->with( $notification );
+        if ($admin) {
+            if ($admin->status == 'active') {
+                if (Hash::check($request->password, $admin->password)) {
+                    if (Auth::guard('admin')->attempt($credential, $request->remember)) {
+                        $notification = __('Login Successfully');
+                        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+                        return redirect()->route('admin.dashboard')->with($notification);
                     }
                 } else {
-                    $notification = __( 'Invalid Password' );
-                    $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-                    return redirect()->back()->with( $notification );
+                    $notification = __('Invalid Password');
+                    $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+                    return redirect()->back()->with($notification);
                 }
             } else {
-                $notification = __( 'Inactive account' );
-                $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-                return redirect()->back()->with( $notification );
+                $notification = __('Inactive account');
+                $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+                return redirect()->back()->with($notification);
             }
         } else {
-            $notification = __( 'Invalid Email' );
-            $notification = array( 'messege' => $notification, 'alert-type' => 'error' );
-            return redirect()->back()->with( $notification );
+            $notification = __('Invalid Email');
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+            return redirect()->back()->with($notification);
         }
 
     }
@@ -74,11 +81,13 @@ class AuthenticatedSessionController extends Controller {
     /**
      * Destroy an authenticated session.
      */
-    public function destroy( Request $request ): RedirectResponse {
-        Auth::guard( 'admin' )->logout();
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('admin')->logout();
 
-        $notification = __( 'Logout Successfully' );
-        $notification = array( 'messege' => $notification, 'alert-type' => 'success' );
-        return redirect()->route( 'admin.login' )->with( $notification );
+        $notification = __('Logout Successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->route('admin.login')->with($notification);
     }
 }

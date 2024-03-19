@@ -3,152 +3,246 @@
 namespace Modules\Customer\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\User;
-use Modules\Customer\app\Models\BannedHistory;
 use App\Traits\GetGlobalInformationTrait;
-use Hash, Mail, Exception, File;
+use App\Traits\MailSenderTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Modules\Customer\app\Emails\SendMailToUser;
-use App\Mail\UserRegistration;
-use Modules\GlobalSetting\app\Models\EmailTemplate;
-
 use Modules\Customer\app\Jobs\SendBulkEmailToUser;
-use App\Jobs\SendVerifyMailToUser;
 use Modules\Customer\app\Jobs\SendUserBannedMailJob;
+use Modules\Customer\app\Models\BannedHistory;
 
-class CustomerController extends Controller
-{
+class CustomerController extends Controller {
+    use GetGlobalInformationTrait, MailSenderTrait;
 
-    use GetGlobalInformationTrait;
+    public function index( Request $request ) {
+        abort_unless( checkAdminHasPermission( 'customer.view' ), 403 );
 
-    public function index()
-    {
-        abort_unless(checkAdminHasPermission('customer.view'), 403);
+        $query = User::query();
 
-        $users = User::orderBy('id','desc')->get();
+        $query->when( $request->filled( 'keyword' ), function ( $q ) use ( $request ) {
+            $q->where( 'name', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'email', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'phone', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'address', 'like', '%' . $request->keyword . '%' );
+        } );
 
-        return view('customer::all_customer')->with([
+        $query->when( $request->filled( 'verified' ), function ( $q ) use ( $request ) {
+            $q->where( function ( $query ) use ( $request ) {
+                if ( $request->verified == 1 ) {
+                    $query->whereNotNull( 'email_verified_at' );
+                } elseif ( $request->verified == 0 ) {
+                    $query->whereNull( 'email_verified_at' );
+                }
+            } );
+        } );
+
+        $query->when( $request->filled( 'banned' ), function ( $q ) use ( $request ) {
+            $q->where( function ( $query ) use ( $request ) {
+                if ( $request->banned == 1 ) {
+                    $query->where( 'is_banned', 'yes' );
+                } elseif ( $request->banned == 0 ) {
+                    $query->where( 'is_banned', 'no' );
+                }
+            } );
+        } );
+        $query->when( $request->filled( 'order_by' ), function ( $q ) use ( $request ) {
+            $q->orderBy( 'id', $request->order_by == 1 ? 'asc' : 'desc' );
+        } );
+
+        if ( $request->filled( 'par-page' ) ) {
+            $users = $request->get( 'par-page' ) == 'all' ? $query->get() : $query->paginate( $request->get( 'par-page' ) )->withQueryString();
+        } else {
+            $users = $query->paginate()->withQueryString();
+        }
+
+        return view( 'customer::all_customer' )->with( [
             'users' => $users,
-        ]);
+        ] );
     }
 
-    public function active_customer()
-    {
-        abort_unless(checkAdminHasPermission('customer.view'), 403);
+    public function active_customer( Request $request ) {
+        abort_unless( checkAdminHasPermission( 'customer.view' ), 403 );
 
-        $users = User::where(['status' => 'active', 'is_banned' => 'no'])->where('email_verified_at', '!=', null)->orderBy('id','desc')->get();
+        $query = User::query();
+        $query->where( ['status' => 'active', 'is_banned' => 'no'] )->where( 'email_verified_at', '!=', null );
 
-        return view('customer::active_customer')->with([
+        $query->when( $request->filled( 'keyword' ), function ( $q ) use ( $request ) {
+            $q->where( 'name', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'email', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'phone', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'address', 'like', '%' . $request->keyword . '%' );
+        } );
+
+        $query->when( $request->filled( 'order_by' ), function ( $q ) use ( $request ) {
+            $q->orderBy( 'id', $request->order_by == 1 ? 'asc' : 'desc' );
+        } );
+
+        if ( $request->filled( 'par-page' ) ) {
+            $users = $request->get( 'par-page' ) == 'all' ? $query->get() : $query->paginate( $request->get( 'par-page' ) )->withQueryString();
+        } else {
+            $users = $query->paginate()->withQueryString();
+        }
+
+        return view( 'customer::active_customer' )->with( [
             'users' => $users,
-        ]);
+        ] );
     }
 
-    public function non_verified_customers()
-    {
-        abort_unless(checkAdminHasPermission('customer.view'), 403);
+    public function non_verified_customers( Request $request ) {
+        abort_unless( checkAdminHasPermission( 'customer.view' ), 403 );
 
-        $users = User::where('email_verified_at', null)->orderBy('id','desc')->get();
+        $query = User::query();
+        $query->where( 'email_verified_at', null );
 
-        return view('customer::non_verified_customer')->with([
+        $query->when( $request->filled( 'keyword' ), function ( $q ) use ( $request ) {
+            $q->where( 'name', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'email', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'phone', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'address', 'like', '%' . $request->keyword . '%' );
+        } );
+        $query->when( $request->filled( 'banned' ), function ( $q ) use ( $request ) {
+            $q->where( function ( $query ) use ( $request ) {
+                if ( $request->banned == 1 ) {
+                    $query->where( 'is_banned', 'yes' );
+                } elseif ( $request->banned == 0 ) {
+                    $query->where( 'is_banned', 'no' );
+                }
+            } );
+        } );
+        $query->when( $request->filled( 'order_by' ), function ( $q ) use ( $request ) {
+            $q->orderBy( 'id', $request->order_by == 1 ? 'asc' : 'desc' );
+        } );
+
+        if ( $request->filled( 'par-page' ) ) {
+            $users = $request->get( 'par-page' ) == 'all' ? $query->get() : $query->paginate( $request->get( 'par-page' ) )->withQueryString();
+        } else {
+            $users = $query->paginate()->withQueryString();
+        }
+
+        return view( 'customer::non_verified_customer' )->with( [
             'users' => $users,
-        ]);
+        ] );
     }
 
-    public function banned_customers()
-    {
-        abort_unless(checkAdminHasPermission('customer.view'), 403);
+    public function banned_customers( Request $request ) {
+        abort_unless( checkAdminHasPermission( 'customer.view' ), 403 );
 
-        $users = User::where('is_banned', 'yes')->orderBy('id','desc')->get();
+        $query = User::query();
+        $query->where( 'is_banned', 'yes' );
 
-        return view('customer::banned_customer')->with([
+        $query->when( $request->filled( 'keyword' ), function ( $q ) use ( $request ) {
+            $q->where( 'name', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'email', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'phone', 'like', '%' . $request->keyword . '%' )
+                ->orWhere( 'address', 'like', '%' . $request->keyword . '%' );
+        } );
+
+        $query->when( $request->filled( 'verified' ), function ( $q ) use ( $request ) {
+            $q->where( function ( $query ) use ( $request ) {
+                if ( $request->verified == 1 ) {
+                    $query->whereNotNull( 'email_verified_at' );
+                } elseif ( $request->verified == 0 ) {
+                    $query->whereNull( 'email_verified_at' );
+                }
+            } );
+        } );
+
+        $query->when( $request->filled( 'order_by' ), function ( $q ) use ( $request ) {
+            $q->orderBy( 'id', $request->order_by == 1 ? 'asc' : 'desc' );
+        } );
+
+        if ( $request->filled( 'par-page' ) ) {
+            $users = $request->get( 'par-page' ) == 'all' ? $query->get() : $query->paginate( $request->get( 'par-page' ) )->withQueryString();
+        } else {
+            $users = $query->paginate()->withQueryString();
+        }
+
+        return view( 'customer::banned_customer' )->with( [
             'users' => $users,
-        ]);
+        ] );
     }
 
+    public function show( $id ) {
+        abort_unless( checkAdminHasPermission( 'customer.view' ), 403 );
 
-    public function show($id)
-    {
-        abort_unless(checkAdminHasPermission('customer.view'), 403);
+        $user = User::findOrFail( $id );
 
-        $user = User::findOrFail($id);
+        $banned_histories = BannedHistory::where( 'user_id', $id )->orderBy( 'id', 'desc' )->get();
 
-        $banned_histories = BannedHistory::where('user_id', $id)->orderBy('id','desc')->get();
-
-        return view('customer::customer_show')->with([
-            'user' => $user,
+        return view( 'customer::customer_show' )->with( [
+            'user'             => $user,
             'banned_histories' => $banned_histories,
-        ]);
+        ] );
     }
 
-    public function update(Request $request, $id)
-    {
-        abort_unless(checkAdminHasPermission('customer.update'), 403);
+    public function update( Request $request, $id ) {
+        abort_unless( checkAdminHasPermission( 'customer.update' ), 403 );
 
         $rules = [
-            'name'=>'required',
-            'address'=>'required'
+            'name'    => 'required',
+            'address' => 'required',
         ];
         $customMessages = [
-            'name.required' => trans('Name is required'),
-            'address.required' => trans('Address is required')
+            'name.required'    => __( 'Name is required' ),
+            'address.required' => __( 'Address is required' ),
         ];
-        $request->validate($rules,$customMessages);
+        $request->validate( $rules, $customMessages );
 
-        $user = User::findOrFail($id);
+        $user = User::findOrFail( $id );
         $user->name = $request->name;
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->save();
 
-        $notification=trans('Updated Successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'Updated Successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
     }
 
-    public function password_change(Request $request, $id)
-    {
-        abort_unless(checkAdminHasPermission('customer.update'), 403);
+    public function password_change( Request $request, $id ) {
+        abort_unless( checkAdminHasPermission( 'customer.update' ), 403 );
 
         $rules = [
-            'password'=>'required|min:4|confirmed',
+            'password' => 'required|min:4|confirmed',
         ];
         $customMessages = [
-            'password.required' => trans('Password is required'),
-            'password.min' => trans('Password minimum 4 character'),
-            'password.confirmed' => trans('Confirm password does not match'),
+            'password.required'  => __( 'Password is required' ),
+            'password.min'       => __( 'Password minimum 4 character' ),
+            'password.confirmed' => __( 'Confirm password does not match' ),
         ];
-        $this->validate($request, $rules,$customMessages);
+        $this->validate( $request, $rules, $customMessages );
 
-        $user = User::findOrFail($id);
+        $user = User::findOrFail( $id );
 
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make( $request->password );
         $user->save();
 
-        $notification = trans('Password change successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'Password change successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
     }
 
-    public function send_banned_request(Request $request, $id)
-    {
-        abort_unless(checkAdminHasPermission('customer.update'), 403);
+    public function send_banned_request( Request $request, $id ) {
+        abort_unless( checkAdminHasPermission( 'customer.update' ), 403 );
 
         $rules = [
-            'subject'=>'required|max:255',
-            'description'=>'required'
+            'subject'     => 'required|max:255',
+            'description' => 'required',
         ];
         $customMessages = [
-            'subject.required' => trans('Subject is required'),
-            'description.required' => trans('Description is required'),
+            'subject.required'     => __( 'Subject is required' ),
+            'description.required' => __( 'Description is required' ),
         ];
 
-        $this->validate($request, $rules,$customMessages);
+        $this->validate( $request, $rules, $customMessages );
 
-        $user = User::findOrFail($id);
-        if($user->is_banned == 'yes'){
+        $user = User::findOrFail( $id );
+        if ( $user->is_banned == 'yes' ) {
             $user->is_banned = 'no';
             $user->save();
 
@@ -158,7 +252,7 @@ class CustomerController extends Controller
             $banned->reasone = 'for_unbanned';
             $banned->description = $request->description;
             $banned->save();
-        }else{
+        } else {
             $user->is_banned = 'yes';
             $user->save();
 
@@ -170,104 +264,108 @@ class CustomerController extends Controller
             $banned->save();
         }
 
-        dispatch(new SendUserBannedMailJob($request->description, $request->subject, $user));
+        dispatch( new SendUserBannedMailJob( $request->description, $request->subject, $user ) );
 
-        $notification = trans('Banned request successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'Banned request successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
 
     }
 
-    public function send_verify_request(Request $request, $id)
-    {
+    public function send_verify_request( Request $request, $id ) {
 
-        $user = User::findOrFail($id);
-        $user->verification_token = Str::random(100);
+        $user = User::findOrFail( $id );
+        $user->verification_token = Str::random( 100 );
         $user->save();
 
-        dispatch(new SendVerifyMailToUser('single_user', $user));
+        $this->sendVerifyMailToUserFromTrait( 'single_user', $user );
 
-        $notification= trans('A varification link has been send to user mail');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'A varification link has been send to user mail' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
 
-    }
-
-    public function send_verify_request_to_all(Request $request)
-    {
-
-        dispatch(new SendVerifyMailToUser('all_user'));
-
-        $notification= trans('A varification link has been send to user mail');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        return redirect()->back()->with( $notification );
 
     }
 
-    public function send_mail_to_customer(Request $request, $id)
-    {
+    public function send_verify_request_to_all( Request $request ) {
+
+        $this->sendVerifyMailToUserFromTrait( 'all_user' );
+
+        $notification = __( 'A varification link has been send to user mail' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
+
+    }
+
+    public function send_mail_to_customer( Request $request, $id ) {
         $rules = [
-            'subject'=>'required|max:255',
-            'description'=>'required'
+            'subject'     => 'required|max:255',
+            'description' => 'required',
         ];
         $customMessages = [
-            'subject.required' => trans('Subject is required'),
-            'description.required' => trans('Description is required'),
+            'subject.required'     => __( 'Subject is required' ),
+            'description.required' => __( 'Description is required' ),
         ];
 
-        $this->validate($request, $rules,$customMessages);
+        $this->validate( $request, $rules, $customMessages );
 
-        $user = User::findOrFail($id);
+        $user = User::findOrFail( $id );
 
-        dispatch(new SendBulkEmailToUser($request->subject, $request->description, 'single_user', $user));
+        dispatch( new SendBulkEmailToUser( $request->subject, $request->description, 'single_user', $user ) );
 
-        $notification = trans('Mail send to customer successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'Mail send to customer successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
     }
 
-    public function send_bulk_mail(){
-        abort_unless(checkAdminHasPermission('customer.bulk.mail'), 403);
-        return view('customer::send_bulk_mail');
+    public function send_bulk_mail() {
+        abort_unless( checkAdminHasPermission( 'customer.bulk.mail' ), 403 );
+
+        return view( 'customer::send_bulk_mail' );
     }
 
-    public function send_bulk_mail_to_all(Request $request)
-    {
-        abort_unless(checkAdminHasPermission('customer.bulk.mail'), 403);
+    public function send_bulk_mail_to_all( Request $request ) {
+        abort_unless( checkAdminHasPermission( 'customer.bulk.mail' ), 403 );
 
         $rules = [
-            'subject'=>'required|max:255',
-            'description'=>'required'
+            'subject'     => 'required|max:255',
+            'description' => 'required',
         ];
 
         $customMessages = [
-            'subject.required' => trans('Subject is required'),
-            'description.required' => trans('Description is required'),
+            'subject.required'     => __( 'Subject is required' ),
+            'description.required' => __( 'Description is required' ),
         ];
 
-        $this->validate($request, $rules,$customMessages);
+        $this->validate( $request, $rules, $customMessages );
 
-        dispatch(new SendBulkEmailToUser($request->subject, $request->description, 'all_user'));
+        dispatch( new SendBulkEmailToUser( $request->subject, $request->description, 'all_user' ) );
 
-        $notification = trans('Mail send to customer successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->back()->with($notification);
+        $notification = __( 'Mail send to customer successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->back()->with( $notification );
 
     }
 
-    public function destroy($id)
-    {
-        abort_unless(checkAdminHasPermission('customer.delete'), 403);
+    public function destroy( $id ) {
+        abort_unless( checkAdminHasPermission( 'customer.delete' ), 403 );
 
-        $user = User::findOrFail($id);
-        if ($user->image) {
-            if (File::exists(public_path($user->image))) unlink(public_path($user->image));
+        $user = User::findOrFail( $id );
+        if ( $user->image ) {
+            if ( File::exists( public_path( $user->image ) ) ) {
+                unlink( public_path( $user->image ) );
+            }
         }
 
         $user->delete();
 
-        $notification = trans('Customer deleted successfully');
-        $notification=array('messege'=>$notification,'alert-type'=>'success');
-        return redirect()->route('admin.active-customers')->with($notification);
+        $notification = __( 'Customer deleted successfully' );
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+        return redirect()->route( 'admin.active-customers' )->with( $notification );
     }
 }

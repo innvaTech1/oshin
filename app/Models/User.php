@@ -51,6 +51,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
     protected static function booted()
     {
         if (Auth::check()) {
@@ -78,6 +79,7 @@ class User extends Authenticatable
             }
         }
     }
+
 
     public function messagesSent()
     {
@@ -117,7 +119,7 @@ class User extends Authenticatable
                 $query->where('sender_id', $contactUser->id)->where('receiver_id', $this->id);
             })->latest('created_at')->first();
 
-            $contactUsersWithUnseenMessages[] = (object)[
+            $contactUsersWithUnseenMessages[] = (object) [
                 'id' => $contactUser->id,
                 'name' => $contactUser->name,
                 'email' => $contactUser->email,
@@ -159,6 +161,7 @@ class User extends Authenticatable
         return $this->hasMany(SocialiteCredential::class, 'user_id');
     }
 
+
     public function wishlistItems()
     {
         return $this->hasMany(Wishlist::class, 'user_id');
@@ -168,4 +171,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cart::class, 'user_id');
     }
+
 }

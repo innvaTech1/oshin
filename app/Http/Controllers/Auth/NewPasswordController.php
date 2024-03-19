@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Rules\CustomRecaptcha;
 use Cache;
-use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,8 +33,8 @@ class NewPasswordController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'token'    => ['required'],
-            'email'    => ['required', 'email'],
+            'token' => ['required'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -46,7 +45,7 @@ class NewPasswordController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
                 $user->forceFill([
-                    'password'       => Hash::make($request->password),
+                    'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
                 ])->save();
 
@@ -58,8 +57,8 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withInput($request->only('email'))
+        ? redirect()->route('login')->with('status', __($status))
+        : back()->withInput($request->only('email'))
             ->withErrors(['email' => __($status)]);
     }
 
@@ -68,32 +67,41 @@ class NewPasswordController extends Controller
 
         $user = User::select('id', 'name', 'email', 'forget_password_token')->where('forget_password_token', $token)->first();
 
-        if (!$user) {
+        if (! $user) {
             $notification = __('Invalid token, please try again');
-            $notification = array('messege' => $notification, 'alert-type' => 'error');
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
             return redirect()->route('password.request')->with($notification);
         }
 
-        return view('frontend.auth.reset-password', ['token' => $token]);
+        return view('auth.reset-password', ['user' => $user, 'token' => $token]);
     }
 
     public function custom_reset_password_store(Request $request, $token)
     {
+
+        $setting = Cache::get('setting');
+
         $rules = [
-            'password'             => 'required|min:4',
+            'email' => 'required',
+            'password' => 'required|min:4|confirmed',
+            'g-recaptcha-response' => $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : '',
         ];
         $customMessages = [
-            'password.required'             => __('Password is required'),
-            'password.min'                  => __('Password must be 4 characters'),
+            'email.required' => __('Email is required'),
+            'password.required' => __('Password is required'),
+            'password.min' => __('Password must be 4 characters'),
+            'g-recaptcha-response.required' => __('Please complete the recaptcha to submit the form'),
         ];
         $this->validate($request, $rules, $customMessages);
 
-        $user = User::select('id', 'name', 'email', 'forget_password_token')->where('forget_password_token', $token)->first();
+        $user = User::select('id', 'name', 'email', 'forget_password_token')->where('forget_password_token', $token)->where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             $notification = __('Invalid token, please try again');
-            $notification = array('messege' => $notification, 'alert-type' => 'error');
-            return redirect(route('login'))->with($notification);
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
+            return redirect()->back()->with($notification);
         }
 
         $user->password = Hash::make($request->password);
@@ -101,7 +109,9 @@ class NewPasswordController extends Controller
         $user->save();
 
         $notification = __('Password Reset successfully');
-        $notification = array('messege' => $notification, 'alert-type' => 'success');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->route('login')->with($notification);
+
     }
 }

@@ -4,21 +4,23 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\CustomRecaptcha;
 use App\Traits\GetGlobalInformationTrait;
+use App\Traits\MailSenderTrait;
+use Cache;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 use Str;
 
 class PasswordResetLinkController extends Controller
 {
-    use GetGlobalInformationTrait;
+    use GetGlobalInformationTrait, MailSenderTrait;
 
     public function create(): View
     {
-        return view('frontend.auth.forgot');
+        return view('auth.forgot-password');
     }
 
     /**
@@ -40,44 +42,41 @@ class PasswordResetLinkController extends Controller
         );
 
         return $status == Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->withInput($request->only('email'))
+        ? back()->with('status', __($status))
+        : back()->withInput($request->only('email'))
             ->withErrors(['email' => __($status)]);
     }
 
     public function custom_forget_password(Request $request)
     {
 
+        $setting = Cache::get('setting');
+
         $request->validate([
-            'email'                => ['required', 'email'],
+            'email' => ['required', 'email'],
+            'g-recaptcha-response' => $setting->recaptcha_status == 'active' ? ['required', new CustomRecaptcha()] : '',
         ], [
-            'email.required'                => __('Email is required'),
+            'email.required' => __('Email is required'),
+            'g-recaptcha-response.required' => __('Please complete the recaptcha to submit the form'),
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-
-            $forgot_pass_token = Str::random(100);
-
-            $user->forget_password_token = $forgot_pass_token;
+            $user->forget_password_token = Str::random(100);
             $user->save();
 
-            Mail::send('frontend.emails.password-reset', [
-                'name'  => $user->name,
-                'token' => $forgot_pass_token
-            ], function ($message) use ($request,$user) {
-                $message->to($request->email, $user->name);
-                $message->subject('Reset Password');
-            });
-
+            $this->sendUserForgetPasswordFromTrait($user);
 
             $notification = __('A password reset link has been send to your mail');
-            $notification = array('messege' => $notification, 'alert-type' => 'success');
-            return redirect(route('resetEmail'))->with($notification);
+            $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+            return redirect()->back()->with($notification);
+
         } else {
             $notification = __('Email does not exist');
-            $notification = array('messege' => $notification, 'alert-type' => 'error');
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+
             return redirect()->back()->with($notification);
         }
     }

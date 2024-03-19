@@ -3,15 +3,12 @@
 namespace Modules\NewsLetter\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Modules\NewsLetter\app\Models\NewsLetter;
 use Modules\NewsLetter\app\Jobs\SendMailToNewsletterJob;
+use Modules\NewsLetter\app\Models\NewsLetter;
 
 class NewsLetterController extends Controller
 {
-
     public function index()
     {
         abort_unless(checkAdminHasPermission('newsletter.view'), 403);
@@ -23,6 +20,7 @@ class NewsLetterController extends Controller
     public function create()
     {
         abort_unless(checkAdminHasPermission('newsletter.mail'), 403);
+
         return view('newsletter::create');
     }
 
@@ -32,25 +30,28 @@ class NewsLetterController extends Controller
         $newsletter = NewsLetter::find($id);
         $newsletter->delete();
 
-        $notification = trans('Deleted successfully');
-        $notification = array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Deleted successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         abort_unless(checkAdminHasPermission('newsletter.mail'), 403);
         $request->validate([
-            'subject'=>'required',
-            'description'=>'required',
-        ],[
-            'subject.required' => trans('Subject is required'),
-            'description.required' => trans('Description is required'),
+            'subject' => 'required',
+            'description' => 'required',
+        ], [
+            'subject.required' => __('Subject is required'),
+            'description.required' => __('Description is required'),
         ]);
 
         dispatch(new SendMailToNewsletterJob($request->subject, $request->description));
 
-        $notification = trans('Mail send successfully');
-        $notification = array('messege'=>$notification,'alert-type'=>'success');
+        $notification = __('Mail send successfully');
+        $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
         return redirect()->back()->with($notification);
     }
 }

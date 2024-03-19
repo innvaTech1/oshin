@@ -1,11 +1,13 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('admin.dashboard') }}">{{ $setting->app_name ?? '' }}</a>
+            <a href="{{ route('admin.dashboard') }}"><img class="w-75" src=""
+                    alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('admin.dashboard') }}">{{ $setting->app_name ?? '' }}</a>
+            <a href="{{ route('admin.dashboard') }}"><img src=""
+                    alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <ul class="sidebar-menu">
@@ -16,6 +18,7 @@
                     </a>
                 </li>
             @endadminCan
+            <li class="menu-header">{{ __('Manage Product') }}</li>
 
             <li class="nav-item dropdown {{ Route::is('admin.products.*') ? 'active' : '' }}">
                 <a href="javascript:void()" class="nav-link has-dropdown"><i
@@ -64,21 +67,29 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="menu-header">{{ __('Manage Contents') }}</li>
+
             @if (Module::isEnabled('Blog') && checkAdminHasPermission('blog.view'))
                 @include('blog::sidebar')
             @endif
 
-            @if (Module::isEnabled('MenuBuilder') && checkAdminHasPermission('menu.view'))
-                @include('menubuilder::sidebar')
+            @if (Module::isEnabled('Media') && checkAdminHasPermission('media.view'))
+                @include('media::sidebar')
             @endif
 
-            @if (Module::isEnabled('PageBuilder') && checkAdminHasPermission('page.view'))
-                @include('pagebuilder::sidebar')
+            @if (Module::isEnabled('Customer') && checkAdminHasPermission('customer.view'))
+                @include('customer::sidebar')
             @endif
 
-            @if (Module::isEnabled('Subscription') && checkAdminHasPermission('subscription.view'))
-                @include('subscription::admin.sidebar')
+
+            <li class="menu-header">{{ __('Manage Website') }}</li>
+
+            @if (Module::isEnabled('Faq') && checkAdminHasPermission('faq.view'))
+                @include('faq::sidebar')
             @endif
+
+            <li class="menu-header">{{ __('Manage Orders') }}</li>
 
             @if (Module::isEnabled('Coupon'))
                 @include('coupon::sidebar')
@@ -92,17 +103,11 @@
                 @include('refund::admin.sidebar')
             @endif
 
-            @if (Module::isEnabled('Wallet'))
-                @include('wallet::admin.sidebar')
-            @endif
-
             @if (Module::isEnabled('PaymentWithdraw'))
                 @include('paymentwithdraw::admin.sidebar')
             @endif
 
-            @if (Module::isEnabled('ClubPoint'))
-                @include('clubpoint::admin.sidebar')
-            @endif
+            <li class="menu-header">{{ __('Settings') }}</li>
 
             @if (Module::isEnabled('GlobalSetting') && checkAdminHasPermission('setting.view'))
                 <li class="{{ Route::is('admin.settings') ? 'active' : '' }}">
@@ -112,21 +117,15 @@
                 </li>
             @endif
 
-            @if (Module::isEnabled('OurTeam'))
-                @include('ourteam::sidebar')
+            @if (Module::isEnabled('Wallet'))
+                @include('wallet::admin.sidebar')
             @endif
 
-            @if (Module::isEnabled('Customer') && checkAdminHasPermission('customer.view'))
-                @include('customer::sidebar')
+            @if (Module::isEnabled('ClubPoint'))
+                @include('clubpoint::admin.sidebar')
             @endif
 
-            @if (Module::isEnabled('Testimonial') && checkAdminHasPermission('testimonial.view'))
-                @include('testimonial::sidebar')
-            @endif
-
-            @if (Module::isEnabled('Faq') && checkAdminHasPermission('faq.view'))
-                @include('faq::sidebar')
-            @endif
+            <li class="menu-header">{{ __('Utility') }}</li>
 
             @if (Module::isEnabled('SupportTicket') && checkAdminHasPermission('support.ticket.view'))
                 @include('supportticket::sidebar')
@@ -136,10 +135,22 @@
                 @include('newsletter::sidebar')
             @endif
 
+            @if (Module::isEnabled('Testimonial') && checkAdminHasPermission('testimonial.view'))
+                @include('testimonial::sidebar')
+            @endif
+
             @if (Module::isEnabled('ContactMessage') && checkAdminHasPermission('contect.message.view'))
                 @include('contactmessage::sidebar')
             @endif
         </ul>
+
+        <div class="py-3 text-center">
+            <div class="btn-group">
+                <button class="btn btn-danger"
+                    onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">Logout <i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
 
     </aside>
 </div>

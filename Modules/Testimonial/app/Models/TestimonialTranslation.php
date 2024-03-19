@@ -2,8 +2,8 @@
 
 namespace Modules\Testimonial\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TestimonialTranslation extends Model
@@ -21,7 +21,7 @@ class TestimonialTranslation extends Model
         'comment',
     ];
 
-    public function testimonial():?BelongsTo
+    public function testimonial(): ?BelongsTo
     {
         return $this->belongsTo(Testimonial::class);
     }

@@ -15,7 +15,8 @@
                     <div class="col-12">
                         <div class="card profile-widget">
                             <div class="profile-widget-header">
-                                <img alt="image" src="{{ $admin->image ? asset($admin->image) : '' }}"
+                                <img alt="image" id="profileImgPreview"
+                                    src="{{ $admin->image ? asset($admin->image) : '' }}"
                                     class="rounded-circle profile-widget-picture">
                             </div>
 
@@ -28,7 +29,8 @@
                                     <div class="row">
                                         <div class="form-group col-12">
                                             <label>{{ __('New Image') }}</label>
-                                            <input type="file" class="form-control-file" name="image">
+                                            <input id="profileImgInput" type="file" class="form-control-file"
+                                                name="image">
                                         </div>
 
                                         <div class="form-group col-12">
@@ -107,3 +109,12 @@
         </section>
     </div>
 @endsection
+@push('js')
+    <script>
+        //input image preview function
+        "use strict";
+        $(document).ready(function() {
+            setupImagePreview('profileImgInput', 'profileImgPreview');
+        });
+    </script>
+@endpush

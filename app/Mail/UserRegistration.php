@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,7 +13,9 @@ class UserRegistration extends Mailable
     use Queueable, SerializesModels;
 
     public $mail_subject;
+
     public $mail_message;
+
     public $from_user;
 
     public function __construct($mail_message, $mail_subject, $from_user)

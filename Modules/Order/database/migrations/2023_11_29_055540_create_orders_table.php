@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('order_id');
             $table->string('transaction_id');
             $table->string('payment_method');
-            $table->enum('payment_status', ['pending', 'success','rejected'])->default('pending');
+            $table->enum('payment_status', ['pending', 'success', 'rejected'])->default('pending');
             $table->enum('order_status', ['pending', 'success'])->default('pending');
             $table->timestamps();
         });

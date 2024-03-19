@@ -43,11 +43,11 @@ class UnitTypeController extends Controller
         try {
             $this->unitTypeService->save($request->except("_token"));
             LogActivity::successLog('Units added.');
-            return $this->redirectWithSession(RedirectType::CREATE->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::CREATE->value, "admin.unit.index");
 
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            return $this->redirectWithSession(RedirectType::ERROR->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::ERROR->value, "admin.unit.index");
         }
 
     }
@@ -65,7 +65,8 @@ class UnitTypeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $unit = $this->unitTypeService->findById($id);
+        return $unit;
     }
 
     /**
@@ -76,10 +77,10 @@ class UnitTypeController extends Controller
         try {
             $this->unitTypeService->update($request->except("_token"), $id);
             LogActivity::successLog('Units updated.');
-            return $this->redirectWithSession(RedirectType::UPDATE->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::UPDATE->value, "admin.unit.index");
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
-            return $this->redirectWithSession(RedirectType::ERROR->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::ERROR->value, "admin.unit.index");
         }
 
     }
@@ -92,13 +93,13 @@ class UnitTypeController extends Controller
         try {
             $result = $this->unitTypeService->delete($id);
             if ($result == "not_possible") {
-                return $this->redirectWithSession(RedirectType::ERROR->value, "admin.unit.index");
+                return $this->redirectWithMessage(RedirectType::ERROR->value, "admin.unit.index");
             }
             LogActivity::successLog('unit delete successful.');
-            return $this->redirectWithSession(RedirectType::DELETE->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::DELETE->value, "admin.unit.index");
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage() . ' - Error has been detected for Unit Destroy');
-            return $this->redirectWithSession(RedirectType::ERROR->value, "admin.unit.index");
+            return $this->redirectWithMessage(RedirectType::ERROR->value, "admin.unit.index");
         }
 
     }
