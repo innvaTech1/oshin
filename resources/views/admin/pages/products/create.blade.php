@@ -109,6 +109,8 @@
                                         </div>
                                         <div class="col-12 row attributes_values">
                                         </div>
+                                        <div class="col-12 row attributes_variatiions">
+                                        </div>
                                         <div class="form-group col-12">
                                             <label class="custom-switch mt-2" style="padding-left: 0px !important;">
                                                 <input type="checkbox" name="is_physical" id="is_physical"
@@ -291,6 +293,51 @@
         @include('components.admin.preloader')
     </div>
 
+    <!-- Modal for adding wholesale prices -->
+    <div class="modal fade" id="add-price-wholesale" tabindex="-1" role="dialog"
+        aria-labelledby="addPriceWholesaleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPriceWholesaleModalLabel">Add Wholesale Price</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="wholesalePriceForm">
+                        <div id="wholesalePriceFields">
+                            <input type="hidden" name="variation_wholesale_name[]">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="wholesalePrice">Wholesale Price</label>
+                                    <input type="text" class="form-control" name="variation_wholesale_price[]"
+                                        placeholder="Enter Wholesale Price">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="minQuantity">Minimum Quantity</label>
+                                    <input type="number" class="form-control" name="variation_min_quantity[]"
+                                        placeholder="Enter Minimum Quantity">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="maxQuantity">Maximum Quantity</label>
+                                    <input type="number" class="form-control" name="variation_max_quantity[]"
+                                        placeholder="Enter Maximum Quantity">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addFields">Add Price Field</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveWholesalePrice">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     {{-- Media Modal Show --}}
     @if (Module::isEnabled('Media'))
         @stack('media_list_html')
@@ -377,12 +424,12 @@
                                 <input type="text" name='choice[]' value="${attribute.name}" class="form-control" readonly>
                             </div>
                             <div class="col-8 mb-2">
-                                <select name="choice_options_${attribute.id}[]" class="form-control select2" multiple>
+                                <select name="choice_options_${attribute.id}[]" class="form-control select2 attr-multi-value" multiple>
                         `;
 
                             $.each(attribute.values, function(index, value) {
                                 html +=
-                                    `<option value="${value.id}">${value.value}</option>`;
+                                    `<option value="${value.value}">${value.value}</option>`;
                             });
 
                             html += `
@@ -397,13 +444,106 @@
                         // After appending all select elements, initialize Select2
                         $('.select2').select2();
 
-
                         $('.preloader_area').addClass('d-none')
                     }
                 })
 
             })
+
+            $(document).on('change', '.attr-multi-value', function() {
+                // Initialize an empty array to store selected values
+                var selectedValues = [];
+
+                // Loop through each select element
+                $('.attr-multi-value').each(function(index, select) {
+                    // Get the selected options for the current select element
+                    var selectedOptions = $(select).val();
+
+                    // If options are selected, add them to the selectedValues array
+                    if (selectedOptions && selectedOptions.length > 0) {
+                        selectedValues.push(selectedOptions);
+                    }
+                });
+
+                // Create a variation table HTML
+                var variationTableHTML =
+                    '<table class="table"><thead><tr><th>Variant</th><th>Selling Price</th><th>SKU</th></tr></thead><tbody>';
+
+                // Generate rows for each combination of selected values
+                selectedValues = cartesian(selectedValues);
+                $.each(selectedValues, function(index, combination) {
+
+
+                    // Create a row for the combination
+                    variationTableHTML += '<tr>';
+                    variationTableHTML += '<td>' + combination.join('-') +
+                        `<input type="hidden" name="variant" value="${combination.join('-')}">` +
+                        '</td>'; // Variant column (joined if there are multiple)
+                    variationTableHTML +=
+                        '<td class="d-flex justify-content-between align-items-center"><input type="text" class="form-control selling-price" name="selling_price[]" placeholder="Enter Selling Price"> <button type="button" class="btn btn-primary ml-2" title="" data-toggle="modal" data-target="#add-price-wholesale"><i class="fas fa-plus"></i></button></td>'; // Selling Price column with input
+                    variationTableHTML +=
+                        '<td><input type="text" class="form-control sku" name="sku[]" placeholder="Enter SKU"></td>'; // SKU column with input
+                    variationTableHTML += '</tr>';
+                });
+
+                variationTableHTML += '</tbody></table>';
+
+                // Append the variation table HTML to a container
+                $('.attributes_variatiions').html(variationTableHTML);
+            });
         })
+
+        function cartesian(arrays) {
+            var result = [];
+            var max = arrays.length - 1;
+
+            function helper(arr, i) {
+                for (var j = 0, l = arrays[i].length; j < l; j++) {
+                    var a = arr.slice(0); // clone arr
+                    a.push(arrays[i][j]);
+                    if (i == max)
+                        result.push(a);
+                    else
+                        helper(a, i + 1);
+                }
+            }
+            helper([], 0);
+            return result;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Add Price Field button click event
+            $('#addFields').click(function() {
+                var fieldHTML = `
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" name="variation_wholesale_price[]" placeholder="Enter Wholesale Price">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="number" class="form-control" name="variation_min_quantity[]" placeholder="Enter Minimum Quantity">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="number" class="form-control" name="variation_max_quantity[]" placeholder="Enter Maximum Quantity">
+                        </div>
+                        <div class="form-group col-md-2 d-flex justify-content-center align-items-center">
+                            <button type="button" class="btn btn-danger removeField"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`;
+
+                $('#wholesalePriceFields').append(fieldHTML);
+            });
+
+            $(document).on('click', '.removeField', function () {
+                $(this).closest('.form-row').remove();
+            });
+
+            // Save Wholesale Price button click event
+            $('#saveWholesalePrice').click(function() {
+                // Perform save action here
+            });
+        });
     </script>
 
 @endpush
