@@ -6,8 +6,6 @@ use App\Http\Controllers\frontend\CheckOutController;
 use App\Http\Controllers\frontend\CompareController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\ProductCategoryController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\frontend\ProductController;
 use App\Http\Controllers\frontend\WishlistController;
 use Illuminate\Support\Facades\Route;

@@ -1,3 +1,32 @@
+@php
+    if (auth()->check()) {
+        $cart_items = resolve('App\Models\Cart')::with('product:id,product_name,thumbnail_image_source,slug')
+            ->where('user_id', Auth::id())
+            ->select('id', 'product_id', 'user_id', 'quantity')
+            ->get();
+    } elseif (!auth()->check() && session()->has('cart')) {
+        $cart_items = [];
+        foreach (session()->get('cart') as $productID => $session_item) {
+            $product = resolve('App\Models\Product')::select('id', 'product_name', 'slug', 'thumbnail_image_source')
+                ->where('id', $productID)
+                ->first();
+            $cart_item_with_product = [
+                'quantity' => $session_item['quantity'],
+                'id' => $session_item['cart_id'],
+                'product' => [
+                    'product_name' => $product->product_name,
+                    'thumbnail_image_source' => $product->thumbnail_image_source,
+                    'slug' => $product->slug,
+                    'id' => $productID,
+                ],
+            ];
+            $cart_items[] = $cart_item_with_product;
+        }
+    } else {
+        $cart_items = [];
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 

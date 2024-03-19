@@ -218,7 +218,8 @@
                                             @if ($is_wishlisted) style="color: red; fill: red;" @endif></i>
                                         <span>Wishlist</span>
                                     </a>
-                                    <a href="#">
+                                    <a href="javascript:void(0)" class="add-to-compare"
+                                                data-product-id="{{ $product->id }}">
                                         <i data-feather="shuffle"></i>
                                         <span>Add To Compare</span>
                                     </a>

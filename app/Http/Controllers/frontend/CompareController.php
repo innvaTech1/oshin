@@ -17,6 +17,8 @@ class CompareController extends Controller
         $compareItems = session()->get('compare');
         if (session()->has('compare') && !empty($compareItems)) {
             $products = Product::with('brand:id,name', 'cart')->select('id', 'product_name', 'slug', 'thumbnail_image_source', 'brand_id', 'description', 'specification', 'max_sell_price', DB::raw('ROUND(avg_rating) as avg_rating'))->whereIn('id', $compareItems)->where('status', true)->get();
+        }else{
+            $products = [];
         }
 
         // dd(session()->get('compare'));

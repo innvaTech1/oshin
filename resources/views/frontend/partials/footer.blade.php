@@ -578,7 +578,7 @@
                 },
                 success: function(response) {
                     toastr.success(response.message);
-                    $('.compare-count').text(_count + 1)
+                    $('.compare-count').text(_count + 1);
                 },
                 error: function(error) {
                     toastr.error(error.responseJSON.message);

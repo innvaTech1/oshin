@@ -1,3 +1,6 @@
+@php
+    $categories = resolve('App\Models\Category')::select('id','name','status')->where('status',true)->get();
+@endphp
 <body class="bg-effect">
     <!-- Loader Start -->
     <div class="fullpage-loader">
