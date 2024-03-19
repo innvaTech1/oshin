@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\LiveChat\app\Models\Message;
+use Modules\Order\app\Models\Order;
 
 class User extends Authenticatable
 {
@@ -51,7 +52,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
     protected static function booted()
     {
         if (Auth::check()) {
@@ -79,7 +79,6 @@ class User extends Authenticatable
             }
         }
     }
-
 
     public function messagesSent()
     {
@@ -161,7 +160,6 @@ class User extends Authenticatable
         return $this->hasMany(SocialiteCredential::class, 'user_id');
     }
 
-
     public function wishlistItems()
     {
         return $this->hasMany(Wishlist::class, 'user_id');
@@ -172,4 +170,13 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class, 'user_id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'user_id');
+    }
 }

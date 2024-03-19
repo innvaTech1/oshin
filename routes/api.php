@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\ProductCategoryController;
+use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,24 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Authentication
+Route::post('register', [UserAuthController::class, 'register']);
+Route::post('login', [UserAuthController::class, 'login']);
+Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Reset password
+Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
+Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
+
+// Get user profile (requires authentication)
+Route::get('profile', [UserAuthController::class, 'profile'])->middleware('auth:sanctum');
+
+// Update user profile (requires authentication)
+Route::put('profile', [UserAuthController::class, 'updateProfile'])->middleware('auth:sanctum');
+
+
+
 
 
 // get category list
