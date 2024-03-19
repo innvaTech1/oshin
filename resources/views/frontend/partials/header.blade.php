@@ -1,3 +1,6 @@
+@php
+    $categories = resolve('App\Models\Category')::select('id','name','status')->where('status',true)->get();
+@endphp
 <body class="bg-effect">
     <!-- Loader Start -->
     <div class="fullpage-loader">
@@ -47,7 +50,7 @@
                             </button>
                             <a href="{{ route('home') }}" class="web-logo nav-logo">
                                 <img src="{{ asset('assets/images/logo/3.png') }}" class="img-fluid blur-up lazyload"
-                                    alt="logo" style="height: 80px">
+                                    alt="logo">
                             </a>
 
                             <div class="search-full">
@@ -144,22 +147,21 @@
 
                                 <div class="option-list">
                                     <ul>
-                                        {{-- <li>
-                                            <a href="javascript:void(0)" class="header-icon user-icon search-icon">
-                                                <i class="iconly-Profile icli"></i>
+                                        <li>
+                                            <a href="{{ route('compare') }}" class="header-icon">
+                                                <small class="badge-number compare-count">
+                                                    {{ count(session('compare') ?? []) }}
+                                                </small>
+                                                <i class="iconly-Swap icli"></i>
                                             </a>
-                                        </li> --}}
+                                        </li>
+
+                                        <li class="d-none">
+                                        </li>
 
                                         <li>
                                             <a href="javascript:void(0)" class="header-icon search-box search-icon">
                                                 <i class="iconly-Search icli"></i>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="compare.html" class="header-icon">
-                                                <small class="badge-number">2</small>
-                                                <i class="iconly-Swap icli"></i>
                                             </a>
                                         </li>
 
@@ -193,7 +195,7 @@
                                                 <div class="button-group">
                                                     <a href="{{ route('cart.index') }}"
                                                         class="btn btn-sm cart-button">View Cart</a>
-                                                    <a id="cart-checkout" href="{{ route('home') }}"
+                                                    <a id="cart-checkout" href="{{ route('checkout') }}"
                                                         class="btn btn-sm cart-button theme-bg-color
                                                     text-white">Checkout</a>
                                                 </div>
@@ -258,13 +260,15 @@
                                 </div>
 
                                 <ul class="category-list">
-                                    <li class="onhover-category-list">
-                                        <a href="javascript:void(0)" class="category-name">
-                                            <img src="../assets/svg/1/vegetable.svg" alt="">
-                                            <h6>Fashion</h6>
-                                            <i class="fa-solid fa-angle-right"></i>
-                                        </a>
-                                    </li>
+                                    @foreach ($categories as $category)
+                                        <li class="onhover-category-list">
+                                            <a href="{{ route('products', ['category' => $category->id]) }}"
+                                                class="category-name">
+                                                <h6>{{ $category->name }}</h6>
+                                                <i class="fa-solid fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>

@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Modules\GlobalSetting\app\Models\Setting;
+
+use Cache, Session;
+use Modules\Currency\app\Models\MultiCurrency;
+
 
 class AppServiceProvider extends ServiceProvider {
     /**
@@ -31,14 +34,17 @@ class AppServiceProvider extends ServiceProvider {
                 $setting = (object) $setting;
 
                 return $setting;
-            } );
-            config( ['broadcasting.connections.pusher.key' => $setting->pusher_app_key] );
-            config( ['broadcasting.connections.pusher.secret' => $setting->pusher_app_secret] );
-            config( ['broadcasting.connections.pusher.app_id' => $setting->pusher_app_id] );
-            config( ['broadcasting.connections.pusher.options.cluster' => $setting->pusher_app_cluster] );
-            config( ['broadcasting.connections.pusher.options.host' => 'api-' . $setting->pusher_app_cluster . '.pusher.com'] );
-        } catch ( \Throwable $th ) {
-            $setting = null;
+
+            });
+
+            config(['broadcasting.connections.pusher.key' => $setting->pusher_app_key]);
+            config(['broadcasting.connections.pusher.secret' => $setting->pusher_app_secret]);
+            config(['broadcasting.connections.pusher.app_id' => $setting->pusher_app_id]);
+            config(['broadcasting.connections.pusher.options.cluster' => $setting->pusher_app_cluster]);
+            config(['broadcasting.connections.pusher.options.host' => 'api-' . $setting->pusher_app_cluster . '.pusher.com']);
+
+        } catch (\Throwable $th) {
+          $setting = null;
         }
 
         View::composer( '*', function ( $view ) {
@@ -47,6 +53,7 @@ class AppServiceProvider extends ServiceProvider {
 
             $view->with( 'setting', $setting );
         } );
+
 
         /**
          * Register custom blade directives

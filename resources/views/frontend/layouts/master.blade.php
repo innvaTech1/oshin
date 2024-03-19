@@ -1,3 +1,32 @@
+@php
+    if (auth()->check()) {
+        $cart_items = resolve('App\Models\Cart')::with('product:id,product_name,thumbnail_image_source,slug')
+            ->where('user_id', Auth::id())
+            ->select('id', 'product_id', 'user_id', 'quantity')
+            ->get();
+    } elseif (!auth()->check() && session()->has('cart')) {
+        $cart_items = [];
+        foreach (session()->get('cart') as $productID => $session_item) {
+            $product = resolve('App\Models\Product')::select('id', 'product_name', 'slug', 'thumbnail_image_source')
+                ->where('id', $productID)
+                ->first();
+            $cart_item_with_product = [
+                'quantity' => $session_item['quantity'],
+                'id' => $session_item['cart_id'],
+                'product' => [
+                    'product_name' => $product->product_name,
+                    'thumbnail_image_source' => $product->thumbnail_image_source,
+                    'slug' => $product->slug,
+                    'id' => $productID,
+                ],
+            ];
+            $cart_items[] = $cart_item_with_product;
+        }
+    } else {
+        $cart_items = [];
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,11 +68,12 @@
 
     <style>
         :root {
-            --theme-color: #084FB1;
+            --theme-color: #D2AE71 !important;
             /* Updated color */
             --theme-color-rgb: 8, 79, 177;
             /* Updated RGB values */
-            --theme-color1: #084FB1;
+            --theme-color1: #D2AE71 !important;
+            ;
             /* Updated color */
             --theme-color1-rgb: 8, 79, 177;
             /* Updated RGB values */
@@ -52,20 +82,19 @@
 
 
         .btn-2-animation::after {
-            background: #045ddb !important;
+            background: #f1c882 !important;
         }
     </style>
 </head>
 
-@include('frontend.layouts.partials.header')
+@include('frontend.partials.header')
 
 @yield('content')
 
-@include('frontend.layouts.partials.footer')
+@include('frontend.partials.footer')
 
 <script>
-    $($(document).ready(function() {
-        // Echo the PHP variable into a JavaScript variable
+    $(document).ready(function() {
         var cart_items = <?php echo json_encode($cart_items); ?>;
 
         if (cart_items.length === 0) {
@@ -77,22 +106,19 @@
         } else {
             $('#cart-count').text(cart_items.length);
             $.each(cart_items, function(index, item) {
-                // Create the HTML structure for each item
-                var listItem = $('<li>\
+                var listItem = $('<li data-cart-delete="' + item.id + '">\
                                     <div class="drop-cart">\
-                                        <a class="drop-image" data-slug="' + item.product
-                    .slug + '">\
-                                            <img src="<?php echo asset("' + item.product.thumbnail_image_source + '"); ?>" class="blur-up lazyload cart-product-image" alt="image">\
+                                        <a class="drop-image" data-slug="' + item.product.slug + '">\
+                                            <img src="' + item.product.thumbnail_image_source + '" class="blur-up lazyload cart-product-image" alt="image">\
                                         </a>\
                                         <div class="drop-contain">\
                                             <a data-slug="' + item.product.slug + '">\
-                                                <h5 class="cart-product-title">' + item.product.product_name +
-                    '</h5>\
+                                                <h5 class="cart-product-title">' + item.product.product_name + '</h5>\
                                             </a>\
                                             <h6 class="cart-product-price"><span>' + item.quantity +
                     ' x</span> $100</h6>\
                                             <button class="close-button cart-product-close-btn" style="margin-top:-10px;" data-cart-id="' +
-                    item.id + '">\
+                    item.id + '" data-prod-id="' + item.product.id + '">\
                                                 <i class="fa-solid fa-xmark"></i>\
                                             </button>\
                                         </div>\
@@ -101,35 +127,49 @@
 
                 // Append the HTML structure to the list
                 $('ul.cart-list').append(listItem);
-
-                listItem.find('.cart-product-close-btn').on('click', function() {
-                    var $button = $(this); // Store reference to $(this)
-
-                    var cart_id = $button.attr('data-cart-id');
-                    $.ajax({
-                        url: '/cart/delete/' + cart_id,
-                        type: 'DELETE',
-                        success: function(response) {
-                            toastr.success(response.message);
-                            $button.closest('li').remove();
-                            // Update the cart count
-                            var cartCount = $('#cart-count').text();
-                            if (cartCount > 0) {
-                                $('#cart-count').text(cartCount - 1);
-                            }
-                        },
-                        error: function(error) {
-                            toastr.error(error.responseJSON.message);
-                        }
-                    });
-                });
-
-                listItem.find('a').on('click', function() {
-                    var item_slug = $(this).attr('data-slug');
-                    window.location.href = '/product/' + item_slug
-                });
-
             });
         }
-    }))
+
+        // Attach click event listener to the delete button
+        $('ul.cart-list').on('click', '.cart-product-close-btn', function() {
+            var button = $(this);
+            var cart_id = button.attr('data-cart-id');
+            var prod_id = button.attr('data-prod-id');
+
+            // Send AJAX request to delete item from cart
+            $.ajax({
+                url: '/cart/delete/' + cart_id,
+                type: 'DELETE',
+                success: function(response) {
+                    toastr.success(response.message);
+                    button.closest('li').remove();
+                    $('tr[data-cart-delete="' + cart_id + '"]').remove();
+                    $('input[data-qty-reset="' + prod_id + '"]').val(0);
+                    var divToRemove = $('div[data-removed-from-cart="' + cart_id + '"]');
+                    divToRemove.find('input[name="quantity"]').val(0);
+                    divToRemove.removeClass('open');
+
+                    $('.compare-btn-add-cart[data-product-id="' + prod_id + '"]').attr(
+                        'disabled', false).text('Add to cart');
+
+
+                    // Update the cart count
+                    var cartCount = $('#cart-count').text();
+                    if (cartCount > 0) {
+                        $('#cart-count').text(cartCount - 1);
+                    }
+                },
+                error: function(error) {
+                    toastr.error(error.responseJSON.message);
+                }
+            });
+        });
+
+
+        // Redirect to product page when the product name is clicked
+        $('ul.cart-list').find('a').on('click', function() {
+            var item_slug = $(this).attr('data-slug');
+            window.location.href = '/product/' + item_slug;
+        });
+    });
 </script>

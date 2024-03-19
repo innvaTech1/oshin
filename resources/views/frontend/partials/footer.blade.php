@@ -394,8 +394,7 @@
                         <li class="list-1">
                             <div class="deal-offer-contain">
                                 <a href="javascript:void(0)" class="deal-image">
-                                    <img src="{{ asset('uploads/13.jpg') }}" class="blur-up lazyload"
-                                        alt="">
+                                    <img src="{{ asset('uploads/13.jpg') }}" class="blur-up lazyload" alt="">
                                 </a>
 
                                 <a href="javascript:void(0)" class="deal-contain">
@@ -408,8 +407,7 @@
                         <li class="list-2">
                             <div class="deal-offer-contain">
                                 <a href="javascript:void(0)" class="deal-image">
-                                    <img src="{{ asset('uploads/4.jpg') }}" class="blur-up lazyload"
-                                        alt="">
+                                    <img src="{{ asset('uploads/4.jpg') }}" class="blur-up lazyload" alt="">
                                 </a>
 
                                 <a href="javascript:void(0)" class="deal-contain">
@@ -422,8 +420,7 @@
                         <li class="list-3">
                             <div class="deal-offer-contain">
                                 <a href="javascript:void(0)" class="deal-image">
-                                    <img src="{{ asset('uploads/6.jpg') }}" class="blur-up lazyload"
-                                        alt="">
+                                    <img src="{{ asset('uploads/6.jpg') }}" class="blur-up lazyload" alt="">
                                 </a>
 
                                 <a href="javascript:void(0)" class="deal-contain">
@@ -436,8 +433,7 @@
                         <li class="list-1">
                             <div class="deal-offer-contain">
                                 <a href="javascript:void(0)" class="deal-image">
-                                    <img src="{{ asset('uploads/8.jpg') }}" class="blur-up lazyload"
-                                        alt="">
+                                    <img src="{{ asset('uploads/8.jpg') }}" class="blur-up lazyload" alt="">
                                 </a>
 
                                 <a href="javascript:void(0)" class="deal-contain">
@@ -456,7 +452,7 @@
 <!-- Deal Box Modal End -->
 
 <!-- Cookie Bar Box Start -->
-<div class="cookie-bar-box">
+{{-- <div class="cookie-bar-box">
     <div class="cookie-box">
         <div class="cookie-image">
             <img src="../assets/images/cookie-bar.png" class="blur-up lazyload" alt="">
@@ -472,7 +468,7 @@
         <button class="btn privacy-button">Privacy Policy</button>
         <button class="btn ok-button">OK</button>
     </div>
-</div>
+</div> --}}
 <!-- Cookie Bar Box End -->
 <!-- Tap to top and theme setting button start -->
 <div class="theme-option">
@@ -492,7 +488,7 @@
                             <form class="form-control">
                                 <label for="colorPick" class="form-label mb-0">Theme Color</label>
                                 <input type="color" class="form-control form-control-color" id="colorPick"
-                                    value="#084FB1" title="Choose your color">
+                                    value="#D2AE71" title="Choose your color">
                             </form>
                         </div>
                     </li>
@@ -567,6 +563,30 @@
             });
         })
 
+        //compare
+
+        $(document).on('click', '.add-to-compare', function(e) {
+            e.preventDefault();
+            var _prodId = $(this).data('product-id');
+            var _count = parseInt($('.compare-count').text());
+            console.log(_prodId);
+            $.ajax({
+                url: "/compare", // URL to send the POST request
+                type: "POST",
+                data: {
+                    productId: _prodId
+                },
+                success: function(response) {
+                    toastr.success(response.message);
+                    $('.compare-count').text(_count + 1);
+                },
+                error: function(error) {
+                    toastr.error(error.responseJSON.message);
+                },
+            });
+        })
+
+
     });
 
     // --------------------
@@ -574,7 +594,7 @@
     // --------------------
 
     // Create the HTML structure for the new product
-    function addProductToCartRealTime(cart_id, quantity, product_name, image, slug) {
+    function addProductToCartRealTime(cart_id, quantity, prod_id, product_name, image, slug) {
         var existingItem = $("ul.cart-list").find('[data-cart-id="' + cart_id + '"]');
 
         // Check if an item with the same cart_id already exists
@@ -582,7 +602,7 @@
             existingItem.closest('.drop-cart').find('.cart-product-price span').text(quantity + ' x ')
         } else {
             var listItem = $(
-                '<li>\
+                '<li data-cart-delete="' + cart_id + '">\
                 <div class="drop-cart">\
                     <a href="javascript:void(0)" class="drop-image" data-slug="' + slug + '">\
                         <img src="<?php echo asset("' + image + '"); ?>" class="blur-up lazyload cart-product-image" alt="image">\
@@ -593,19 +613,19 @@
                         </a>\
                         <h6 class="cart-product-price"><span>' + quantity + ' x </span>$100</h6>\
                         <button class="close-button cart-product-close-btn" style="margin-top:-10px;" data-cart-id="' +
-                cart_id + '">\
-                            <i class="fa-solid fa-xmark"></i>\
-                        </button>\
+                cart_id + '" data-prod-id="' + prod_id + '">\
+                                                <i class="fa-solid fa-xmark"></i>\
+                                            </button>\
                     </div>\
                 </div>\
             </li>'
             );
+            // Append the HTML structure to the list
+            $("ul.cart-list").append(listItem);
 
             var cartCount = $("#cart-count").text();
             $("#cart-count").text(+cartCount + 1);
 
-            // Append the HTML structure to the list
-            $("ul.cart-list").append(listItem);
         }
     }
 
@@ -623,17 +643,24 @@
                 if (type == "ADD") {
                     toastr.success(response.message);
                     addProductToCartRealTime(
-                        response.cart.id,
+                        response.cartID,
                         response.cart.quantity,
+                        response.product.id,
                         response.product.product_name,
                         response.product.thumbnail_image_source,
                         response.product.slug
                     );
-                    if (view == 'view-more') {
-                        var element = $('[data-slug="' + response.product.slug +
-                            '"]');
-                        element.find('.qty-input').val(+response.cart.quantity);
-                    }
+
+                    var element = $('[data-slug="' + response.product.slug + '"]');
+                    element.find('.qty-input').val(+response.cart.quantity);
+
+                    $('.btn-add-cart[data-product-id="' + response.product.id + '"]').closest(
+                        '.add-to-cart-box').find('div[data-removed-from-cart]').attr(
+                        'data-removed-from-cart', response.cart.id);
+
+                    $('.compare-btn-add-cart[data-product-id="' + response.product.id + '"]').attr(
+                        'disabled', true).text('Added to cart');
+
                 } else if (type == "INC") {
                     toastr.success(response.message);
                     var element = $('.cart-list').find('[data-slug="' + response.product.slug + '"]');
@@ -642,17 +669,25 @@
                         ' x ');
                 } else {
                     toastr.error(response.message);
-                    var element = $('.cart-list').find('[data-slug="' + response.product.slug + '"]');
-                    var quantityEl = element.parent('.drop-cart').find('.cart-product-price span').text(
-                        response.cart.quantity +
-                        ' x ');
+                    if (response.hasOwnProperty('cart')) {
+                        var element = $('.cart-list').find('[data-slug="' + response.product.slug + '"]');
+                        var quantityEl = element.parent('.drop-cart').find('.cart-product-price span').text(
+                            response.cart.quantity +
+                            ' x ');
+                    } else {
+                        $('li[data-cart-delete="' + response.cartID + '"]').remove();
+                        var cartCount = $("#cart-count").text();
+                        $("#cart-count").text(+cartCount - 1);
+                    }
                 }
             },
             error: function(error) {
                 // Handle error response, e.g., show an error message
                 toastr.error(error.responseJSON.message);
-                if (error.status == 401) {
-                    location.href = "login";
+                if (error && error.status === 401) {
+                    // Extract base URL
+                    var baseURL = window.location.protocol + "//" + window.location.host;
+                    window.location.href = baseURL + "/login";
                 }
             },
         });
