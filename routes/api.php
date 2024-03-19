@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\ProductCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,10 @@ Route::get('/categories', [ProductCategoryController::class,'index']);
 Route::get('/categories/{slug}', [ProductCategoryController::class,'show']);
 // get products by category
 Route::get('/categories/{slug}/products', [ProductCategoryController::class,'products']);
+
+// get brands lists
+Route::get('/brands', [BrandController::class,'brands']);
+// get products by brand
+Route::get('/brands/{slug}/products', [BrandController::class,'products']);
+
+
