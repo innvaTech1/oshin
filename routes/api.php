@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\ProductCategoryController;
+use App\Http\Controllers\API\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,12 @@ Route::get('/brands', [BrandController::class,'brands']);
 Route::get('/brands/{slug}/products', [BrandController::class,'products']);
 
 
+
+// get wishlists
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/wishlists', [WishlistController::class,'index']);
+    // add wishlist
+    Route::post('/wishlists', [WishlistController::class,'store']);
+    // remove wishlist
+    Route::delete('/wishlists/{id}', [WishlistController::class,'destroy']);
+});
