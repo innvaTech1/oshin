@@ -294,7 +294,7 @@
     </div>
 
     <!-- Modal for adding wholesale prices -->
-    <div class="modal fade" id="add-price-wholesale" tabindex="-1" role="dialog"
+    {{-- <div class="modal fade" id="add-price-wholesale" tabindex="-1" role="dialog"
         aria-labelledby="addPriceWholesaleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -335,7 +335,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+    {{-- wholesale modal container --}}
+
+    <div class="wholesale-modal-container"></div>
 
 
     {{-- Media Modal Show --}}
@@ -468,21 +472,23 @@
                 // Create a variation table HTML
                 var variationTableHTML =
                     '<table class="table"><thead><tr><th>Variant</th><th>Selling Price</th><th>SKU</th></tr></thead><tbody>';
-
+                let modal = '';
                 // Generate rows for each combination of selected values
                 selectedValues = cartesian(selectedValues);
                 $.each(selectedValues, function(index, combination) {
-
-
                     // Create a row for the combination
                     variationTableHTML += '<tr>';
                     variationTableHTML += '<td>' + combination.join('-') +
-                        `<input type="hidden" name="variant" value="${combination.join('-')}">` +
+                        `<input type="hidden" name="variant[]" value="${combination.join('-')}">` +
                         '</td>'; // Variant column (joined if there are multiple)
                     variationTableHTML +=
-                        '<td class="d-flex justify-content-between align-items-center"><input type="text" class="form-control selling-price" name="selling_price[]" placeholder="Enter Selling Price"> <button type="button" class="btn btn-primary ml-2" title="" data-toggle="modal" data-target="#add-price-wholesale"><i class="fas fa-plus"></i></button></td>'; // Selling Price column with input
+                        `<td class="d-flex justify-content-between align-items-center"><input type="text" class="form-control selling-price" name="selling_price[]" placeholder="Enter Selling Price"> <button type="button" class="btn btn-primary ml-2" title="" data-toggle="modal" data-target="#add-price-wholesale-${combination.join('-')}"><i class="fas fa-plus"></i></button>
+                            <ul class="price-wholesale-list"></ul>
+                            </td>
+                        
+                        `; // Selling Price column with input
                     variationTableHTML +=
-                        '<td><input type="text" class="form-control sku" name="sku[]" placeholder="Enter SKU"></td>'; // SKU column with input
+                        `<td><input type="text" class="form-control sku" name="sku[]" placeholder="Enter SKU" value="${combination.join('-')}"></td>`; // SKU column with input
                     variationTableHTML += '</tr>';
                 });
 
@@ -490,6 +496,8 @@
 
                 // Append the variation table HTML to a container
                 $('.attributes_variatiions').html(variationTableHTML);
+                $('.wholesale-modal-container').html(modal)
+
             });
         })
 
@@ -515,7 +523,8 @@
     <script>
         $(document).ready(function() {
             // Add Price Field button click event
-            $('#addFields').click(function() {
+            $('.addFields').click(function() {
+                const variant = $(this).data('variant');
                 var fieldHTML = `
                     <div class="form-row">
                         <div class="form-group col-md-4">
@@ -532,10 +541,10 @@
                         </div>
                     </div>`;
 
-                $('#wholesalePriceFields').append(fieldHTML);
+                $(`#wholesalePriceFields-${variant}`).append(fieldHTML);
             });
 
-            $(document).on('click', '.removeField', function () {
+            $(document).on('click', '.removeField', function() {
                 $(this).closest('.form-row').remove();
             });
 
