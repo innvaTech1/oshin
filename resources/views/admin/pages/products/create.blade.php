@@ -339,7 +339,11 @@
 
     {{-- wholesale modal container --}}
 
-    <div class="wholesale-modal-container"></div>
+    <div class="wholesale-modal-container">
+        <div class="modal fade" id="add-price-wholesale" tabindex="-1" role="dialog"
+            aria-labelledby="addPriceWholesaleModalLabel" aria-hidden="true">
+        </div>
+    </div>
 
 
     {{-- Media Modal Show --}}
@@ -482,10 +486,18 @@
                         `<input type="hidden" name="variant[]" value="${combination.join('-')}">` +
                         '</td>'; // Variant column (joined if there are multiple)
                     variationTableHTML +=
-                        `<td class="d-flex justify-content-between align-items-center"><input type="text" class="form-control selling-price" name="selling_price[]" placeholder="Enter Selling Price"> <button type="button" class="btn btn-primary ml-2" title="" data-toggle="modal" data-target="#add-price-wholesale-${combination.join('-')}"><i class="fas fa-plus"></i></button>
-                            <ul class="price-wholesale-list"></ul>
+                        `<td >
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <input type="text" class="form-control selling-price w-75" name="selling_price[]" placeholder="Enter Selling Price">
+                                  
+                                    <button type="button" class="btn btn-primary ml-2 price-wholesale-modal w-25" title="" data-toggle="modal" data-target="#add-price-wholesale-${combination.join('-')}"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <ul class="price-wholesale-list">
+                                    <small class="d-block" style="">Range:(10-20) $100</small>
+                                    <small class="d-block" style="line-height:.2">Range:(30-40) $800</small>
+                                </ul>  
                             </td>
-                        
+
                         `; // Selling Price column with input
                     variationTableHTML +=
                         `<td><input type="text" class="form-control sku" name="sku[]" placeholder="Enter SKU" value="${combination.join('-')}"></td>`; // SKU column with input
@@ -499,6 +511,34 @@
                 $('.wholesale-modal-container').html(modal)
 
             });
+
+            $(document).on('click', '.price-wholesale-modal', function() {
+                let id = $(this).data('target');
+                id = id.replace("#", '')
+                $('.wholesale-modal-container > modal').html('');
+                let list = $(this).parent().siblings('.price-wholesale-list');
+                let priceRange = [];
+                list.find("small").each(function() {
+                    // Get the text content of the <li> element
+                    var liText = $(this).text();
+
+                    // Split the text based on parentheses and space
+                    var parts = liText.split(/[\(\)\s]+/);
+
+                    // Extract the values
+                    var range = parts[1].split("-");
+                    var min = range[0];
+                    var max = range[1];
+                    var price = parts[2];
+
+                    priceRange.push({
+                        min: min,
+                        max: max,
+                        price: price
+                    });
+                });
+                console.log(priceRange);
+            })
         })
 
         function cartesian(arrays) {

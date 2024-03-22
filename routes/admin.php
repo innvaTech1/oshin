@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UnitTypeController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::put('profile-update', 'profile_update')->name('profile-update');
             Route::put('update-password', 'update_password')->name('update-password');
         });
+
+
+        // sellers routes
+        Route::resource('sellers', SellerController::class);
 
         Route::get('role/assign', [RolesController::class, 'assignRoleView'])->name('role.assign');
         Route::post('role/assign/{id}', [RolesController::class, 'getAdminRoles'])->name('role.assign.admin');
