@@ -515,7 +515,7 @@
             $(document).on('click', '.price-wholesale-modal', function() {
                 let id = $(this).data('target');
                 id = id.replace("#", '')
-                $('.wholesale-modal-container > modal').html('');
+                $('.wholesale-modal-container > .modal').html('');
                 let list = $(this).parent().siblings('.price-wholesale-list');
                 let priceRange = [];
                 list.find("small").each(function() {
@@ -537,7 +537,19 @@
                         price: price
                     });
                 });
-                console.log(priceRange);
+                $.ajax({
+                    url: "{{ route('admin.wholesale.modal') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        priceRange: priceRange,
+                        id: id
+                    },
+                    success: function(response) {
+                        $('.wholesale-modal-container > .modal').html(response);
+                        $('.wholesale-modal-container > .modal').modal('show')
+                    }
+                })
             })
         })
 

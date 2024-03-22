@@ -10,6 +10,7 @@ use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\UnitTypeService;
 use App\Traits\LogActivity;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -56,5 +57,9 @@ class ProductController extends Controller
             // Toastr::error(__('common.error_message'));
             return back();
         }
+    }
+    public function productWholesaleModal(Request $request){
+        $data = $request->except('_token');
+        return view('admin.pages.products.components.wholesale_price_modal',compact('data'))->render();
     }
 }

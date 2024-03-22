@@ -43,7 +43,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::get('/{id}/clone', [ProductController::class, 'clone'])->name('clone');
             Route::get('bulk-product-upload', [ProductController::class, 'bulk_product_upload_page'])->name('bulk_product_upload_page');
             Route::post('bulk-product-upload-store', [ProductController::class, 'bulk_product_store'])->name('bulk_product_store');
-
+            Route::post('wholesale-modal', [ProductController::class, 'productWholesaleModal'])->name('wholesale.modal');
             // Categories Routes
 
             Route::resource('category', CategoryController::class);
