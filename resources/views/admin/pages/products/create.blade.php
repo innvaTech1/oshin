@@ -338,12 +338,15 @@
     </div> --}}
 
     {{-- wholesale modal container --}}
-
-    <div class="wholesale-modal-container">
+    
         <div class="modal fade" id="add-price-wholesale" tabindex="-1" role="dialog"
             aria-labelledby="addPriceWholesaleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content  wholesale-modal-container">
+                </div>
+            </div>
         </div>
-    </div>
+    
 
 
     {{-- Media Modal Show --}}
@@ -476,7 +479,6 @@
                 // Create a variation table HTML
                 var variationTableHTML =
                     '<table class="table"><thead><tr><th>Variant</th><th>Selling Price</th><th>SKU</th></tr></thead><tbody>';
-                let modal = '';
                 // Generate rows for each combination of selected values
                 selectedValues = cartesian(selectedValues);
                 $.each(selectedValues, function(index, combination) {
@@ -508,14 +510,12 @@
 
                 // Append the variation table HTML to a container
                 $('.attributes_variatiions').html(variationTableHTML);
-                $('.wholesale-modal-container').html(modal)
-
             });
 
             $(document).on('click', '.price-wholesale-modal', function() {
+                $('.preloader_area').removeClass('.d-none');
                 let id = $(this).data('target');
                 id = id.replace("#", '')
-                $('.wholesale-modal-container > .modal').html('');
                 let list = $(this).parent().siblings('.price-wholesale-list');
                 let priceRange = [];
                 list.find("small").each(function() {
@@ -546,8 +546,10 @@
                         id: id
                     },
                     success: function(response) {
-                        $('.wholesale-modal-container > .modal').html(response);
-                        $('.wholesale-modal-container > .modal').modal('show')
+                        console.log(response)
+                        $('.wholesale-modal-container').html(response);
+                        $('#add-price-wholesale').modal('show')
+                        $('.preloader_area').addClass('.d-none');
                     }
                 })
             })

@@ -91,7 +91,7 @@ class AttributeController extends Controller
      */
     public function destroy(string $id)
     {
-
+        
     }
 
     /**
