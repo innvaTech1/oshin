@@ -104,4 +104,9 @@ class CategoryService
     {
         return $this->categoryRepository->firstCategory();
     }
+
+    public function getCategoryById($id)
+    {
+        return $this->categoryRepository->getCategoryById($id);
+    }
 }

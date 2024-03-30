@@ -129,4 +129,17 @@ class CategoryController extends Controller
         }
 
     }
+
+    public function getSubCategory($id){
+        try {
+            $category = $this->categoryService->getCategoryById($id);
+            return response()->json($category);
+        } catch (Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => $e,
+            ]);
+        }
+    }
 }

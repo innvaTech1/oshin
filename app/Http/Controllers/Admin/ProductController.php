@@ -30,7 +30,7 @@ class ProductController extends Controller
         $data['units'] = $unitTypeService->getActiveAll();
         $data['attributes'] = $attributeService->getActiveAll();
         // $data['products'] = $this->productService->allbyPaginate();
-        $data['categories'] = $categoryService->getAll();
+        $data['categories'] = $categoryService->category();
         $data['brands'] = $brandService->getAll();
 
         return view('admin.pages.products.create', compact('data'));
@@ -40,6 +40,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
+            dd($request->all());
             $this->productService->create($request->except("_token"));
             DB::commit();
             // Toastr::success(__('common.added_successfully'), __('common.success'));

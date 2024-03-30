@@ -47,6 +47,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             // Categories Routes
 
             Route::resource('category', CategoryController::class);
+            Route::get('get-sub-category/{id}',[CategoryController::class, 'getSubCategory'])->name('get.sub-category');
             Route::get('bulk-category-upload', [CategoryController::class, 'bulk_category_upload_page'])->name('bulk_category_upload_page');
             Route::get('download-category-list-csv', [CategoryController::class, 'csv_category_download'])->name('csv_category_download');
             Route::post('bulk-category-upload-store', [CategoryController::class, 'bulk_category_store'])->name('bulk_category_store');

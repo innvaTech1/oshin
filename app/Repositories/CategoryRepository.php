@@ -15,10 +15,10 @@ class CategoryRepository
     }
     public function category()
     {
-        return Category::with(['brands', 'groups.categories', 'subCategories'])->where("parent_id", 0)->paginate(10);
+        return Category::with(['subCategories'])->where("parent_id", 0)->paginate(10);
     }public function activeCategory()
     {
-        return Category::with(['brands', 'groups.categories', 'subCategories'])->where("parent_id", 0)->where('status', 1)->paginate(20);
+        return Category::with(['subCategories'])->where("parent_id", 0)->where('status', 1)->paginate(20);
     }
     public function getData()
     {
@@ -132,5 +132,10 @@ class CategoryRepository
     public function checkParentId($id)
     {
         return Category::where('parent_id', $id)->get();
+    }
+
+    public function getCategoryById($id)
+    {
+        return Category::with('subCategories')->where('id', $id)->first();
     }
 }
