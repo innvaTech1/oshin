@@ -20,6 +20,10 @@ class CategoryRepository
     {
         return Category::with(['subCategories'])->where("parent_id", 0)->where('status', 1)->paginate(20);
     }
+    public function getAllCategory()
+    {
+        return Category::with(['subCategories'])->where("parent_id", 0)->where('status', 1)->get();
+    }
     public function getData()
     {
         return Category::with(['subCategories', 'categoryImage'])->latest();

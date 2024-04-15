@@ -28,7 +28,7 @@
                         <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-none"><i
                                     class="fas fa-search"></i></a></li>
                         @if (Module::isEnabled('Language') && Route::has('set-language'))
-                            <form id="setLanguageHeader" action="{{ route('set-language') }}">
+                            {{-- <form id="setLanguageHeader" action="{{ route('set-language') }}">
                                 <select class="bg-transparent form-control-sm border-light text-light" name="code">
                                     @forelse (allLanguages() as $language)
                                         <option class="text-dark" value="{{ $language->code }}"
@@ -41,7 +41,7 @@
                                         </option>
                                     @endforelse
                                 </select>
-                            </form>
+                            </form> --}}
                         @endif
                     </ul>
                 </div>

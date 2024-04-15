@@ -532,7 +532,7 @@
                                     <li>
                                         <img src="{{ asset($item->product->thumbnail_image_source) }}"
                                             class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                        <h4>{{ $item->product->product_name }} <span>X {{ $item->quantity }}</span></h4>
+                                        <h4>{{ $item->product->name }} <span>X {{ $item->quantity }}</span></h4>
                                         <h4 class="price">$32.34</h4>
                                     </li>
                                 @endforeach

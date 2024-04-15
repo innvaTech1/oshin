@@ -16,6 +16,10 @@ class BrandService
     {
         return $this->brandRepository->getAll();
     }
+    public function getActiveBrands()
+    {
+        return $this->brandRepository->getActiveBrands();
+    }
 
     public function save($data)
     {

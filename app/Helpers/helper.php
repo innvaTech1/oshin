@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Modules\Currency\app\Models\MultiCurrency;
 use Modules\GlobalSetting\app\Models\Setting;
 use Modules\Language\app\Models\Language;
 
@@ -53,37 +54,48 @@ function admin_lang()
 }
 
 // calculate currency
-function currency($price)
+function currency($price = '')
 {
     // currency information will be loaded by Session value
 
-    // $currency_icon = Session::get('currency_icon');
-    // $currency_code = Session::get('currency_code');
-    // $currency_rate = Session::get('currency_rate');
-    // $currency_position = Session::get('currency_position');
+    $currencySetting = Cache::rememberForever('currency', function () {
+        $siteCurrencyId = Session::get('site_currency');
 
-    $currency_icon = '$';
-    $currency_code = 'USD';
-    $currency_rate = '1.00';
-    $currency_position = 'before_price';
+        $currency = MultiCurrency::when($siteCurrencyId, function ($query) use ($siteCurrencyId) {
+            return $query->where('id', $siteCurrencyId);
+        })->when(!$siteCurrencyId, function ($query) {
+            return $query->where('is_default', 'yes');
+        })->first();
 
-    $price = $price * $currency_rate;
-    $price = number_format($price, 2, '.', ',');
+        return $currency;
+    });
 
-    if ($currency_position == 'before_price') {
-        $price = $currency_icon . $price;
-    } elseif ($currency_position == 'before_price_with_space') {
-        $price = $currency_icon . ' ' . $price;
-    } elseif ($currency_position == 'after_price') {
-        $price = $price . $currency_icon;
-    } elseif ($currency_position == 'after_price_with_space') {
-        $price = $price . ' ' . $currency_icon;
+    $currency_icon = $currencySetting->currency_icon;
+    $currency_code = $currencySetting->currency_code;
+    $currency_rate = $currencySetting->currency_rate;
+    $currency_position = $currencySetting->currency_position;
+    if ($price) {
+        $price = $price * $currency_rate;
+        $price = number_format($price, 2, '.', ',');
+
+        if ($currency_position == 'before_price') {
+            $price = $currency_icon . $price;
+        } elseif ($currency_position == 'before_price_with_space') {
+            $price = $currency_icon . ' ' . $price;
+        } elseif ($currency_position == 'after_price') {
+            $price = $price . $currency_icon;
+        } elseif ($currency_position == 'after_price_with_space') {
+            $price = $price . ' ' . $currency_icon;
+        } else {
+            $price = $currency_icon . $price;
+        }
+
+        return $price;
     } else {
-        $price = $currency_icon . $price;
+        return $currency_icon;
     }
-
-    return $price;
 }
+
 
 // calculate currency
 

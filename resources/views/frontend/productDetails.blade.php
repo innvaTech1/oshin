@@ -328,8 +328,8 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>Type</td>
-                                                        <td>{{ $product->product_type == 1 ? 'Single Product' : 'Variant Product' }}
-                                                        </td>
+                                                        {{-- <td>{{ $product->product_type == 1 ? 'Single Product' : 'Variant Product' }}
+                                                        </td> --}}
                                                     </tr>
                                                     <tr>
                                                         <td>Category</td>

@@ -51,4 +51,10 @@
         var slug = name.toLowerCase().replace(/^-+|-+$/g, '').replace(/\s/g, '-').replace(/\-\-+/g, '-');
         $(target).val(slug);
     }
+    function convertToSlug(Text) {
+        return Text
+            .toLowerCase()
+            .replace(/[^\w ]+/g, '')
+            .replace(/ +/g, '-');
+    }
 </script>

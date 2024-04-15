@@ -12,6 +12,10 @@ class BrandRepository
     {
         return Brand::latest()->get();
     }
+    public function getActiveBrands()
+    {
+        return Brand::where('status', 1)->latest()->get();
+    }
     public function getAllCount()
     {
         return Brand::query()->count();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\RedirectType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Services\AttributeService;
@@ -10,11 +11,14 @@ use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\UnitTypeService;
 use App\Traits\LogActivity;
+use App\Traits\RedirectHelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\Language\app\Traits\GenerateTranslationTrait;
 
 class ProductController extends Controller
 {
+    use GenerateTranslationTrait, RedirectHelperTrait;
     protected $productService;
     public function __construct(ProductService $productService)
     {
@@ -30,9 +34,8 @@ class ProductController extends Controller
         $data['units'] = $unitTypeService->getActiveAll();
         $data['attributes'] = $attributeService->getActiveAll();
         // $data['products'] = $this->productService->allbyPaginate();
-        $data['categories'] = $categoryService->category();
-        $data['brands'] = $brandService->getAll();
-
+        $data['categories'] = $categoryService->getAllCategory();
+        $data['brands'] = $brandService->getActiveBrands();
         return view('admin.pages.products.create', compact('data'));
     }
 
@@ -40,18 +43,13 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            dd($request->all());
-            $this->productService->create($request->except("_token"));
+            $this->productService->create($request);
             DB::commit();
-            // Toastr::success(__('common.added_successfully'), __('common.success'));
+            
             LogActivity::successLog('product upload successful.');
-            if ($request->request_from == 'main_product_form') {
-                return redirect()->route('product.index');
-            } elseif ($request->request_from == 'seller_product_form') {
-                return redirect()->route('seller.product.index');
-            } elseif ($request->request_from == 'inhouse_product_form') {
-                return redirect()->route('admin.my-product.index');
-            }
+
+            return $this->redirectWithMessage(RedirectType::CREATE->value, 'admin.product.index');
+
         } catch (\Exception $e) {
             DB::rollBack();
             LogActivity::errorLog($e->getMessage());

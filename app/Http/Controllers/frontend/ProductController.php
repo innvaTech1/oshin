@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function show(string $slug)
     {
         $product = Product::with(['brand', 'images'])
-            ->select('id', 'product_name', 'slug', 'user_id', 'product_type', 'brand_id', 'thumbnail_image_source', 'model_number', 'shipping_type', 'shipping_cost', 'discount_type', 'discount', 'tax_type', 'tax', 'description', 'specification', 'min_sell_price', 'max_sell_price', 'total_sale', 'max_order_qty', 'meta_title', 'meta_description', 'meta_image', 'is_approved', 'status', 'avg_rating')
+            ->select('id', 'product_name', 'slug', 'user_id', 'brand_id', 'thumbnail_image_source', 'model_number', 'shipping_type', 'shipping_cost', 'discount_type', 'discount', 'tax_type', 'tax', 'description', 'specification', 'min_sell_price', 'max_sell_price', 'total_sale', 'max_order_qty', 'meta_title', 'meta_description', 'meta_image', 'is_approved', 'status', 'avg_rating')
             ->where('is_approved', true)
             ->where('slug', $slug)
             ->first();

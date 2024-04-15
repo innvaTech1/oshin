@@ -603,7 +603,7 @@
                                             @endfor
                                         </ul>
                                         <a href="{{ route('productDetails', $product->slug) }}">
-                                            <h5 class="name">{{ $product->product_name }}</h5>
+                                            <h5 class="name">{{ $product->name }}</h5>
                                         </a>
                                         <h5 class="price theme-color">$70.21<del>$65.25</del></h5>
                                         {{-- quicek view details starts --}}
@@ -611,7 +611,6 @@
                                         <input type="hidden" class="product-description"
                                             value="{{ $product->description }}">
                                         <input type="hidden" class="product-brand" value="{{ $product->brand->name }}">
-                                        <input type="hidden" class="product-type" value="{{ $product->product_type }}">
                                         <input type="hidden" class="product-slug" value="{{ $product->slug }}">
                                         {{-- quicek view details end --}}
                                         <div class="price-qty">

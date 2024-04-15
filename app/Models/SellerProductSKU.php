@@ -61,7 +61,7 @@ class SellerProductSKU extends Model
 
     public function cartProducts()
     {
-        return $this->hasMany(Cart::class, 'product_id', 'id')->where('product_type', 'product');
+        return $this->hasMany(Cart::class, 'product_id', 'id')->where('product');
     }
 
     public function wholeSalePrices()

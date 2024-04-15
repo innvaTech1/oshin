@@ -24,16 +24,16 @@
                                         </div>
                                         <div class="form-group col-12">
                                             <label class="d-block">{{ __('Type') }}</label>
-                                            <div class="form-check form-check-inline">
+                                            {{-- <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Single" value="single"
                                                     name="product_type" checked>
                                                 <label class="form-check-label" for="Single">{{ __('Single') }}</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
+                                            </div> --}}
+                                            {{-- <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" id="Variant"
                                                     value="variant" name="product_type">
                                                 <label class="form-check-label" for="Variant">{{ __('Variant') }}</label>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="form-group col-6">
                                             <label>{{ __('Product Name') }} <span class="text-danger">*</span></label>
@@ -372,25 +372,6 @@
                 $(this).parent().parent().remove();
             });
 
-            $('[name="product_type"]').on('change', function() {
-                if ($(this).val() == 'single') {
-                    $('.product-single').removeClass('d-none');
-                    $('.for-variant').addClass('d-none')
-
-                    // disabled all input select tag inside for variant class
-                    $('.for-variant input, .for-variant select').prop('disabled', true);
-
-                    // enable all input select tag inside .product-single class
-                    $('.product-single input, .product-single select').prop('disabled', false);
-                } else {
-                    $('.product-single').addClass('d-none');
-                    $('.for-variant').removeClass('d-none');
-                    $('.for-variant input, .for-variant select').prop('disabled', false);
-
-                    // disable all input select tag inside .product-single class
-                    $('.product-single input, .product-single select').prop('disabled', true);
-                }
-            });
 
             $('[name="is_physical"]').on('change', function() {
                 if ($(this).is(':checked')) {

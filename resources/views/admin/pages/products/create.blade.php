@@ -1,279 +1,550 @@
 @extends('admin.master_layout')
 @section('title')
-    <title>{{ __('Products') }}</title>
+    <title>{{ __('Product List') }}</title>
 @endsection
+
+@push('css')
+    <style>
+        .tagify.form-control.tags {
+            height: auto;
+        }
+
+        tag {
+            padding-top: 5px;
+        }
+    </style>
+@endpush
 @section('admin-content')
-    <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>{{ __('Create Product') }}</h1>
+                <h1>{{ __('Product List') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
-                    <div class="breadcrumb-item">{{ __('Create Product') }}</div>
+                    <div class="breadcrumb-item active"><a
+                            href="{{ route('admin.product.index') }}">{{ __('Product List') }}</a>
+                    </div>
+                    <div class="breadcrumb-item">{{ __('Add Product') }}</div>
                 </div>
             </div>
-
             <div class="section-body">
-                <a href="{{ route('admin.product.index') }}" class="btn btn-primary"><i class="fas fa-list"></i>
-                    {{ __('Products') }}</a>
-                <div class="row mt-4">
+                <div class="mt-4 row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h4>{{ __('Add Product') }}</h4>
+                                <div>
+                                    <a href="{{ route('admin.product.index') }}" class="btn btn-primary"><i
+                                            class="fa fa-arrow-left"></i>{{ __('Back') }}</a>
+                                </div>
+                            </div>
                             <div class="card-body">
-                                <form action="{{ route('admin.product.store') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('admin.product.store') }}" method="post">
                                     @csrf
                                     <div class="row">
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Thumbnail Image Preview') }}</label>
-                                            <div>
-                                                <img id="preview-img" class="admin-img"
-                                                    src="{{ asset('uploads/website-images/preview.png') }}" alt="">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Thumnail Image') }} <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control-file" name="thumb_image"
-                                                onchange="previewThumnailImage(event)">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Banner Image') }} <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control-file" name="banner_image">
-                                        </div>
-
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Short Name') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="short_name" class="form-control" name="short_name"
-                                                value="{{ old('short_name') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Name') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="name" class="form-control" name="name"
-                                                value="{{ old('name') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Slug') }} <span class="text-danger">*</span></label>
-                                            <input type="text" id="slug" class="form-control" name="slug"
-                                                value="{{ old('slug') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Category') }} <span class="text-danger">*</span></label>
-                                            <select name="category" class="form-control select2" id="category">
-                                                <option value="">{{ __('Select Category') }}</option>
-                                                @foreach ($data['categories'] as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Sub Category') }}</label>
-                                            <select name="sub_category" class="form-control select2" id="sub_category">
-                                                <option value="">{{ __('Select Sub Category') }}</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Child Category') }}</label>
-                                            <select name="child_category" class="form-control select2" id="child_category">
-                                                <option value="">{{ __('Select Child Category') }}</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Brand') }} <span class="text-danger">*</span></label>
-                                            <select name="brand" class="form-control select2" id="brand">
-                                                <option value="">{{ __('Select Brand') }}</option>
-                                                @foreach ($data['brands'] as $brand)
-                                                    <option {{ old('brand') == $brand->id ? 'selected' : '' }}
-                                                        value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('SKU') }} </label>
-                                            <input type="text" class="form-control" name="sku">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Price') }} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="price"
-                                                value="{{ old('price') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Offer Price') }}</label>
-                                            <input type="text" class="form-control" name="offer_price"
-                                                value="{{ old('offer_price') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Stock Quantity') }} <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" name="quantity"
-                                                value="{{ old('quantity') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Video Link') }}</label>
-                                            <input type="text" class="form-control" name="video_link"
-                                                value="{{ old('video_link') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Short Description') }} <span
-                                                    class="text-danger">*</span></label>
-                                            <textarea name="short_description" id="" cols="30" rows="10" class="form-control text-area-5">{{ old('short_description') }}</textarea>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Long Description') }} <span class="text-danger">*</span></label>
-                                            <textarea name="long_description" id="" cols="30" rows="10" class="summernote">{{ old('long_description') }}</textarea>
-                                        </div>
-
-
-
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Tags') }}</label>
-                                            <input type="text" class="form-control tags" name="tags"
-                                                value="{{ old('tags') }}">
-                                        </div>
-
-                                        {{-- <div class="form-group col-12">
-                                    <label>{{__('Tax')}} <span class="text-danger">*</span></label>
-                                    <select name="tax" class="form-control">
-                                        <option value="">{{__('Select Tax')}}</option>
-                                        @foreach ($productTaxs as $tax)
-                                            <option {{ old('tax') == $tax->id ? 'selected' : '' }}  value="{{ $tax->id }}">{{ $tax->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Product Return Availabe ?') }} <span
-                                                    class="text-danger">*</span></label>
-                                            <select name="is_return" class="form-control" id="is_return">
-                                                <option value="0">{{ __('No') }}</option>
-                                                <option value="1">{{ __('Yes') }}</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-12 d-none" id="policy_box">
-                                            <label>{{ __('Return Policy') }} <span class="text-danger">*</span></label>
-                                            {{-- <select name="return_policy_id" class="form-control">
-                                        @foreach ($retrunPolicies as $retrunPolicy)
-                                            <option value="{{ $retrunPolicy->id }}">{{ $retrunPolicy->title }}</option>
-                                        @endforeach
-                                    </select> --}}
-                                        </div>
-
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Warranty Available ?') }} <span
-                                                    class="text-danger">*</span></label>
-                                            <select name="is_warranty" class="form-control">
-                                                <option value="1">{{ __('Yes') }}</option>
-                                                <option value="0">{{ __('No') }}</option>
-                                            </select>
-                                        </div>
-
-
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Status') }} <span class="text-danger">*</span></label>
-                                            <select name="status" class="form-control">
-                                                <option value="1">{{ __('Active') }}</option>
-                                                <option value="0">{{ __('Inactive') }}</option>
-                                            </select>
-                                        </div>
-
-
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('SEO Title') }}</label>
-                                            <input type="text" class="form-control" name="seo_title"
-                                                value="{{ old('seo_title') }}">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('SEO Description') }}</label>
-                                            <textarea name="seo_description" id="" cols="30" rows="10" class="form-control text-area-5">{{ old('seo_description') }}</textarea>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label>{{ __('Specifications') }}</label>
-                                            <div>
-                                                <a href="javascript::void()" id="manageSpecificationBox">
-                                                    <input name="is_specification" id="status_toggle" type="checkbox"
-                                                        checked data-toggle="toggle" data-on="Enable" data-off="Disabled"
-                                                        data-onstyle="success" data-offstyle="danger">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-12" id="specification-box">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <label>{{ __('Key') }} <span class="text-danger">*</span></label>
-                                                    {{-- <select name="keys[]" class="form-control">
-                                                @foreach ($specificationKeys as $specificationKey)
-                                                    <option value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>
-                                                @endforeach
-                                            </select> --}}
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <label>{{ __('Specification') }} <span
+                                        <div class="col-md-8 row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="name">{{ __('Name') }}<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="specifications[]">
+                                                    <input type="text" name="name" class="form-control" id="name"
+                                                        required value="{{ old('name') }}">
+                                                    @error('name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <button type="button" class="btn btn-success plus_btn"
-                                                        id="addNewSpecificationRow"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="slug">{{ __('Slug') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" id="slug" name="slug"
+                                                        value="{{ old('slug') }}" placeholder="{{ __('Slug') }}"
+                                                        class="form-control">
+                                                    @error('slug')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="sku">{{ __('SKU') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name="sku" class="form-control" id="sku"
+                                                        required value="{{ old('sku') }}">
+                                                    @error('sku')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="price">{{ __('Price') }} ({{ currency() }})<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" name="price" class="form-control" id="price"
+                                                        required value="{{ old('price') }}">
+                                                    @error('price')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="discount">{{ __('Discount') }}</label>
+                                                    <input type="number" name="discount" class="form-control"
+                                                        id="discount" value="{{ old('discount') }}">
+                                                    @error('discount')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="discount_type">{{ __('Discount Type') }}</label>
+                                                    <select name="discount_type" id="discount_type" class="form-control">
+                                                        <option value="fixed">{{ __('Fixed') }}</option>
+                                                        <option value="percent">{{ __('Percent') }}</option>
+                                                    </select>
+                                                    @error('discount')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="categories">{{ __('Categories') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <select name="categories[]" id="categories" class="form-control select2"
+                                                        multiple>
+                                                        <option value="">{{ __('Select Categories') }}
+                                                        </option>
+                                                        @foreach ($data['categories'] as $cat)
+                                                            <option value="{{ $cat->id }}">
+                                                                {{ $cat->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('categories')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="brand_id">{{ __('Brands') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <select name="brand_id" id="brand_id" class="form-control select2">
+                                                        <option value="">{{ __('Select Brand') }}</option>
+                                                        @foreach ($data['brands'] as $brand)
+                                                            <option value="{{ $brand->id }}">
+                                                                {{ $brand->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('brand_id')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="unit_id">{{ __('Unit Type') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <select name="unit_id" id="unit_id" class="form-control select2">
+                                                        <option value="">{{ __('Select Unit Type') }}
+                                                        </option>
+                                                        @foreach ($data['units'] as $unit)
+                                                            <option value="{{ $unit->id }}">
+                                                                {{ $unit->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('unit_id')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ __('Stock Quantity') }} <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" name="quantity"
+                                                        value="{{ old('quantity') }}">
+                                                    @error('quantity')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ __('Video Link') }}</label>
+                                                    <input type="text" class="form-control" name="video_link"
+                                                        value="{{ old('video_link') }}">
+                                                    @error('video_link')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="short_description">{{ __('Short Description') }} <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="short_description" id="" cols="30" rows="10" class="summernote">{{ old('short_description') }}</textarea>
+                                                    @error('short_description')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="description">{{ __('Description') }} <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="description" id="" cols="30" rows="10" class="summernote">{{ old('description') }}</textarea>
+                                                    @error('description')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label
+                                                        for="additional_information">{{ __('Additional Information') }}</label>
+                                                    <textarea name="additional_information" id="additional_information" cols="30" rows="10"
+                                                        class="summernote">{{ old('additional_information') }}</textarea>
+                                                    @error('additional_information')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-4 row">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="status">{{ __('Status') }}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <select name="status" id="status" class="form-control">
+                                                                <option value="1" @if (old('status') == 1)
+                                                                    selected
+                                                                @endif>
+                                                                    {{ __('Active') }}</option>
+                                                                <option value="0" @if (old('status') == 0)
+                                                                    selected
+                                                                @endif>
+                                                                    {{ __('Inactive') }}</option>
+                                                            </select>
+                                                            @error('status')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
 
 
-                                        <div id="hidden-specification-box" class="d-none">
-                                            <div class="delete-specification-row">
-                                                <div class="row mt-2">
-                                                    <div class="col-md-5">
-                                                        <label>{{ __('Key') }} <span
-                                                                class="text-danger">*</span></label>
-                                                        {{-- <select name="keys[]" class="form-control">
-                                                    @foreach ($specificationKeys as $specificationKey)
-                                                        <option value="{{ $specificationKey->id }}">{{ $specificationKey->key }}</option>
-                                                    @endforeach
-                                                </select> --}}
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Warranty Available ?') }}</label>
+                                                            <select name="is_warranty" class="form-control">
+                                                                <option value="0" @if (old('is_warranty') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_warranty') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_warranty')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <label>{{ __('Specification') }} <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control"
-                                                            name="specifications[]">
+                                                    <div class="col-md-12 d-none warranty_duration">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Warranty Duration') }} </label>
+                                                            <input type="text" name="warranty_duration"
+                                                                class="form-control" disabled />
+                                                            @error('warranty_duration')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button"
-                                                            class="btn btn-danger plus_btn deleteSpeceficationBtn"><i
-                                                                class="fas fa-trash"></i></button>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Product Return Availabe ?') }} </label>
+                                                            <select name="is_returnable" class="form-control"
+                                                                id="is_returnable">
+                                                                <option value="0" @if (old('is_returnable') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_returnable') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_returnable')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Is Featured ?') }} </label>
+                                                            <select name="is_featured" class="form-control"
+                                                                id="is_featured">
+                                                                <option value="0" @if (old('is_featured') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_featured') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_featured')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Show Home Page ?') }} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select name="show_homepage" class="form-control"
+                                                                id="show_homepage">
+                                                                <option value="0" @if (old('show_homepage') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1"@if (old('show_homepage') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('show_homepage')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Is Flash Deal ?') }} </label>
+                                                            <select name="is_flash_deal" class="form-control"
+                                                                id="is_flash_deal">
+                                                                <option value="0" @if (old('is_flash_deal') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_flash_deal') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_flash_deal')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Is Top Selling ?') }} </label>
+                                                            <select name="is_top" class="form-control"
+                                                                id="is_top">
+                                                                <option value="0" @if (old('is_top') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_top') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_top')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Best Seller') }} </label>
+                                                            <select name="is_bestseller" class="form-control"
+                                                                id="is_bestseller">
+                                                                <option value="0" @if (old('is_bestseller') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_bestseller') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_bestseller')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Is New') }} </label>
+                                                            <select name="is_new" class="form-control" id="is_new">
+                                                                <option value="0" @if (old('is_new') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_new') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_new')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Is Verified') }} </label>
+                                                            <select name="is_verified" class="form-control" id="is_verified">
+                                                                <option value="0" @if (old('is_verified') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_verified') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_verified')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Allow Cash On Delivery?') }} </span></label>
+                                                            <select name="is_cod" class="form-control" id="is_cod">
+                                                                <option value="0" @if (old('is_cod') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_cod') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_cod')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Take Pre Order?') }} </span></label>
+                                                            <select name="is_pre_order" class="form-control"
+                                                                id="is_pre_order">
+                                                                <option value="0" @if (old('is_pre_order') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_pre_order') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_pre_order')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 d-none release_date">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Release Date') }} </label>
+                                                            <input type="text" name="release_date"
+                                                                class="form-control datepicker" disabled />
+                                                            @error('release_date')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 d-none max_product">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Max Quantity') }} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" name="max_product"
+                                                                class="form-control" disabled />
+                                                            @error('max_product')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Has Partial Payment?') }} </label>
+                                                            <select name="is_partial" class="form-control"
+                                                                id="is_partial">
+                                                                <option value="0" @if (old('is_partial') == 0)
+                                                                    selected
+                                                                @endif>{{ __('No') }}</option>
+                                                                <option value="1" @if (old('is_partial') == 1)
+                                                                    selected
+                                                                @endif>{{ __('Yes') }}</option>
+                                                            </select>
+                                                            @error('is_partial')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 d-none partial_amount">
+                                                        <div class="form-group">
+                                                            <label>{{ __('Partial Amount') }} <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" name="partial_amount"
+                                                                class="form-control" disabled />
+                                                            @error('partial_amount')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="badge">{{ __('Badge') }}</label>
+                                                            <input type="text" class="form-control inputtags"
+                                                                name="badge">
+                                                            @error('badge')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="tags">{{ __('Tags') }}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control tags"
+                                                                name="tags">
+                                                            @error('tags')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="meta_title">{{ __('Meta Title') }}</label>
+                                                            <input type="text" class="form-control"
+                                                                name="meta_title">
+                                                            @error('meta_title')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="meta_description">{{ __('Meta Description') }}</label>
+                                                            <textarea type="text" class="form-control"
+                                                                name="meta_description" style="height: 80px">{{old('meta_description')}}</textarea>
+                                                            @error('meta_description')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <button class="btn btn-primary">{{ __('Save') }}</button>
+                                        <div class="text-center offset-md-2 col-md-8">
+                                            <x-admin.save-button :text="__('Save')">
+                                            </x-admin.save-button>
                                         </div>
                                     </div>
                                 </form>
@@ -281,121 +552,45 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
+@endsection
 
+@push('js')
     <script>
         (function($) {
             "use strict";
-            var specification = true;
             $(document).ready(function() {
-                $("#name").on("focusout", function(e) {
-                    $("#slug").val(convertToSlug($(this).val()));
-                })
-
-                $("#category").on("change", function() {
-                    var categoryId = $("#category").val();
-                    if (categoryId) {
-                        $.ajax({
-                            type: "get",
-                            url: "{{ route('admin.get.sub-category', '') }}" + "/" +
-                                categoryId,
-                            success: function(response) {
-                                console.log(response);
-                                $("#sub_category").html(response.subCategories);
-                                var response =
-                                    "<option value=''>{{ __('Select Child Category') }}</option>";
-                                $("#child_category").html(response);
-                            },
-                            error: function(err) {
-                                console.log(err);
-
-                            }
-                        })
-                    } else {
-                        var response =
-                            "<option value=''>{{ __('Select Sub Category') }}</option>";
-                        $("#sub_category").html(response);
-                        var response =
-                            "<option value=''>{{ __('Select Child Category') }}</option>";
-                        $("#child_category").html(response);
-                    }
-
-
-                })
-
-                $("#sub_category").on("change", function() {
-                    var SubCategoryId = $("#sub_category").val();
-                    if (SubCategoryId) {
-                        $.ajax({
-                            type: "get",
-                            url: "{{ url('/admin/childcategory-by-subcategory/') }}" + "/" +
-                                SubCategoryId,
-                            success: function(response) {
-                                $("#child_category").html(response.childCategories);
-                            },
-                            error: function(err) {
-                                console.log(err);
-
-                            }
-                        })
-                    } else {
-                        var response =
-                            "<option value=''>{{ __('Select Child Category') }}</option>";
-                        $("#child_category").html(response);
-                    }
-
-                })
-
-                $("#is_return").on('change', function() {
-                    var returnId = $("#is_return").val();
-                    if (returnId == 1) {
-                        $("#policy_box").removeClass('d-none');
-                    } else {
-                        $("#policy_box").addClass('d-none');
-                    }
-
-                })
-
-                $("#addNewSpecificationRow").on('click', function() {
-                    var html = $("#hidden-specification-box").html();
-                    $("#specification-box").append(html);
-                })
-
-                $(document).on('click', '.deleteSpeceficationBtn', function() {
-                    $(this).closest('.delete-specification-row').remove();
+                $('[name="name"]').on('input', function() {
+                    makeSlug('[name="name"]', "[name='slug']");
                 });
-
-
-                $("#manageSpecificationBox").on("click", function() {
-                    if (specification) {
-                        specification = false;
-                        $("#specification-box").addClass('d-none');
-                    } else {
-                        specification = true;
-                        $("#specification-box").removeClass('d-none');
-                    }
-
-
+                $('[name="is_warranty"]').on('change', function() {
+                    var is_warranty = $(this).val();
+                    changeAttr(is_warranty, 'warranty_duration')
                 })
-
+                $('[name="is_partial"]').on('change', function() {
+                    var is_partial = $(this).val();
+                    changeAttr(is_partial, 'partial_amount')
+                })
+                $('[name="is_pre_order"]').on('change', function() {
+                    var is_partial = $(this).val();
+                    changeAttr(is_partial, 'release_date')
+                    changeAttr(is_partial, 'max_product')
+                })
             });
-        })(jQuery);
 
-        function convertToSlug(Text) {
-            return Text
-                .toLowerCase()
-                .replace(/[^\w ]+/g, '')
-                .replace(/ +/g, '-');
-        }
-
-        function previewThumnailImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('preview-img');
-                output.src = reader.result;
+            function changeAttr(val, selectorName) {
+                if (val == 1) {
+                    $(`[name="${selectorName}"]`).attr('required', true);
+                    $(`.${selectorName}`).removeClass('d-none')
+                    $(`[name="${selectorName}"]`).removeAttr('disabled');
+                } else {
+                    $(`[name="${selectorName}"]`).removeAttr('required');
+                    $(`[name="${selectorName}"]`).attr('disabled');
+                    $(`.${selectorName}`).addClass('d-none')
+                }
             }
-            reader.readAsDataURL(event.target.files[0]);
-        };
+        })(jQuery);
     </script>
-@endsection
+@endpush

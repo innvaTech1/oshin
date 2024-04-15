@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "product_name", "sku", "slug", 'user_id', "product_type", "unit_type_id", "brand_id", "thumbnail_image_source", "barcode_type", "model_number", "shipping_type", "shipping_cost", "discount_type", "discount", "tax_type", "tax", "pdf", "video_provider", "video_link", "description", 'specification', "minimum_order_qty", 'min_sell_price', 'max_sell_price', 'total_sale', "max_order_qty", "meta_title", "meta_description", "meta_image", 'is_physical', 'is_approved', 'status', 'display_in_details', 'requested_by', "created_by", "updated_by", 'stock_manage', 'avg_rating', 'recent_view',
-    ];
+    protected $fillable = ['product_name', 'slug', 'thumb_image', 'user_id', 'brand_id', 'unit_id', 'qty', 'short_description', 'long_description', 'additional_information', 'video_link', 'sku', 'batch', 'meta_title', 'meta_description', 'price', 'discount', 'discount_type', 'offer_start_date', 'offer_end_date', 'is_cod', 'is_verified', 'is_wholesale', 'is_pre_order', 'release_date', 'max_product', 'is_partial', 'partial_amount', 'delivery_location', 'badge', 'tags', 'is_return', 'return_policy_id', 'is_warranty', 'warranty_duration', 'show_homepage', 'is_undefine', 'is_featured', 'is_new', 'is_top', 'is_bestseller', 'is_flash_deal', 'buyone_getone', 'status', 'viewed', 'created_by', 'updated_by', 'deleted_by'];
 
     // public static function boot()
     // {
@@ -50,7 +47,7 @@ class Product extends Model
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_products');
+        return $this->belongsToMany(Category::class, 'category_products', 'product_id', 'category_id');
     }
     private function createSlug($name, $model = null)
     {
@@ -73,10 +70,7 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, "brand_id")->withDefault();
     }
-    public function images()
-    {
-        return $this->hasMany(ProductGalaryImage::class, 'product_id');
-    }
+   
     public function variations()
     {
         return $this->hasMany(ProductVariations::class);
@@ -87,7 +81,6 @@ class Product extends Model
     }
     public function activeSkus()
     {
-
         return $this->hasMany(ProductSku::class)->where('status', 1);
     }
     public function tags()
@@ -135,7 +128,7 @@ class Product extends Model
     public function getCartAttribute()
     {
         if (auth()->check() && $this->relationLoaded('cart')) {
-                return  $this->getRelation('cart')->where('user_id', auth()->id());
+            return $this->getRelation('cart')->where('user_id', auth()->id());
         }
         return [];
     }

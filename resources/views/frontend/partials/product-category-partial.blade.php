@@ -14,7 +14,7 @@
                             <input type="hidden" class="product-id" value="{{ $product->id }}">
                             <input type="hidden" class="product-description" value="{{ $product->description }}">
                             <input type="hidden" class="product-brand" value="{{ $product->brand->name }}">
-                            <input type="hidden" class="product-type" value="{{ $product->product_type }}">
+                            {{-- <input type="hidden" class="product-type" value="{{ $product->product_type }}"> --}}
                             <input type="hidden" class="product-slug" value="{{ $product->slug }}">
                             {{-- quicek view details end --}}
 

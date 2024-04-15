@@ -29,7 +29,7 @@ class GlobalSettingInfoSeeder extends Seeder
             'link_text' => 'More Info',
             'btn_text' => 'Yes',
             'message' => 'This website uses essential cookies to ensure its proper operation and tracking cookies to understand how you interact with it. The latter will be set only upon approval.',
-            'copyright_text' => 'this is copyright text',
+            'copyright_text' => date('Y').' All rights reserved',
             'recaptcha_site_key' => '6LeQCfwjAAAoKX9eg',
             'recaptcha_secret_key' => '6LeQCfwjAMsR',
             'recaptcha_status' => 'inactive',

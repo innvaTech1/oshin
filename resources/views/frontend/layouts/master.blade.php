@@ -7,14 +7,14 @@
     } elseif (!auth()->check() && session()->has('cart')) {
         $cart_items = [];
         foreach (session()->get('cart') as $productID => $session_item) {
-            $product = resolve('App\Models\Product')::select('id', 'product_name', 'slug', 'thumbnail_image_source')
+            $product = resolve('App\Models\Product')::select('id', 'name', 'slug', 'thumbnail_image_source')
                 ->where('id', $productID)
                 ->first();
             $cart_item_with_product = [
                 'quantity' => $session_item['quantity'],
                 'id' => $session_item['cart_id'],
                 'product' => [
-                    'product_name' => $product->product_name,
+                    'product_name' => $product->name,
                     'thumbnail_image_source' => $product->thumbnail_image_source,
                     'slug' => $product->slug,
                     'id' => $productID,

@@ -22,6 +22,10 @@ class CategoryService
     {
         return $this->categoryRepository->category();
     }
+    public function getAllCategory()
+    {
+        return $this->categoryRepository->getAllCategory();
+    }
 
     public function subcategory($id)
     {

@@ -15,7 +15,7 @@ class ProductCategoryController extends Controller
     private function filter($brandsquery, $categoriesquery, $ratingsquery)
     {
         $query = Product::with('brand', 'cart', 'wishlists')
-            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
+            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
             ->where('status', true);
 
         if ($brandsquery) {
@@ -50,7 +50,7 @@ class ProductCategoryController extends Controller
         $brands = Brand::select('id', 'name', 'slug', 'status')->where('status', true)->get();
 
         $products = Product::with('brand', 'cart', 'wishlists')
-            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
+            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
             ->where('is_approved', true)
             // ->inRandomOrder()
             ->paginate($this->totalItemsInAPage);
@@ -71,7 +71,7 @@ class ProductCategoryController extends Controller
             return $this->filter($brandsquery, $categoriesquery, $ratingsquery);
         } else {
             $query = Product::with('brand', 'cart', 'wishlists')
-                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'product_type', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
+                ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
                 ->where('status', true);
             $products = $query->inRandomOrder()->paginate($this->totalItemsInAPage);
             $returnHTML = view('frontend.partials.product-category-partial', compact('products'))->render();

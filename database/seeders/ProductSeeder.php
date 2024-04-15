@@ -14,15 +14,14 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         // Array of brand IDs to choose from
-        $brandIds = [1, 2, 3, 4,5,6];
+        $brandIds = [1, 2, 3, 4, 5, 6];
 
         // Loop to create 10 random products
         for ($i = 0; $i < 20; $i++) {
             Product::create([
-                'product_name' => 'Product ' . ($i + 2),
+                'name' => 'Product ' . ($i + 2),
                 'slug' => 'product-' . ($i + 2),
                 'user_id' => 1, // Assuming the user ID
-                'product_type' => rand(1, 2),
                 'unit_type_id' => rand(1, 10), // Assuming unit type IDs exist
                 'brand_id' => $brandIds[array_rand($brandIds)],
                 'thumbnail_image_source' => 'uploads/' . (($i % 10) + 1) . '.jpg', // Assuming thumbnail images exist

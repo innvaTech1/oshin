@@ -42,7 +42,7 @@
                                         @foreach ($products as $product)
                                             <td class="product_row_{{ $product->id }}">
                                                 <a class="text-title" href="{{ route('productDetails', $product->slug) }}">
-                                                    {{ $product->product_name }}
+                                                    {{ $product->name }}
                                                 </a>
                                             </td>
                                         @endforeach
