@@ -146,6 +146,12 @@ class CategoryRepository
         return Category::where('slug', $slug)->first();
     }
 
+    public function getProductByCategory(string $slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        return $category->products;
+    }
+
     public function getCategoryById($id)
     {
         return Category::with('subCategories')->where('id', $id)->first();

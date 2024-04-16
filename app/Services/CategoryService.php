@@ -94,6 +94,11 @@ class CategoryService
         return $this->categoryRepository->findBySlug($slug);
     }
 
+    public function getProductByCategory($slug)
+    {
+        return $this->categoryRepository->getProductByCategory($slug);
+    }
+
     public function csvUploadCategory($data)
     {
         return $this->categoryRepository->csvUploadCategory($data);

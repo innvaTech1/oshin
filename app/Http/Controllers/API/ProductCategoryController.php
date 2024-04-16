@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
@@ -40,12 +41,11 @@ class ProductCategoryController extends Controller
 
     public function products($slug)
     {
-        $category = Category::where('slug', $slug)->first();
-        $products = $category->products;
-
-        return response()->json([
-            'data' => $products,
-            'msg' => 'success'
-        ], 200);
+        $products = $this->categoryService->getProductByCategory($slug);
+        if (count($products) > 0) {
+            return responseSuccess(ProductResource::collection($products));
+        } else {
+            return responseFail('Products not found', 404);
+        }
     }
 }
