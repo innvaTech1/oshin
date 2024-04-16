@@ -62,7 +62,7 @@ Route::get('/products/homepage', [ProductController::class, 'homepageProducts'])
 Route::get('/products/{slug}', [ProductController::class, 'show']);
 
 // get wishlists
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::get('/wishlists', [WishlistController::class, 'index']);
     // add wishlist
     Route::post('/wishlists', [WishlistController::class, 'store']);
