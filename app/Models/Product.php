@@ -132,4 +132,8 @@ class Product extends Model
         }
         return [];
     }
+    public function orders()
+    {
+        return $this->hasMany(OrderDetails::class, 'product_id', 'id');
+    }
 }

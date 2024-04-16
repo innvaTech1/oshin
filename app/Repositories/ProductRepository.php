@@ -16,7 +16,7 @@ class ProductRepository
     {
         $user = $user = auth('admin')->user()->roles[0]->name;
         if ($user == 'Super Admin' || $user == 'admin' || $user == 'staff') {
-            return Product::with('brand')->where('is_approved', 1)->latest();
+            return Product::with('brand')->latest();
         } else {
             return Product::with('brand')->where('created_by', $user->id)->latest();
         }
@@ -89,6 +89,7 @@ class ProductRepository
             'release_date' => isset($data["release_date"]) ? $data["release_date"] : null,
             'max_product' => isset($data["max_product"]) ? $data["max_product"] : 1,
             'badge' => $data["badge"],
+            'created_by' => auth('admin')->user()->id,
         ]);
         
         $tags = [];

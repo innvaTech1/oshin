@@ -16,7 +16,8 @@ class CategoryRepository
     public function category()
     {
         return Category::with(['subCategories'])->where("parent_id", 0)->paginate(10);
-    }public function activeCategory()
+    }
+    public function activeCategory()
     {
         return Category::with(['subCategories'])->where("parent_id", 0)->where('status', 1)->paginate(20);
     }
@@ -121,10 +122,12 @@ class CategoryRepository
     public function delete($id)
     {
         $category = Category::find($id);
-        if (count($category->products) > 0 || count($category->subCategories) > 0
+        if (
+            count($category->products) > 0 || count($category->subCategories) > 0
             || count($category->newUserZoneCategories) > 0 || count($category->newUserZoneCouponCategories) > 0 ||
             count($category->MenuElements) > 0 || count($category->MenuRightPanel) > 0 || count($category->Silders) > 0 || count($category->headerCategoryPanel) > 0 ||
-            count($category->homepageCustomCategories) > 0) {
+            count($category->homepageCustomCategories) > 0
+        ) {
             return "not_possible";
         } else {
             if ($category->categoryImage->image) {
@@ -136,6 +139,11 @@ class CategoryRepository
     public function checkParentId($id)
     {
         return Category::where('parent_id', $id)->get();
+    }
+
+    public function findBySlug($slug)
+    {
+        return Category::where('slug', $slug)->first();
     }
 
     public function getCategoryById($id)

@@ -1,6 +1,6 @@
 @extends('admin.master_layout')
 @section('title')
-    <title>{{ __('Product List') }}</title>
+    <title>{{ __('Add Product') }}</title>
 @endsection
 
 @push('css')
@@ -18,12 +18,12 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>{{ __('Product List') }}</h1>
+                <h1>{{ __('Add Product') }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
                     <div class="breadcrumb-item active"><a
-                            href="{{ route('admin.product.index') }}">{{ __('Product List') }}</a>
+                            href="{{ route('admin.product.index') }}">{{ __('Add Product') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('Add Product') }}</div>
                 </div>

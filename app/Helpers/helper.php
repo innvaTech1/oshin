@@ -20,7 +20,6 @@ function file_upload($request_file, $old_file, $file_path)
         if (File::exists(public_path($old_file))) {
             unlink(public_path($old_file));
         }
-
     }
 
     return $file_name;
@@ -142,5 +141,30 @@ if (!function_exists('productSlug')) {
     function productSlug($slug)
     {
         return str_replace(' ', '-', $slug);
+    }
+}
+
+// response with success message
+
+if (!function_exists("responseSuccess")) {
+    function responseSuccess($data = [], $message = 'success', $status = 200)
+    {
+        return response()->json([
+            'data' => $data,
+            'msg' => $message,
+            'status' => $status,
+        ]);
+    }
+}
+
+// response with fail message
+
+if (!function_exists("responseFail")) {
+    function responseFail($message = 'fail', $status = 400)
+    {
+        return response()->json([
+            'msg' => $message,
+            'status' => $status,
+        ]);
     }
 }

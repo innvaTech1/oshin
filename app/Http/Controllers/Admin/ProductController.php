@@ -26,7 +26,8 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = $this->productService->all();
+        $products = $this->productService->all()->paginate(50);
+        
         return view('admin.pages.products.index', compact('products'));
     }
     public function create(CategoryService $categoryService, UnitTypeService $unitTypeService, BrandService $brandService, AttributeService $attributeService, )
