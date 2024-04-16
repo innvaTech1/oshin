@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\LiveChat\app\Models\Message;
 use Modules\Order\app\Models\Order;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -78,6 +79,19 @@ class User extends Authenticatable
                 session()->forget('cart');
             }
         }
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [
+            'email' => $this->email,
+            'name' => $this->name
+        ];
     }
 
     public function messagesSent()

@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'refresh', 'logout']]);
+    }
+
     /**
      * Get the authenticated user's profile.
      *
@@ -34,11 +41,11 @@ class UserAuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Revoke the user's token
-        $request->user()->tokens()->delete();
-
-        // Return success response
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        Auth::guard('api')->logout();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully logged out',
+        ]);
     }
     /**
      * Handle user registration.
@@ -49,28 +56,35 @@ class UserAuthController extends Controller
     public function register(Request $request)
     {
         // Validate incoming request data
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'phone' => 'nullable|unique:users,phone',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Create new user
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'message' => $validator->errors()], 422);
+        }
+
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Generate an API token for the newly registered user
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        // Return token and user details
+        $token = Auth::guard('api')->login($user);
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'status' => 'success',
+            'message' => 'User created successfully',
             'user' => $user,
-        ], 201);
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
+        ]);
     }
     /**
      * Handle user login.
@@ -81,37 +95,44 @@ class UserAuthController extends Controller
      */
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
         // Attempt to authenticate the user
-        if (Auth::attempt($request->only('email', 'password'))) {
-            // If authentication succeeds, generate an API token
-            $user = Auth::user();
-            $token = $user->createToken('auth_token')->plainTextToken;
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|exists:users,email',
+            'password' => 'required|string',
+        ]);
 
-            // Return token and user details
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user,
-            ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'message' => $validator->errors()], 422);
         }
 
-        // If authentication fails, throw an exception
-        throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
+        $credentials = $request->only('email', 'password');
+
+        $token = Auth::guard('api')->attempt($credentials);
+        if (!$token) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $user = Auth::guard('api')->user();
+        return response()->json([
+            'status' => 'success',
+            'user' => $user,
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
         ]);
     }
-/**
- * Handle forgot password request.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return \Illuminate\Http\JsonResponse
- * @throws \Illuminate\Validation\ValidationException
- */
+    /**
+     * Handle forgot password request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function forgotPassword(Request $request)
     {
         // Validate incoming request data
@@ -179,18 +200,40 @@ class UserAuthController extends Controller
         $user = $request->user();
 
         // Validate incoming request data
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|unique:users,phone,' . $user->id,
         ]);
 
-        // Update user details
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'message' => $validator->errors()], 422);
+        }
 
-        // Return success response
-        return response()->json(['message' => 'Profile updated successfully']);
+        // Update user details
+        $user->update(['name' => $request->name, 'phone' => $request->phone]);
+
+        // Return updated user details
+        return response()->json(['user' => $user], 200);
     }
 
+
+    /**
+     * Refresh user token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function refresh(Request $request)
+
+    {
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::guard('api')->user(),
+            'authorisation' => [
+                'token' => Auth::guard('api')->refresh(),
+                'type' => 'bearer',
+            ]
+        ]);
+    }
 }

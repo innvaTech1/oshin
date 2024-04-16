@@ -27,7 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Authentication
 Route::post('register', [UserAuthController::class, 'register']);
 Route::post('login', [UserAuthController::class, 'login']);
-Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('logout', [UserAuthController::class, 'logout']);
+Route::post('refresh', [UserAuthController::class, 'refresh']);
+
 
 // Reset password
 Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
