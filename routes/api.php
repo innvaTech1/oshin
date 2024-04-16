@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\ProductCategoryController;
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\WishlistController;
 use Illuminate\Http\Request;
@@ -50,6 +51,13 @@ Route::get('/brands', [BrandController::class, 'brands']);
 Route::get('/brands/{slug}', [BrandController::class, 'show']);
 // get products by brand
 Route::get('/brands/{slug}/products', [BrandController::class, 'products']);
+
+// get products
+Route::get('/products', [ProductController::class, 'products']);
+Route::get('/products/featured', [ProductController::class, 'featuredProducts']);
+Route::get('/products/best-seller', [ProductController::class, 'bestSellerProducts']);
+Route::get('/products/homepage', [ProductController::class, 'homepageProducts']);
+Route::get('/products/{slug}', [ProductController::class, 'show']);
 
 // get wishlists
 Route::middleware('auth:sanctum')->group(function () {

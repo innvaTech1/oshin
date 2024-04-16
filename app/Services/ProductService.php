@@ -16,6 +16,15 @@ class ProductService
     {
         return $this->productRepository->getAll();
     }
+
+    public function allActiveProducts()
+    {
+        return $this->productRepository->allActiveProducts();
+    }
+    public function findBySlug($slug)
+    {
+        return $this->productRepository->findBySlug($slug);
+    }
     public function allbyPaginate()
     {
         return $this->productRepository->allbyPaginate();

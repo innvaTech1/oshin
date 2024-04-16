@@ -21,6 +21,16 @@ class ProductRepository
             return Product::with('brand')->where('created_by', $user->id)->latest();
         }
     }
+
+    public function allActiveProducts()
+    {
+        return Product::where('status', 1)->where('is_approved', 1)->latest();
+    }
+    public function findBySlug($slug)
+    {
+        return Product::where('slug', $slug)->first();
+    }
+
     public function getProduct()
     {
         $all_columns = Schema::getColumnListing('products');
@@ -91,7 +101,7 @@ class ProductRepository
             'badge' => $data["badge"],
             'created_by' => auth('admin')->user()->id,
         ]);
-        
+
         $tags = [];
         if (isset($data['tags'])) {
             $tags = json_decode($data['tags']);
