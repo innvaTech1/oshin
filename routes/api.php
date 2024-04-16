@@ -35,11 +35,6 @@ Route::post('refresh', [UserAuthController::class, 'refresh']);
 Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
 Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
 
-// Get user profile (requires authentication)
-Route::get('profile', [UserAuthController::class, 'profile'])->middleware('auth:sanctum');
-
-// Update user profile (requires authentication)
-Route::put('profile', [UserAuthController::class, 'updateProfile'])->middleware('auth:sanctum');
 
 // get category list
 Route::get('/categories', [ProductCategoryController::class, 'index']);
@@ -80,4 +75,11 @@ Route::middleware('auth:api')->group(function () {
 
     // Delete Address
     Route::delete('addresses/{id}', [AddressController::class, 'deleteAddress']);
+
+
+    // Get user profile (requires authentication)
+    Route::get('profile', [UserAuthController::class, 'profile']);
+
+    // Update user profile (requires authentication)
+    Route::put('profile', [UserAuthController::class, 'updateProfile']);
 });

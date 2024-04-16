@@ -30,8 +30,10 @@ class UserAuthController extends Controller
         // Retrieve the authenticated user
         $user = $request->user();
 
-        // Return user details
-        return response()->json(['user' => $user], 200);
+        if (!$user) {
+            return responseFail('User not found', 404);
+        }
+        return responseSuccess($user, 'User profile', 200);
     }
     /**
      * Handle user logout.
@@ -199,6 +201,9 @@ class UserAuthController extends Controller
         // Retrieve the authenticated user
         $user = $request->user();
 
+        if (!$user) {
+            return responseFail('User not found', 404);
+        }
         // Validate incoming request data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -213,7 +218,7 @@ class UserAuthController extends Controller
         $user->update(['name' => $request->name, 'phone' => $request->phone]);
 
         // Return updated user details
-        return response()->json(['user' => $user], 200);
+        return responseSuccess($user, 'User profile updated', 200);
     }
 
 
