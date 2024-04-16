@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Modules\Media\app\Models\Media;
 
 class Product extends Model
 {
@@ -70,7 +71,22 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, "brand_id")->withDefault();
     }
-   
+    public function categoriesList()
+    {
+        return $this->belongsToMany(Category::class, 'category_products', 'product_id', 'category_id');
+    }
+    public function getActualPriceAttribute()
+    {
+        if ($this->discount_type == 'percentage') {
+            return $this->price - ($this->price * $this->discount / 100);
+        } else {
+            return $this->price - $this->discount;
+        }
+    }
+   public function thumbnail()
+    {
+        return $this->hasOne(Media::class, 'id', 'thumbnail_image_source');
+    }
     public function variations()
     {
         return $this->hasMany(ProductVariations::class);

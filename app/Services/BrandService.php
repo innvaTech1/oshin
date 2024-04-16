@@ -20,6 +20,15 @@ class BrandService
     {
         return $this->brandRepository->getActiveBrands();
     }
+    public function findBySlug($slug)
+    {
+        return $this->brandRepository->findBySlug($slug);
+    }
+
+    public function getProductByBrand($slug)
+    {
+        return $this->brandRepository->getProductByBrand($slug);
+    }
 
     public function save($data)
     {

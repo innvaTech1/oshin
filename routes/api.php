@@ -47,6 +47,7 @@ Route::get('/categories/{slug}/products', [ProductCategoryController::class, 'pr
 
 // get brands lists
 Route::get('/brands', [BrandController::class, 'brands']);
+Route::get('/brands/{slug}', [BrandController::class, 'show']);
 // get products by brand
 Route::get('/brands/{slug}/products', [BrandController::class, 'products']);
 
@@ -61,13 +62,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Create Address
     Route::post('addresses', [AddressController::class, 'createAddress']);
 
-// Get Addresses
+    // Get Addresses
     Route::get('addresses', [AddressController::class, 'getAddresses']);
 
-// Update Address
+    // Update Address
     Route::put('addresses/{id}', [AddressController::class, 'updateAddress']);
 
-// Delete Address
+    // Delete Address
     Route::delete('addresses/{id}', [AddressController::class, 'deleteAddress']);
-
 });

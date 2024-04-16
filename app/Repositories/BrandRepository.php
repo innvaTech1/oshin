@@ -92,6 +92,11 @@ class BrandRepository
     {
         return Brand::where('slug', $slug)->first();
     }
+    public function getProductByBrand($slug)
+    {
+        $brand = Brand::where('slug', $slug)->first();
+        return $brand->products;
+    }
     public function csvUploadBrand($data)
     {
         Excel::import(new BrandImport, $data['file']->store('temp'));
