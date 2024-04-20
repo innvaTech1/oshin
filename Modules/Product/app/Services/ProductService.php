@@ -2,13 +2,16 @@
 
 namespace Modules\Product\app\Services;
 
-use Illuminate\Database\Eloquent\Collection;
-use Modules\Language\app\Enums\TranslationModels;
-use Modules\Language\app\Traits\GenerateTranslationTrait;
-use Modules\Product\app\Models\AttributeValue;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Product\app\Models\Product;
 use Modules\Product\app\Models\Variant;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Modules\Product\app\Models\VariantOption;
+use Modules\Product\app\Models\AttributeValue;
+use Modules\Language\app\Enums\TranslationModels;
+use Modules\Language\app\Traits\GenerateTranslationTrait;
 
 class ProductService
 {
@@ -31,7 +34,7 @@ class ProductService
 
     public function getProduct($id): ?Product
     {
-        return $this->product->where('id',$id)->first();
+        return $this->product->where('id', $id)->first();
     }
     public function storeProduct($request)
     {
@@ -136,8 +139,9 @@ class ProductService
         return $product;
     }
 
-    public function getActiveProductById($id){
-        return $this->product->where('id',$id)->where('status',1)->first();
+    public function getActiveProductById($id)
+    {
+        return $this->product->where('id', $id)->where('status', 1)->first();
     }
 
     public function deleteProduct($product)
@@ -310,7 +314,6 @@ class ProductService
                     ]);
                 }
             }
-
         }
     }
 
@@ -337,6 +340,132 @@ class ProductService
         $variant->options()->delete();
 
         return $variant->delete();
+    }
 
+    public function bulkImport($request)
+    {
+
+        $file = $request->file('file');
+
+        // read xlxs / xls / csv file
+        $data = Excel::toCollection(null, $file);
+
+        $data = $data->first()->slice(0);
+        //  remove the first row
+        $data = $data->slice(1);
+
+
+        //  loop through the data and store the products
+        $unsavedData = [];
+        foreach ($data as $row) {
+
+            $findProduct = $this->product->where(function ($q) use ($row) {
+                $q->where('slug', trim($row[10]))
+                    ->orWhere('sku', trim($row[12]));
+            })->first();
+
+            if ($findProduct) {
+                $unsavedData[] = $row;
+                continue;
+            }
+
+            // make tags
+            $lists = explode(',', trim($row[11]));
+            $lists = array_map('trim', $lists);
+            $tags = [];
+            foreach ($lists as $tag) {
+                $tags[] = ['value' => $tag];
+            }
+
+            $product = $this->product->create([
+                'slug' => trim($row[10])  != null ? trim($row[10]) :  Str::slug(trim($row[1])),
+                'unit_id' => trim($row[2]),
+                'brand_id' => trim($row[3]),
+                'discount' => trim($row[5]),
+                'discount_type' => trim($row[6]),
+                'sku' => trim($row[12]),
+                'status' => 1, // 'active'
+                'price' => trim($row[13]),
+                'created_by' => auth('admin')->user()->id,
+            ]);
+            // store product categories
+            $cats = explode(',', trim($row[4]));
+            $cats = array_map('trim', $cats);
+
+            $product->categories()->sync($cats);
+
+
+            // make a request object using the row data
+            $request = new Request();
+            $request->replace([
+                'name' => trim($row[1]),
+                'slug' => trim($row[10])  != null ? trim($row[10]) :  Str::slug(trim($row[1])),
+                'unit_id' => trim($row[2]),
+                'brand_id' => trim($row[3]),
+                'discount' => trim($row[5]),
+                'discount_type' => trim($row[6]),
+                'short_description' => trim($row[7]),
+                'description' => trim($row[8]),
+                'additional_information' => trim($row[9]),
+                'tags' => json_encode($tags),
+                'sku' => trim($row[12]),
+                'price' => trim($row[13]),
+                'meta_title' => trim($row[14]),
+                'meta_description' => trim($row[15]),
+            ]);
+
+
+
+
+            $this->generateTranslations(
+                TranslationModels::Product,
+                $product,
+                'product_id',
+                $request,
+            );
+        }
+    }
+
+
+
+    // make an excel file and download it
+
+    public function downloadUnsavedData($unsavedData)
+    {
+        $fileName = 'unsaved_products_' . time() . '.xlsx';
+        $filePath = public_path('excel_files/' . $fileName);
+
+        $data = collect($unsavedData);
+
+        $data->prepend([
+            'id',
+            'Name',
+            'Unit',
+            'Brand',
+            'Category',
+            'Discount',
+            'Discount Type',
+            'Short Description',
+            'Description',
+            'Additional Information',
+            'Slug',
+            'Tags',
+            'SKU',
+            'Price',
+            'Meta Title',
+            'Meta Description',
+        ]);
+
+        $file = Excel::store(function ($excel) use ($data) {
+            $excel->sheet('Sheet1', function ($sheet) use ($data) {
+                $sheet->fromArray($data);
+            });
+        }, $filePath);
+
+        // store the file to $filePath
+
+
+
+        return response()->download($filePath);
     }
 }

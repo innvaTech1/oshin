@@ -405,4 +405,25 @@ class ProductController extends Controller
     {
         return view('product::products.import');
     }
+
+    // store bulk product
+    public function bulkImportStore(Request $request)
+    {
+        
+
+        
+        $this->productService->bulkImport($request);
+        try {
+            return back()->with([
+                'messege' => 'Products imported successfully',
+                'alert-type' => 'success',
+            ]);
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
+            return back()->with([
+                'messege' => 'Something Went Wrong',
+                'alert-type' => 'error',
+            ]);
+        }
+    }
 }

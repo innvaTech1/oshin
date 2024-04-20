@@ -171,6 +171,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ])->toArray(),
 
     /*
@@ -188,6 +190,8 @@ return [
         // 'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ])->toArray(),
 
 ];

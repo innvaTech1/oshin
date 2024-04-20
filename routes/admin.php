@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
+use Modules\Product\app\Http\Controllers\ProductController;
 
 /*  End Admin panel Controller  */
 
@@ -37,6 +38,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::put('update-password', 'update_password')->name('update-password');
         });
 
+        Route::get('product/bulk-import', [ProductController::class,'bulkImport'])->name('product.import');
 
         // sellers routes
         Route::resource('sellers', SellerController::class);

@@ -24,11 +24,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
     Route::resource('product', ProductController::class);
     
     // bulk product import 
-    Route::get('product/import', function(){
-        dd('bulk import');
-    })->name('product.import');
+    
 
-    Route::post('product/import', [ProductController::class, 'import_store'])->name('product.import.store');
+    Route::post('product/import', [ProductController::class, 'bulkImportStore'])->name('product.import.store');
     
     
     Route::get('product/product-gallery/{id}', [ProductController::class, 'product_gallery'])->name('product-gallery');
