@@ -23,6 +23,12 @@ class ProductService
         return $this->product;
     }
 
+    // get all active products
+    public function allActiveProducts(): Collection
+    {
+        return $this->product->where('status', 1)->get();
+    }
+
     public function getProduct($id): ?Product
     {
         return $this->product->where('id',$id)->first();

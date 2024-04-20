@@ -76,4 +76,18 @@ class BrandService
         return $this->brand->where('status', '1')->get();
     }
 
+    public function findBySlug($slug)
+    {
+        return $this->brand->where('slug', $slug)->first();
+    }
+
+    public function getProductByBrand($slug)
+    {
+        $brand = $this->brand->where('slug', $slug)->first();
+        if ($brand) {
+            return $brand->products;
+        }
+        return [];
+    }
+
 }

@@ -5,21 +5,21 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
-use App\Models\Category;
-use App\Services\CategoryService;
+
 use Illuminate\Http\Request;
+use Modules\Product\app\Services\ProductCategoryService;
 
 class ProductCategoryController extends Controller
 {
     protected $categoryService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(ProductCategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }
     public function index()
     {
-        $categories = $this->categoryService->getActiveAll();
+        $categories = $this->categoryService->getActiveProductCategories();
         if (count($categories) > 0) {
             return responseSuccess(CategoryResource::collection($categories));
         } else {

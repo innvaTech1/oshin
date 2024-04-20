@@ -2,8 +2,8 @@
 
 namespace Modules\Product\app\Services;
 
+use Modules\Product\app\Models\UnitType;
 
-use App\Models\UnitType;
 class UnitTypeService
 {
 

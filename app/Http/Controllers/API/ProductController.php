@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
-use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Modules\Product\app\Services\ProductService;
 
 class ProductController extends Controller
 {
@@ -54,7 +54,7 @@ class ProductController extends Controller
         }
     }
     public function show(string $slug){
-        $product = $this->productService->findBySlug($slug);
+        $product = $this->productService->getProductBySlug($slug);
         if ($product) {
             return responseSuccess($product);
         } else {

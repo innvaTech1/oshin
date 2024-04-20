@@ -5,9 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\ProductResource;
-use App\Models\Brand;
-use App\Services\BrandService;
-use Illuminate\Http\Request;
+
+use Modules\Product\app\Services\BrandService;
 
 class BrandController extends Controller
 {

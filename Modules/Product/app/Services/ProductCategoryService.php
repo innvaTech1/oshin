@@ -21,14 +21,21 @@ class ProductCategoryService
 
     public function getAllProductCategories()
     {
-        return Category::paginate(20);
+        return $this->category->paginate(20);
+    }
+
+    // Get all active product categories
+
+    public function getActiveProductCategories()
+    {
+        return $this->category->where('status', '1')->get();
     }
 
     // store product category
 
     public function storeProductCategory($request)
     {
-        $category = Category::create($request->all());
+        $category = $this->category->create($request->all());
         $this->generateTranslations(
             TranslationModels::ProductCategory,
             $category,
@@ -42,7 +49,7 @@ class ProductCategoryService
 
     public function updateProductCategory($request, $id)
     {
-        $category = Category::find($id);
+        $category = $this->category->find($id);
         $category->update($request->all());
         $request['code'] = getSessionLanguage();
         $this->updateTranslations(
@@ -59,30 +66,44 @@ class ProductCategoryService
     public function deleteProductCategory($id)
     {
         // check if category has products
-        $category = Category::find($id);
+        $category = $this->category->find($id);
         if ($category->products->count() > 0) {
             return false;
         }
-        return Category::destroy($id);
+        return $this->category->destroy($id);
     }
 
     // get all product categories for select
 
     public function getAllProductCategoriesForSelect()
     {
-        return Category::where('status', '1')->get();
+        return $this->category->where('status', '1')->get();
     }
 
     // get categories id by product id
     public function getCategoriesIdsByProductId($product_id)
     {
-        return Category::whereHas('products', function ($query) use ($product_id) {
+        return $this->category->whereHas('products', function ($query) use ($product_id) {
             $query->where('product_id', $product_id);
         })->pluck('id')->toArray();
     }
 
     public function getProductCategory($id)
     {
-        return Category::find($id);
+        return $this->category->find($id);
+    }
+
+    public function findBySlug($slug)
+    {
+        return $this->category->where('slug', $slug)->first();
+    }
+
+    public function getProductByCategory($slug)
+    {
+        $category = $this->category->where('slug', $slug)->first();
+        if ($category) {
+            return $category->products;
+        }
+        return [];
     }
 }
