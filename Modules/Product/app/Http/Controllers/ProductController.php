@@ -412,8 +412,8 @@ class ProductController extends Controller
         
 
         
-        $this->productService->bulkImport($request);
         try {
+            $this->productService->bulkImport($request);
             return back()->with([
                 'messege' => 'Products imported successfully',
                 'alert-type' => 'success',
