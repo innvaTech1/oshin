@@ -2,8 +2,10 @@
 
 namespace Modules\Language\app\Traits;
 
-use Modules\Language\App\Enums\TranslationModels;
-use Modules\Language\App\Models\Language;
+// use Modules\Language\App\Enums\TranslationModels;
+use Modules\Language\app\Models\Language;
+
+use Modules\Language\app\Enums\TranslationModels;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 trait GenerateTranslationTrait

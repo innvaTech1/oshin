@@ -18,5 +18,6 @@
     "PaymentWithdraw": true,
     "Testimonial": true,
     "Faq": true,
-    "Media": true
+    "Media": true,
+    "Product": true
 }
