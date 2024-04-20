@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Modules\Product\app\Models\Category;
+use Modules\Product\app\Models\Product;
+use Modules\Product\app\Models\ProductBrand;
 
 class ProductCategoryController extends Controller
 {
@@ -47,10 +47,10 @@ class ProductCategoryController extends Controller
     public function index()
     {
         $categories = Category::select('id', 'name', 'status')->where('status', true)->get();
-        $brands = Brand::select('id', 'name', 'slug', 'status')->where('status', true)->get();
+        $brands = ProductBrand::select('id', 'name', 'slug', 'status')->where('status', true)->get();
 
         $products = Product::with('brand', 'cart', 'wishlists')
-            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'thumbnail_image_source', 'is_approved', 'status', 'avg_rating')
+            ->select('id', 'product_name', 'slug', 'description', 'brand_id', 'image', 'is_approved', 'status', 'avg_rating')
             ->where('is_approved', true)
             // ->inRandomOrder()
             ->paginate($this->totalItemsInAPage);

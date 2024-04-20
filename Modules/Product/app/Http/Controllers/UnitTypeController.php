@@ -4,10 +4,10 @@ namespace Modules\Product\app\Http\Controllers;
 
 use App\Enums\RedirectType;
 use App\Http\Controllers\Controller;
-use App\Services\UnitTypeService;
 use App\Traits\LogActivity;
 use App\Traits\RedirectHelperTrait;
 use Illuminate\Http\Request;
+use Modules\Product\app\Services\UnitTypeService;
 
 class UnitTypeController extends Controller
 {

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Product\app\Models\Product;
 
 class ProductController extends Controller
 {

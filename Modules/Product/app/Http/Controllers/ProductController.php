@@ -399,4 +399,10 @@ class ProductController extends Controller
             ]);
         }
     }
+
+    // bulk product import
+    public function bulkImport()
+    {
+        return view('product::products.import');
+    }
 }

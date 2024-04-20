@@ -4,8 +4,8 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\Product;
 use Illuminate\Http\Request;
+use Modules\Product\app\Models\Product;
 
 class CartController extends Controller
 {
@@ -56,7 +56,7 @@ class CartController extends Controller
 
             if (session()->has('cart')) {
                 foreach (session()->get('cart') as $productID => $session_item) {
-                    $product = Product::select('id', 'product_name', 'slug', 'thumbnail_image_source', 'brand_id')
+                    $product = Product::select('id', 'product_name', 'slug', 'image', 'brand_id')
                         ->where('id', $productID)
                         ->with('brand:id,name')
                         ->first();
