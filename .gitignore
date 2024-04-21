@@ -18,5 +18,5 @@
 # /.fleet
 # /.idea
 # /.vscode
-# /vendor/srmklive/paypal/tests/Mocks/samples
+/vendor/srmklive/paypal/tests/Mocks/samples
 # /bootstrap/cache
