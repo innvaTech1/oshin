@@ -24,8 +24,6 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             CurrencySeeder::class,
             GlobalSettingInfoSeeder::class,
-            BasicPaymentInfoSeeder::class,
-            PaymentGatewaySeeder::class,
             CustomPaginationSeeder::class,
             EmailTemplateSeeder::class,
             SeoInfoSeeder::class,
@@ -33,14 +31,5 @@ class DatabaseSeeder extends Seeder
             AdminInfoSeeder::class,
         ]);
 
-        // if(app()->isLocal()){
-        //     $this->call([
-        //     ]);
-        // }
-
-        // if(app()->isProduction()){
-        //     $this->call([
-        //     ]);
-        // }
     }
 }
