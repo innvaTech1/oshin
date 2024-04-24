@@ -6,8 +6,7 @@
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('admin.dashboard') }}"><img src=""
-                    alt="{{ $setting->app_name ?? '' }}"></a>
+            <a href="{{ route('admin.dashboard') }}"><img src="" alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <ul class="sidebar-menu">
@@ -19,9 +18,15 @@
                 </li>
             @endadminCan
 
-            @if (Module::isEnabled('Product') )
+            @if (Module::isEnabled('Product'))
                 @include('product::sidebar')
             @endif
+
+            <li class="{{ Route::is('admin.shipping.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.shipping.index') }}"><i class="fas fa-shipping-fast"></i>
+                    <span>{{ __('Shipping') }}</span>
+                </a>
+            </li>
 
             <li class="menu-header">{{ __('Manage Contents') }}</li>
 

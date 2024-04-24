@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ShippingMethodController;
 use Illuminate\Support\Facades\Route;
 use Modules\Product\app\Http\Controllers\ProductController;
 
@@ -42,6 +43,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
         // sellers routes
         Route::resource('sellers', SellerController::class);
+        Route::resource('shipping', ShippingMethodController::class);
+        Route::put('shipping/status/{id}',[ShippingMethodController::class, 'shippingStatus'])->name('shipping.status');
 
         Route::get('role/assign', [RolesController::class, 'assignRoleView'])->name('role.assign');
         Route::post('role/assign/{id}', [RolesController::class, 'getAdminRoles'])->name('role.assign.admin');
