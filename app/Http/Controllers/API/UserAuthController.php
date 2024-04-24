@@ -61,19 +61,36 @@ class UserAuthController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'phone' => 'nullable|unique:users,phone',
             'password' => 'required|string|min:6|confirmed',
+            "username" => "required"
         ]);
 
         if ($validator->fails()) {
             return response()->json(['status' => 422, 'message' => $validator->errors()], 422);
         }
 
+        $login = $request->username;
 
+        $field = null;
+        if (is_numeric($login)) {
+            $field = 'phone';
+        } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $field = 'email';
+        }
+
+        $check = User::where($field, $login)->first();
+
+        if ($check) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User already exists',
+            ], 409);
+        }
+
+        // create user
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            $field => $request->username,
             'password' => Hash::make($request->password),
         ]);
 
@@ -100,15 +117,36 @@ class UserAuthController extends Controller
 
         // Attempt to authenticate the user
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string',
+            'username' => 'required',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['status' => 422, 'message' => $validator->errors()], 422);
         }
 
-        $credentials = $request->only('email', 'password');
+        $login = $request->username;
+
+        $field = null;
+        if (is_numeric($login)) {
+            $field = 'phone';
+        } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $field = 'email';
+        }
+
+        $check = User::where($field, $login)->first();
+
+        if (!$check) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        $credentials = [
+            $field => $login,
+            'password' => $request->password,
+        ];
 
         $token = Auth::guard('api')->attempt($credentials);
         if (!$token) {

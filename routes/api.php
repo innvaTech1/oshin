@@ -57,6 +57,9 @@ Route::get('/products/best-seller', [ProductController::class, 'bestSellerProduc
 Route::get('/products/homepage', [ProductController::class, 'homepageProducts']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
 
+// coupon
+Route::get('/coupon', [CouponController::class, 'index']);
+
 // get wishlists
 Route::middleware('auth:api')->group(function () {
     Route::get('/wishlists', [WishlistController::class, 'index']);
@@ -65,8 +68,7 @@ Route::middleware('auth:api')->group(function () {
     // remove wishlist
     Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
 
-    // coupon
-    Route::get('/coupon', [CouponController::class, 'index']);
+    
 
     // Create Address
     Route::post('addresses', [AddressController::class, 'createAddress']);

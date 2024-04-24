@@ -9,49 +9,45 @@ use Modules\Coupon\app\Models\Coupon;
 
 class CouponController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
     public function index(Request $request)
     {
         if ($request->coupon == null) {
-            $notification = trans('user_validation.Coupon Field is required');
-            return response()->json(['status' => 0, 'message' => $notification]);
+            $notification = trans('Coupon Field is required');
+            return responseFail($notification, 403);
         }
 
-        $user = Auth::guard('api')->user();
-
-        $coupon = Coupon::where(['code' => $request->coupon, 'status' => 1])->first();
+        $coupon = Coupon::where(['coupon_code' => $request->coupon, 'status' => 'active'])->first();
 
         if ($coupon->expired_date < date('Y-m-d')) {
-            $notification = trans('user_validation.Coupon already expired');
-            return response()->json(['status' => 0, 'message' => $notification], 403);
+            $notification = trans('Coupon already expired');
+            return responseFail($notification, 403);
         }
 
         if ($coupon->apply_qty >=  $coupon->max_quantity) {
-            $notification = trans('user_validation.Sorry! You can not apply this coupon');
-            return response()->json(['status' => 0, 'message' => $notification], 403);
+            $notification = trans('Sorry! You can not apply this coupon');
+            return responseFail($notification, 403);
+        }
+        if($coupon->min_price && $request->amount < $coupon->min_price){
+            return responseFail('Minimum purchase amount should be '.$coupon->min_price,403);
         }
 
+
+
         if ($coupon) {
+            $discount = 0;
             if ($coupon->offer_type == 1) {
                 $coupon_price = $coupon->offer_percentage;
-
-                session()->put('offer_type', 1);
-                session()->put('coupon_name', $request->coupon);
-
-                $discountAmount = ($coupon_price / 100) * $sub_total;
-                $discountAmount = number_format((float) $discountAmount, 2, '.', '');
-                session()->put('coupon_price', $discountAmount);
+                $discountAmount = ($coupon_price / 100) * $request->amount;
+                $discount = $discountAmount;
             } else {
-                $coupon_price = $coupon->discount;
+                $discount = $coupon->discount;
             }
 
-            return $this->cart();
+            return responseSuccess(['discount' => $discount, 'coupon' => $coupon]);
+
         } else {
-            $notification = trans('user_validation.Invalid Coupon');
-            return response()->json(['status' => 0, 'message' => $notification], 403);
+            $notification = trans('Invalid Coupon');
+            return responseFail($notification, 403);
         }
     }
 }
