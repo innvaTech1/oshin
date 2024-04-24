@@ -59,4 +59,16 @@ class Variant extends Model
         });
     }
 
+    public function getAttributesAttribute()
+    {
+        return $this->options->map(function ($option) {
+            return [
+                'attribute_id' => $option->attributeValue->attribute_id,
+                'attribute' => $option->attributeValue->attribute->name,
+                'attribute_value_id' => $option->attribute_value_id,
+                'attribute_value' => $option->attributeValue->name,
+            ];
+        });
+    }
+
 }

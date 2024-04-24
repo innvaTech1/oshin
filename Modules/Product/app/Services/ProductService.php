@@ -29,7 +29,7 @@ class ProductService
     // get all active products
     public function allActiveProducts(): Collection
     {
-        return $this->product->where('status', 1)->get();
+        return $this->product->where('status', 1)->with('categories')->get();
     }
 
     public function getProduct($id): ?Product

@@ -168,3 +168,20 @@ if (!function_exists("responseFail")) {
         ]);
     }
 }
+
+
+// calculateDiscountPercentage
+
+if (!function_exists('calculateDiscountPercentage')) {
+    function calculateDiscountPercentage($originalPrice, $discountedPrice)
+    {
+        if ($originalPrice == 0) {
+            return 0;
+        }
+
+        $discount = $originalPrice - $discountedPrice;
+        $discountPercentage = ($discount / $originalPrice) * 100;
+
+        return round($discountPercentage, 2);
+    }
+}
