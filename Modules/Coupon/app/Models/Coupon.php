@@ -13,10 +13,14 @@ class Coupon extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-
-    protected static function newFactory(): CouponFactory
-    {
-        //return CouponFactory::new();
-    }
+    protected $fillable = [
+        'author_id',
+        'coupon_code',
+        'expired_date',
+        'discount',
+        'min_price',
+        'offer_type',
+        'max_quantity',
+        'status',
+    ];
 }

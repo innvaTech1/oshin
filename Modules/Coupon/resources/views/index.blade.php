@@ -34,8 +34,12 @@
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $coupon->coupon_code }}</td>
-                                                    <td>{{ currency($coupon->min_price) }}</td>
-                                                    <td>{{ $coupon->offer_percentage }}%</td>
+                                                    <td>{{ $coupon->min_price ? currency($coupon->min_price) : '' }}</td>
+                                                    <td>@if ($coupon->offer_type == 1)
+                                                        {{ $coupon->discount }}%
+                                                        @else
+                                                        {{currency($coupon->discount)}}
+                                                    @endif</td>
 
                                                     <td>{{ date('d M Y', strtotime($coupon->expired_date)) }}</td>
 
@@ -103,15 +107,28 @@
                                 <div class="form-group">
                                     <label for="">{{ __('Minimum purchase price') }} <span data-toggle="tooltip"
                                             data-placement="top" class="fa fa-info-circle text--primary"
-                                            title="Price should be USD($)"> <span class="text-danger">*</span></label>
+                                            title="Price should be in ({{currency()}})"></label>
                                     <input type="text" name="min_price" autocomplete="off" class="form-control"
                                         value="{{ $coupon->min_price }}">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">{{ __('Offer') }}(%) <span class="text-danger">*</span></label>
-                                    <input type="text" name="offer_percentage" autocomplete="off" class="form-control"
-                                        value="{{ $coupon->offer_percentage }}">
+                                    <label for="">{{ __('Max Quantity') }} <span class="text-danger">*</span></label>
+                                    <input type="text" name="max_quantity" autocomplete="off" class="form-control"
+                                        value="{{ $coupon->max_quantity }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">{{ __('Offer') }} <span class="text-danger">*</span></label>
+                                    <input type="text" name="discount" autocomplete="off" class="form-control"
+                                        value="{{ $coupon->discount }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{{ __('Discount Type') }} <span class="text-danger">*</span></label>
+                                    <select name="offer_type" class="form-control">
+                                        <option value="1" @if($coupon->offer_type ==1) selected @endif>{{__('Parcent')}}</option>
+                                        <option value="2" @if($coupon->offer_type == 2) selected @endif>{{__('Flat')}}</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -165,16 +182,28 @@
                             <div class="form-group">
                                 <label for="">{{ __('Minimum purchase price') }} <span data-toggle="tooltip"
                                         data-placement="top" class="fa fa-info-circle text--primary"
-                                        title="Price should be USD($)"> <span class="text-danger">*</span></label>
+                                        title="Price should be in ({{ currency() }})"></label>
                                 <input type="text" name="min_price" autocomplete="off" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <label for="">{{ __('Offer') }}(%) <span class="text-danger">*</span></label>
-                                <input type="text" name="offer_percentage" autocomplete="off" class="form-control">
-                            </div>
+                                    <label for="">{{ __('Max Quantity') }} <span class="text-danger">*</span></label>
+                                    <input type="text" name="max_quantity" autocomplete="off" class="form-control">
+                                </div>
 
+                            <div class="form-group">
+                                    <label for="">{{ __('Discount') }} <span class="text-danger">*</span></label>
+                                    <input type="text" name="discount" autocomplete="off" class="form-control"
+                                        >
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="">{{ __('Discount Type') }} <span class="text-danger">*</span></label>
+                                    <select name="offer_type" class="form-control">
+                                        <option value="1">{{__('Parcent')}}</option>
+                                        <option value="2">{{__('Flat')}}</option>
+                                    </select>
+                                </div>
 
                             <div class="form-group">
                                 <label for="">{{ __('End time') }} <span class="text-danger">*</span></label>

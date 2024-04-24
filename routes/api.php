@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\BrandController;
+use App\Http\Controllers\API\CouponController;
 use App\Http\Controllers\API\ProductCategoryController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserAuthController;
@@ -64,6 +65,9 @@ Route::middleware('auth:api')->group(function () {
     // remove wishlist
     Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
 
+    // coupon
+    Route::get('/coupon', [CouponController::class, 'index']);
+
     // Create Address
     Route::post('addresses', [AddressController::class, 'createAddress']);
 
@@ -82,4 +86,5 @@ Route::middleware('auth:api')->group(function () {
 
     // Update user profile (requires authentication)
     Route::put('profile', [UserAuthController::class, 'updateProfile']);
+
 });
