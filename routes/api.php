@@ -5,6 +5,7 @@ use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\CouponController;
 use App\Http\Controllers\API\ProductCategoryController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\ShippingMethodController;
 use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\WishlistController;
 use Illuminate\Http\Request;
@@ -56,6 +57,11 @@ Route::get('/products/featured', [ProductController::class, 'featuredProducts'])
 Route::get('/products/best-seller', [ProductController::class, 'bestSellerProducts']);
 Route::get('/products/homepage', [ProductController::class, 'homepageProducts']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
+
+
+// shipping methods routes
+Route::get('/shipping-methods', [ShippingMethodController::class, 'index']);
+Route::get('/shipping-methods/{id}', [ShippingMethodController::class, 'show']);
 
 // coupon
 Route::get('/coupon', [CouponController::class, 'index']);

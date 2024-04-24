@@ -1,5 +1,5 @@
 <?php
-namespace app\Services;
+namespace App\Services;
 
 use App\Models\ShippingMethod;
 
@@ -13,6 +13,10 @@ class ShippingMethodService
     public function getAll()
     {
         return $this->shippingMethod->all();
+    }
+    public function getActive()
+    {
+        return $this->shippingMethod->where('status', 1)->get();
     }
     public function create($request)
     {
