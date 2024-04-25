@@ -42,9 +42,7 @@ class ProductResource extends JsonResource
             'is_cod' => $this->is_cod ? 'Yes' : 'No',
             'unit' => $this->unit?->name,
             'unit_id' => $this->unit_id,
-            'partial_amount' => $this->partial_amount,  
-            "variations" => 
-
+            'partial_amount' => $this->partial_amount
         ];
     }
     public function singleProduct(): array
