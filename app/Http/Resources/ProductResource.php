@@ -43,6 +43,7 @@ class ProductResource extends JsonResource
             'unit' => $this->unit?->name,
             'unit_id' => $this->unit_id,
             'partial_amount' => $this->partial_amount,  
+            "variations" => 
 
         ];
     }
