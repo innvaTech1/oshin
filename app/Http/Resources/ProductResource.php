@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'sku' => $this->sku,
             'badge' => $this->badge,
+            'quantity' => $this->stock,
             "rating" => random_int(1, 5),
             'description' => $this->description,
             'short_description' => $this->short_description,
@@ -38,6 +39,11 @@ class ProductResource extends JsonResource
             'attributes' => $this->attributeAndValues,
             'related_products' => ProductResource::collection($this->relatedProducts),
             "images_url" => $this->images_url,
+            'is_cod' => $this->is_cod ? 'Yes' : 'No',
+            'unit' => $this->unit?->name,
+            'unit_id' => $this->unit_id,
+            'partial_amount' => $this->partial_amount,  
+
         ];
     }
     public function singleProduct(): array
