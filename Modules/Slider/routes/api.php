@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Slider\app\Http\Controllers\API\SliderController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('slider', fn (Request $request) => $request->user())->name('slider');
+Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+Route::get('slider', [SliderController::class, 'index']);
 });
+

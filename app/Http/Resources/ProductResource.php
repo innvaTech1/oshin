@@ -20,6 +20,8 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'badge' => $this->badge,
+            "rating" => random_int(1, 5),
+            "sold" => random_int(1, 100),
             // 'description' => $this->short_description,
             'price' => $this->price,
             'actual_price' => $this->actual_price,
@@ -29,6 +31,7 @@ class ProductResource extends JsonResource
 
             'status' => $this->status ? 'Active' : 'Inactive',
             'brand' => $this->brand?->name,
+            'brand_slug' => $this->brand?->slug,
             'categories' => CategoryResource::collection($this->categories),
             'thumbnail' => asset($this->image_url),
         ];

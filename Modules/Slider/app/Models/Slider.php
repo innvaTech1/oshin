@@ -24,10 +24,15 @@ class Slider extends Model
         'status',
         'order',
     ];
-    
 
-    public function image_url()
+
+    public function image_path()
     {
-        $this->belongsTo(Media::class, 'image', 'id');
+        return $this->belongsTo(Media::class, 'image', 'id');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image_path->path;
     }
 }

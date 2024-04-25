@@ -61,7 +61,7 @@
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{ $categories->links() }}
+                                    {{ $sliders->links() }}
                                 </div>
                             </div>
                         </div>

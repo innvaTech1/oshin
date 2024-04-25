@@ -33,10 +33,9 @@
                                     <div class="row">
                                         <div class="col-md-8 offset-md-2">
                                             <div class="form-group">
-                                                <label for="title">{{ __('Title') }}<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="title">{{ __('Title') }}</label>
                                                 <input type="text" name="title" class="form-control" id="title"
-                                                    required value="{{ old('title') }}">
+                                                     value="{{ old('title') }}">
                                                 @error('title')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -44,10 +43,9 @@
                                         </div>
                                         <div class="col-md-8 offset-md-2">
                                             <div class="form-group">
-                                                <label for="sub_title">{{ __('Sub Title') }}<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="sub_title">{{ __('Sub Title') }}</label>
                                                 <input type="text" name="sub_title" class="form-control" id="sub_title"
-                                                    required value="{{ old('sub_title') }}">
+                                                     value="{{ old('sub_title') }}">
                                                 @error('sub_title')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -57,7 +55,7 @@
                                             <div class="form-group">
                                                 <label for="button_text">{{ __('Button Text') }}</label>
                                                 <input type="text" name="button_text" class="form-control" id="button_text"
-                                                    required value="{{ old('button_text') }}">
+                                                     value="{{ old('button_text') }}">
                                                 @error('button_text')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -67,7 +65,7 @@
                                             <div class="form-group">
                                                 <label for="button_link">{{ __('Button Link') }}</label>
                                                 <input type="text" name="button_link" class="form-control" id="button_link"
-                                                    required value="{{ old('button_link') }}">
+                                                     value="{{ old('button_link') }}">
                                                 @error('button_link')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -76,8 +74,8 @@
                                         <div class="col-md-8 offset-md-2">
                                             <div class="form-group">
                                                 <label for="order">{{ __('Slider Order') }}</label>
-                                                <input type="text" name="order" class="form-control" id="order"
-                                                    required value="{{ old('order') }}">
+                                                <input type="number" name="order" class="form-control" id="order"
+                                                     value="{{ old('order') }}">
                                                 @error('order')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
