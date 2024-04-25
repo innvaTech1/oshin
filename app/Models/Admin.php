@@ -22,6 +22,7 @@ class Admin extends Authenticatable {
         'email',
         'password',
         'forget_password_token',
+        'image',
     ];
 
     /**
@@ -72,5 +73,12 @@ class Admin extends Authenticatable {
         }
 
         return $hasPermission;
+    }
+
+    public function getImageAttribute( $value ) {
+        $path = $this->attributes['image'];
+        $public_path = str_contains(request()->getHttpHost(), '127.0.0.1') ? '' : 'public/';
+
+        return asset($public_path . $path);
     }
 }
