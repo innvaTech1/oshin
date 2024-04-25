@@ -180,9 +180,22 @@ if (!function_exists('calculateDiscountPercentage')) {
             return 0;
         }
 
-        $discount = $originalPrice - $discountedPrice;
+
+        $discount = removeChar($originalPrice) - removeChar($discountedPrice);
         $discountPercentage = ($discount / $originalPrice) * 100;
 
         return round($discountPercentage, 2);
+    }
+}
+
+
+// remove special character from string
+
+if (!function_exists('removeSpecialCharacter')) {
+    function removeChar($string)
+    {
+        $val = floatval(str_replace(',', '', $string));
+
+        return $val;
     }
 }
