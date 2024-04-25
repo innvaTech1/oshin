@@ -15,7 +15,5 @@ use Modules\Slider\app\Http\Controllers\API\SliderController;
     |
 */
 
-Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
-Route::get('slider', [SliderController::class, 'index']);
-});
+Route::get('sliders', [SliderController::class, 'index']);
 
