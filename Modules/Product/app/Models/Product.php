@@ -106,16 +106,19 @@ class Product extends Model
     public function getImagesUrlAttribute()
     {
         $images = $this->images;
-        $images = explode(',', $images[0]);
+        if ($images) {
+            $images = explode(',', $images[0]);
 
-        $media = Media::whereIn('id', $images)->select('path')->get()->toArray();
-        
-        // flatten the array
-        $media = array_map(function ($item) {
-            return asset('public/'.$item['path']);
-        }, $media);
+            $media = Media::whereIn('id', $images)->select('path')->get()->toArray();
 
-        return $media;
+            // flatten the array
+            $media = array_map(function ($item) {
+                return asset('public/' . $item['path']);
+            }, $media);
+
+            return $media;
+        }
+        return [];
     }
 
     public function setImagesAttribute($value)
