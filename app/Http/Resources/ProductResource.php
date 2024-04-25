@@ -25,7 +25,7 @@ class ProductResource extends JsonResource
             'actual_price' => $this->actual_price,
             'discount' => $this->discount,
             'discount_type' => $this->discount_type,
-            'discount_percentage' => $this->discount_type == 'fixed'? calculateDiscountPercentage($this->price, $this->actual_price): $this->discount,
+            'discount_percentage' => $this->discount_type == 'fixed' && $this->discount != 0? calculateDiscountPercentage($this->price, $this->actual_price): $this->discount,
 
             'status' => $this->status ? 'Active' : 'Inactive',
             'brand' => $this->brand?->name,
