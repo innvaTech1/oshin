@@ -19,5 +19,6 @@
     "Testimonial": true,
     "Faq": true,
     "Media": true,
-    "Product": true
+    "Product": true,
+    "Slider": true
 }

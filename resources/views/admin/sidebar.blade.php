@@ -45,6 +45,9 @@
 
             <li class="menu-header">{{ __('Manage Website') }}</li>
 
+            @if(Module::isEnabled('Slider'))
+                @include('slider::sidebar')
+            @endif
             @if (Module::isEnabled('Faq') && checkAdminHasPermission('faq.view'))
                 @include('faq::sidebar')
             @endif
