@@ -16,10 +16,13 @@ class Media extends Model {
 
     public function getPathAttribute(){
 
-        if(file_exists(public_path($this->attributes['path']))){
-            return asset($this->attributes['path']);
-        }else if(file_exists(public_path('public/'.$this->attributes['path']))){
-            return asset('public/'.$this->attributes['path']);
+        $path = str_replace('\\', '/', $this->attributes['path']);
+        $public_path = public_path($path);
+
+        if (file_exists($public_path)) {
+            return asset($path);
+        } else {
+            return asset('public/' . $path);
         }
     }
 }
