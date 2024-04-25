@@ -48,7 +48,8 @@
                                                 <div class="form-group">
                                                     @php
                                                         $images = $product->images;
-                                                        $images = explode(',',$images[0]);
+                                                        
+                                                        $images = $images? explode(',',$images[0]): [];
                                                     @endphp
                                                     <x-media::media-input name="images[]" multiple="yes" :dataImages="$images" label_text="Gallery Images"/>
                                                 </div>
