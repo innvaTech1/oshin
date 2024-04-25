@@ -16,14 +16,9 @@ class Media extends Model {
 
     public function getPathAttribute(){
 
-        $path = str_replace('\\', '/', $this->attributes['path']);
-        $public_path = public_path($path);
+        $path = $this->attributes['path'];
+        $public_path = str_contains(request()->getHttpHost(), '127.0.0.1') ? '' : 'public/';
 
-        dd(public_path());
-        if (file_exists($public_path)) {
-            return asset($path);
-        } else {
-            return asset('public/' . $path);
-        }
+        return asset($public_path . $path);
     }
 }
