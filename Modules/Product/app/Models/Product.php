@@ -149,7 +149,8 @@ class Product extends Model
 
     public function getActualPriceAttribute()
     {
-        dd(floatval($this->price));
+        $price = str_replace(',', '', $this->price);
+        dd(floatval($price));
         if ($this->discount_type == 'fixed') {
             return number_format($this->price - $this->discount, 2);
         } else {
