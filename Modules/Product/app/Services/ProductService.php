@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Modules\Product\app\Models\Product;
 use Modules\Product\app\Models\Variant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\Request;
 use Modules\Product\app\Models\VariantOption;
 use Modules\Product\app\Models\AttributeValue;
@@ -153,9 +154,20 @@ class ProductService
         return $product->delete();
     }
 
-    public function storeRelatedProducts($product, $request)
+    public function storeRelatedProducts($request, $product)
     {
-        $product->relatedProducts()->sync($request->product_id);
+        $ids = $request->product_id;
+
+
+        // Remove existing related products
+        $product->relatedProducts()->delete();
+
+        // Add new related products
+        foreach ($ids as $relatedProductId) {
+            $product->relatedProducts()->create([
+                'related_product_id' => $relatedProductId
+            ]);
+        }
 
         return $product;
     }

@@ -231,12 +231,12 @@ class ProductController extends Controller
             $relatedProducts = $this->productService->storeRelatedProducts($request, $product);
             DB::commit();
             if ($relatedProducts) {
-                return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.product.related_product', [$product->id], [
+                return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.related-products', [$product->id], [
                     'messege' => 'Related Products updated successfully',
                     'alert-type' => 'success',
                 ]);
             } else {
-                return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.product.related_product', [$product->id], [
+                return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.related-products', [$product->id], [
                     'messege' => 'Related Products update failed',
                     'alert-type' => 'error',
                 ]);
