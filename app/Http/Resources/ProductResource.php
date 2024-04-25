@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             "rating" => random_int(1, 5),
             'description' => $this->description,
             'short_description' => $this->short_description,
+            'additional_information' => $this->additional_information,
             'categories' => CategoryResource::collection($this->categories),
             "sold" => random_int(1, 100),
             'price' => $this->price,
