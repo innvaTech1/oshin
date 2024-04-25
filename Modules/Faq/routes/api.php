@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Faq\app\Http\Controllers\API\FaqController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,4 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('faq', fn (Request $request) => $request->user())->name('faq');
-});
+Route::get('faqs',[FaqController::class,'index']);
