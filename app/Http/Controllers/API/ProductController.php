@@ -62,8 +62,8 @@ class ProductController extends Controller
             $product = $this->productService->getProductBySlug($slug);
 
             $productResource = new ProductResource($product);
-            $data = $productResource->singleProduct();
-            $prodVar = $this->productService->getProductVariants($product, $data);
+            return $productResource;
+            $prodVar = $this->productService->getProductVariants($product);
             $data['variants'] = $prodVar;
             if ($product) {
                 return responseSuccess($product);

@@ -426,4 +426,52 @@ class ProductController extends Controller
             ]);
         }
     }
+
+    public function product_gallery(string $id)
+    {
+        try {
+            $product = $this->productService->getProduct($id);
+            if (!$product) {
+                return back()->with([
+                    'messege' => 'Product not found',
+                    'alert-type' => 'error',
+                ]);
+            }
+            return view('product::products.gallery', compact('product'));
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
+            return back()->with([
+                'messege' => 'Something Went Wrong',
+                'alert-type' => 'error',
+            ]);
+        }
+    }
+
+    public function product_gallery_store(Request $request, string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $product = $this->productService->getProduct($id);
+            if (!$product) {
+                return back()->with([
+                    'messege' => 'Product not found',
+                    'alert-type' => 'error',
+                ]);
+            }
+            $this->productService->storeProductGallery($request, $product);
+            DB::commit();
+            return $this->redirectWithMessage(RedirectType::UPDATE->value, 'admin.product-gallery', [$product->id], [
+                'messege' => 'Product Gallery updated successfully',
+                'alert-type' => 'success',
+            ]);
+
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
+            DB::rollBack();
+            return back()->with([
+                'messege' => 'Something Went Wrong',
+                'alert-type' => 'error',
+            ]);
+        }
+    }
 }

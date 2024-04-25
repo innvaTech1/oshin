@@ -2,6 +2,7 @@
 
 namespace Modules\Product\app\Models;
 
+use App\Http\Resources\ProductResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -102,6 +103,21 @@ class Product extends Model
         return json_decode($value);
     }
 
+    public function getImagesUrlAttribute()
+    {
+        $images = $this->images;
+        $images = explode(',', $images[0]);
+
+        $media = Media::whereIn('id', $images)->select('path')->get()->toArray();
+        
+        // flatten the array
+        $media = array_map(function ($item) {
+            return asset('public/'.$item['path']);
+        }, $media);
+
+        return $media;
+    }
+
     public function setImagesAttribute($value)
     {
         $this->attributes['images'] = json_encode($value);
@@ -121,6 +137,7 @@ class Product extends Model
     {
         return $this->mediaImage?->path;
     }
+
 
     public function setAttributesAttribute($value)
     {
@@ -255,5 +272,11 @@ class Product extends Model
             }
         }
         return $variantsWithAttributes;
+    }
+
+    public function singleProduct()
+    {
+        $resource = new ProductResource($this);
+        return $resource->singleProduct();
     }
 }

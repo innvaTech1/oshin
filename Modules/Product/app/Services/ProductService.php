@@ -468,4 +468,14 @@ class ProductService
 
         return response()->download($filePath);
     }
+
+    public function storeProductGallery($request, $product)
+    {
+        $images = $request->images;
+
+        $product->images = $images;
+
+        $product->save();
+        return $product;
+    }
 }

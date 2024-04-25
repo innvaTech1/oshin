@@ -176,6 +176,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
+                                                    
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="status">{{ __('Status') }}<span

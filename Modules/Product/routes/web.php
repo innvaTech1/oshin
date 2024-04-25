@@ -30,6 +30,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
     
     
     Route::get('product/product-gallery/{id}', [ProductController::class, 'product_gallery'])->name('product-gallery');
+    Route::post('product/product-gallery/{id}', [ProductController::class, 'product_gallery_store'])->name('product-gallery.store');
 
     // view
     Route::get('product/related-product/{id}', [ProductController::class, 'related_product'])->name('related-products');
