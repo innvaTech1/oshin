@@ -38,7 +38,7 @@ class ProductResource extends JsonResource
             'brand_slug' => $this->brand?->slug,
             'thumbnail' => asset($this->image_url),
             'attributes' => $this->attributeAndValues,
-            // 'related_products' => $this->relatedProducts? ProductResource::collection($this->relatedProducts) : [],
+            'related_products' => $this->relatedProducts? ProductResource::collection($this->relatedProduct) : [],
             "images_url" => $this->images_url,
             'is_cod' => $this->is_cod ? 'Yes' : 'No',
             'unit' => $this->unit?->name,

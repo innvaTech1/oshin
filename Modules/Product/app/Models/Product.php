@@ -189,6 +189,13 @@ class Product extends Model
         return $this->hasMany(RelatedProduct::class, 'product_id', 'id');
     }
 
+    public function getRelatedProductAttribute()
+    {
+        return $this->relatedProducts->map(function ($relatedProduct) {
+            return $relatedProduct->relatedProduct;
+        });
+    }
+
     public function getStockStatusAttribute($value)
     {
         return $value == 'in_stock' ? 'In Stock' : 'Out of Stock';
