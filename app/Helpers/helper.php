@@ -182,7 +182,7 @@ if (!function_exists('calculateDiscountPercentage')) {
 
 
         $discount = removeChar($originalPrice) - removeChar($discountedPrice);
-        $discountPercentage = ($discount / $originalPrice) * 100;
+        $discountPercentage = ($discount / removeChar($originalPrice)) * 100;
 
         return round($discountPercentage, 2);
     }
