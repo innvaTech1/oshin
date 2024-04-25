@@ -19,6 +19,6 @@ class Media extends Model {
         $path = $this->attributes['path'];
         $public_path = str_contains(request()->getHttpHost(), '127.0.0.1') ? '' : 'public/';
 
-        return asset($public_path . $path);
+        return $public_path . $path;
     }
 }

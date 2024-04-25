@@ -55,6 +55,20 @@
                                                 @enderror
                                             </div>
                                         </div>
+
+                                        <div class="col-md-8 offset-md-2">
+                                            <div class="form-group">
+                                                <label for="top_category">{{ __('Is Top Category?') }}<span
+                                                        class="text-danger">*</span></label>
+                                                <select name="top_category" id="top_category" class="form-control">
+                                                    <option value="0" @if ($cat->top_category == 0) selected @endif>{{__('No')}}</option>
+                                                    <option value="1" @if ($cat->top_category == 1) selected @endif>{{__('Yes')}}</option>
+                                                </select>
+                                                @error('top_category')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="col-md-8 offset-md-2">
                                             <div class="form-group">
                                                 <label for="slug">{{ __('Status') }}<span

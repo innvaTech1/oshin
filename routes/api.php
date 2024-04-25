@@ -40,6 +40,7 @@ Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
 
 // get category list
 Route::get('/categories', [ProductCategoryController::class, 'index']);
+Route::get('/categories/top', [ProductCategoryController::class, 'topCategories']);
 // get category by id
 Route::get('/categories/{slug}', [ProductCategoryController::class, 'show']);
 // get products by category

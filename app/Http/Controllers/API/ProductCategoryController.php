@@ -27,6 +27,16 @@ class ProductCategoryController extends Controller
         }
     }
 
+    public function topCategories()
+    {
+        $categories = $this->categoryService->getTopProductCategories()->limit(6)->get();
+        if (count($categories) > 0) {
+            return responseSuccess(CategoryResource::collection($categories));
+        } else {
+            return responseFail('Categories not found', 404);
+        }
+    }
+
     public function show($slug)
     {
         $category = $this->categoryService->findBySlug($slug);
