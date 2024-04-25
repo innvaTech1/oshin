@@ -18,12 +18,13 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'image' => $this->image,
+            'image' => $this->image_url,
             'parent_id' => $this->parent_id,
             'depth_level' => $this->depth_level,
             'icon' => $this->icon,
             'searchable' => $this->searchable,
             'status' => $this->status,
+            "children" => CategoryResource::collection($this->children),
         ];
     }
 }

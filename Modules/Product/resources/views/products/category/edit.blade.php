@@ -75,7 +75,7 @@
                                         <div class="col-md-8 offset-md-2">
                                             <div class="form-group">
                                                 <label for="parent">{{ __('Parent Id') }}</label>
-                                                <select name="parent" id="parent" class="form-control select2">
+                                                <select name="parent_id" id="parent" class="form-control select2">
                                                     <option value="">{{ __('Select One') }}</option>
                                                     @foreach ($categories as $category)
                                                         <option value="{{ $category->id }}"
