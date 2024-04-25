@@ -71,7 +71,7 @@ function currency($price = '')
 
     $currency_icon = $currencySetting->currency_icon;
     $currency_code = $currencySetting->currency_code;
-    $currency_rate = $currencySetting->currency_rate;
+    $currency_rate = $currencySetting->currency_rate ? $currencySetting->currency_rate : 1;
     $currency_position = $currencySetting->currency_position;
     if ($price) {
         $price = $price * $currency_rate;
