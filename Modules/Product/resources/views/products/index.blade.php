@@ -42,7 +42,7 @@
                                                     <td>{{ ++$index }}</td>
                                                     <td>{{ $product->name }}
                                                     </td>
-                                                    <td>{{ currency($product->price) }}</td>
+                                                    <td>{{ currency($product->actual_price) }}</td>
                                                     <td> <img class="rounded-circle" src="{{ asset($product->image_url) }}"
                                                             alt="" width="100px" height="100px"></td>
                                                     <td>
