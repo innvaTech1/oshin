@@ -62,7 +62,7 @@ class ProductController extends Controller
             $product = $this->productService->getProductBySlug($slug);
 
             $productResource = new ProductResource($product);
-            $data['product'] = $productResource->resolve();
+            $data['product'] = $productResource;
             $prodVar = $this->productService->getProductVariants($product);
             $data['variants'] = $prodVar;
             if ($product) {
