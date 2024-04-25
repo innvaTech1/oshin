@@ -19,7 +19,7 @@ class Media extends Model {
         $path = str_replace('\\', '/', $this->attributes['path']);
         $public_path = public_path($path);
 
-        dd(file_exists($public_path));
+        dd(public_path());
         if (file_exists($public_path)) {
             return asset($path);
         } else {
