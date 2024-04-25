@@ -74,7 +74,6 @@ function currency($price = '')
     $currency_rate = $currencySetting->currency_rate ? $currencySetting->currency_rate : 1;
     $currency_position = $currencySetting->currency_position;
     if ($price) {
-        dd($price);
         $price = $price * $currency_rate;
         $price = number_format($price, 2, '.', ',');
 
