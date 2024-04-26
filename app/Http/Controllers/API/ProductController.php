@@ -20,10 +20,8 @@ class ProductController extends Controller
 
     public function products(Request $request)
     {
-        $products = $this->productService->allActiveProducts();
-        
+        $products = $this->productService->allActiveProducts($request);
         if (count($products) > 0) {
-            // dd($products);
             return responseSuccess(ProductResource::collection($products));
         } else {
             return responseFail('Products not found', 404);
@@ -32,7 +30,7 @@ class ProductController extends Controller
 
     public function featuredProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts()->where('is_featured', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('is_featured', 1)->paginate(12);
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -41,7 +39,7 @@ class ProductController extends Controller
     }
     public function bestSellerProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts()->where('is_bestseller', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('is_bestseller', 1)->paginate(12);
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -50,7 +48,7 @@ class ProductController extends Controller
     }
     public function homepageProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts()->where('show_homepage', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('show_homepage', 1)->paginate(12);
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {

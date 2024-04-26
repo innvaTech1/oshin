@@ -28,9 +28,38 @@ class ProductService
     }
 
     // get all active products
-    public function allActiveProducts(): Collection
+    public function allActiveProducts($request): Collection
     {
-        return $this->product->where('status', 1)->with('categories')->get();
+        $products = $this->product->where('status', 1)->with('categories');
+        if($request->has('category')){
+            $products = $products->whereHas('categories', function($query) use ($request){
+                $query->where('slug', $request->category);
+            });
+        }
+        if($request->has('brand')){
+            $products = $products->where('brand', function ($query) use ($request){
+                $query->where('slug', $request->brand);
+            });
+        }
+        if($request->has('min_price')){
+            $products = $products->where('price', '>=', $request->min_price);
+        }
+
+        if($request->has('max_price')){
+            $products = $products->where('price', '<=', $request->max_price);
+        }
+
+        if($request->has('search')){
+            $products = $products->whereHas('translation', function($query) use ($request){
+                $query->where('name', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        if($request->has('sort')){
+            $products = $products->orderBy('price', $request->sort);
+        }
+
+        return $products->get();
     }
 
     public function getProduct($id): ?Product
