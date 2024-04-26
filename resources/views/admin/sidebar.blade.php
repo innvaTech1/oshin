@@ -30,10 +30,6 @@
 
             <li class="menu-header">{{ __('Manage Contents') }}</li>
 
-            @if (Module::isEnabled('Blog') && checkAdminHasPermission('blog.view'))
-                @include('blog::sidebar')
-            @endif
-
             @if (Module::isEnabled('Media') && checkAdminHasPermission('media.view'))
                 @include('media::sidebar')
             @endif
@@ -66,9 +62,9 @@
                 @include('refund::admin.sidebar')
             @endif
 
-            @if (Module::isEnabled('PaymentWithdraw'))
+            {{-- @if (Module::isEnabled('PaymentWithdraw'))
                 @include('paymentwithdraw::admin.sidebar')
-            @endif
+            @endif --}}
 
             <li class="menu-header">{{ __('Settings') }}</li>
 
@@ -84,20 +80,11 @@
                 @include('wallet::admin.sidebar')
             @endif
 
-            <li class="menu-header">{{ __('Utility') }}</li>
-
-
-            @if (Module::isEnabled('NewsLetter') && checkAdminHasPermission('newsletter.view'))
-                @include('newsletter::sidebar')
-            @endif
-
-            @if (Module::isEnabled('Testimonial') && checkAdminHasPermission('testimonial.view'))
-                @include('testimonial::sidebar')
-            @endif
+            {{-- <li class="menu-header">{{ __('Utility') }}</li>
 
             @if (Module::isEnabled('ContactMessage') && checkAdminHasPermission('contect.message.view'))
                 @include('contactmessage::sidebar')
-            @endif
+            @endif --}}
         </ul>
 
         <div class="py-3 text-center">

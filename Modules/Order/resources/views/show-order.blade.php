@@ -280,7 +280,7 @@
     @include('components.admin.preloader')
     <script>
         function deleteData(id) {
-            $("#deleteForm").attr("action", '{{ url('admin/delete-order/') }}' + "/" + id)
+            $("#deleteForm").attr("action", "{{ route('admin.order-delete','') }}" + "/" + id)
         }
     </script>
 @endsection

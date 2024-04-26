@@ -6,7 +6,6 @@
     <input type="hidden" name="variant_price" value="0" id="modal_variant_price">
     <input type="hidden" name="variant_sku" value="0" id="modal_variant_sku">
 
-    {{-- @dd($product->attribute_and_values) --}}
     <div class="row justify-content-center mb-3">
         <div class="col-md-12">
             <div class="card shadow-none">

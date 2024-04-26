@@ -57,4 +57,8 @@
             .replace(/[^\w ]+/g, '')
             .replace(/ +/g, '-');
     }
+    // remove currency symbol
+    function removeCurrency(value) {
+        return value.replace(/[^0-9.]/g, '');
+    }
 </script>

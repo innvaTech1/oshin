@@ -4,13 +4,14 @@ namespace Modules\Order\app\Services;
 
 
 use App\Models\User;
-use App\Models\Variant;
+
 use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
 use Modules\GlobalSetting\app\Models\Setting;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
+use Modules\Product\app\Models\Variant;
 
 class OrderService
 {
@@ -119,7 +120,7 @@ class OrderService
     }
 
     public function destroy(Order $order){
-        
+
         $orderProducts = $order->orderDetails;
         foreach ($orderProducts as $orderProduct) {
             $orderProduct->delete();
@@ -139,7 +140,7 @@ class OrderService
         $message = str_replace('{{payment_status}}', $payment_status, $message);
         $message = str_replace('{{order_status}}', 'Pending', $message);
         $message = str_replace('{{order_date}}', $order->created_at->format('d F, Y'), $message);
-        
+
         $this->sendOrderSuccessMailFromTrait($subject,$message,$user);
     }
 }

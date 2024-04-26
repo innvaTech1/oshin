@@ -649,11 +649,6 @@
                     $("#add_new_address_form").on("submit", function(e) {
                         e.preventDefault();
 
-                        var isDemo = "{{ env('APP_MODE') }}"
-                        if (isDemo == 0) {
-                            toastr.error('This Is Demo Version. You Can Not Change Anything');
-                            return;
-                        }
                         $('.preloader_area').removeClass('d-none');
                         $.ajax({
                             type: 'POST',
@@ -700,6 +695,7 @@
                     // make payment modal
                     $("#makePaymentBtn").on("click", function() {
 
+                        const deliveryMethod = $('[name="delivery_method"]').val()
                         let customer_id = $("#order_customer_id").val();
                         if (!customer_id) {
                             toastr.error("{{ __('Please select a customer') }}")
@@ -707,7 +703,7 @@
                         }
 
                         let address_id = $("#order_address_id").val();
-                        if (!address_id && customer_id != 'walk-in-customer') {
+                        if (!address_id && customer_id != 'walk-in-customer' && deliveryMethod == 1) {
                             toastr.error("{{ __('Please select a address') }}")
                             return;
                         }

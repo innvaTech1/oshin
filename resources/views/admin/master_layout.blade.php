@@ -148,6 +148,7 @@
     {{-- end admin logout form --}}
     @include('admin.partials.javascripts')
 
+    
     @stack('js')
 
 </body>

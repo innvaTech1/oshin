@@ -36,8 +36,9 @@ if (!function_exists('allPaymentMethods')) {
     function allPaymentMethods($key = null)
     {
         $methods = [
-            'stripe' => 'Stripe',
-            'paypal' => 'Paypal',
+            'bkash' => 'bKash',
+            'rocket' => 'Rocket',
+            'nagad' => 'Nagad',
             'bank_transfer' => 'Bank Transfer',
             'hand_cash' => 'Hand Cash',
             'cod' => 'Cash On Delivery',
@@ -245,5 +246,73 @@ if (!function_exists('removeSpecialCharacter')) {
         $val = floatval(str_replace(',', '', $string));
 
         return $val;
+    }
+}
+
+
+
+if (!function_exists('getOrderStatus')) {
+    function getOrderStatus($status)
+    {
+        switch ($status) {
+            case 1:
+                return 'Pending';
+            case 2:
+                return 'Accepted';
+            case 3:
+                return 'Progress';
+            case 4:
+                return 'On the way';
+            case 5:
+                return 'Delivered';
+            case 6:
+                return 'Cancelled';
+            default:
+                return 'Pending';
+        }
+    }
+}
+
+if (!function_exists('statusColor')) {
+    function statusColor($status)
+    {
+
+        switch ($status) {
+            case 1:
+                return 'warning';
+                break;
+            case 2:
+                return 'info';
+                break;
+            case 3:
+                return 'info';
+                break;
+            case 4:
+                return 'primary';
+                break;
+            case 5:
+                return 'success';
+                break;
+            case 6:
+                return 'danger';
+                break;
+            default:
+                return 'warning';
+        }
+    }
+}
+
+
+// default avatar
+
+if (!function_exists('avatar')) {
+    function avatar($img = null)
+    {
+        $setting = cache('setting');
+        if ($img && file_exists(public_path($img))) {
+            return asset($img);
+        } else {
+            return asset($setting->default_avatar);
+        }
     }
 }

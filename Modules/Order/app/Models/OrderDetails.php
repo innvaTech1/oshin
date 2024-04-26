@@ -2,11 +2,11 @@
 
 namespace Modules\Order\app\Models;
 
-use App\Models\Product;
-use App\Models\Variant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Order\Database\factories\OrderDetailsFactory;
+use Modules\Product\app\Models\Product;
+use Modules\Product\app\Models\Variant;
 
 class OrderDetails extends Model
 {

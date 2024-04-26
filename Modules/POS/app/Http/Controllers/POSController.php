@@ -4,6 +4,7 @@ namespace Modules\POS\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\OrderSuccessfulMailJob;
+use App\Models\Address;
 use App\Models\User;
 use App\Models\Variant;
 use Modules\Order\app\Services\OrderService;
@@ -125,17 +126,20 @@ class POSController extends Controller
 
     public function add_to_cart(Request $request)
     {
-
         $product = $this->productService->getActiveProductById($request->product_id);
 
         $attributes = '';
         $options = collect([]);
 
+
         if ($product->has_variant) {
             $prodVar = $this->productService->getVariantBySku($request->variant_sku);
+
             $attributes = $prodVar->attributes();
             $options = $prodVar->attribute_and_value_ids;
         }
+
+
 
         $cart_contents = session()->get('POSCART');
         $cart_contents = $cart_contents ? $cart_contents : [];
@@ -256,8 +260,7 @@ class POSController extends Controller
 
             Address::create([
                 'user_id' => $user->id,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+                'name' => $request->first_name. ' ' . $request->last_name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,

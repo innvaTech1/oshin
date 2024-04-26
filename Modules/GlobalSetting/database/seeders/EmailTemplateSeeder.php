@@ -12,6 +12,7 @@ class EmailTemplateSeeder extends Seeder
      */
     public function run(): void
     {
+        EmailTemplate::truncate();
         $templates = [
             [
                 'name' => 'password_reset',
@@ -52,7 +53,7 @@ class EmailTemplateSeeder extends Seeder
             [
                 'name' => 'new_refund',
                 'subject' => 'New Refund Request',
-                'message' => '<p>Hello ecommerce, </p>
+                'message' => '<p>Hello websolutionus, </p>
 
                 <p>Mr. {{user_name}} has send a new refund request to you.</p>',
             ],
@@ -71,9 +72,134 @@ class EmailTemplateSeeder extends Seeder
                 'message' => '<p>Dear {{user_name}},</p>
                 <p>We are happy to say that, we have send a withdraw amount to your provided bank information.</p>
                 <p>Thanks &amp; Regards</p>
-                <p>ecommerce</p>',
+                <p>WebSolutionUs</p>',
             ],
 
+            [
+                'name' => 'approved_withdraw',
+                'subject' => 'Withdraw Request Approval',
+                'message' => '<p>Dear {{user_name}},</p>
+                <p>We are happy to say that, we have send a withdraw amount to your provided bank information.</p>
+                <p>Thanks &amp; Regards</p>
+                <p>WebSolutionUs</p>',
+            ],
+            [
+                'name' => 'Order Successfully',
+                'subject' => 'Order Successfully',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Thanks for your new order. Your order has been placed .</p>
+                <p>Total Amount : {{total_amount}},</p>
+                <p>Payment Method : {{payment_method}},</p>
+                <p>Payment Status : {{payment_status}},</p>
+                <p>Order Status : {{order_status}},</p>
+                <p>Order Date: {{order_date}},</p>',
+            ],
+            [
+                'name' => 'Order Cancel',
+                'subject' => 'Order Cancel',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your order has been canceled .</p>
+                <p>Total Amount : {{total_amount}},</p>
+                <p>Payment Method : {{payment_method}},</p>
+                <p>Payment Status : {{payment_status}},</p>
+                <p>Order Status : {{order_status}},</p>
+                <p>Order Date: {{order_date}},</p>',
+            ],
+            [
+                'name' => 'Order Delivery',
+                'subject' => 'Order Delivery',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your order has been delivered .</p>
+                <p>Total Amount : {{total_amount}},</p>
+                <p>Payment Method : {{payment_method}},</p>
+                <p>Payment Status : {{payment_status}},</p>
+                <p>Order Status : {{order_status}},</p>
+                <p>Order Date: {{order_date}},</p>',
+            ],
+            [
+                'name' => 'Payment Success',
+                'subject' => 'Payment Success',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your payment has been successfully completed .</p>
+                <p>Total Amount : {{total_amount}},</p>
+                <p>Payment Method : {{payment_method}},</p>
+                <p>Payment Status : {{payment_status}},</p>
+                <p>Order Status : {{order_status}},</p>
+                <p>Order Date: {{order_date}},</p>',
+            ],
+
+            [
+                'name' => 'Workout Enrolled',
+                'subject' => 'Workout Enrolled',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> You have successfully enrolled in the workout .</p>
+                <p>Workout Name : {{workout_name}},</p>
+                <p>Workout Date : {{workout_date}},</p>
+                <p>Workout Time : {{workout_time}},</p>',
+            ],
+
+            // member registration successful
+            [
+                'name' => 'Member Registration',
+                'subject' => 'Member Registration',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your registration has been successfully completed .</p>
+                <p>Member ID : {{member_id}},</p>
+                <p>Member Name : {{member_name}},</p>
+                <p>Member Email : {{member_email}},</p>
+                <p>Member Password : {{member_password}},</p>
+                <p>Member Phone : {{member_phone}},</p>',
+            ],
+
+            // subscription success
+            [
+                'name' => 'Subscription Success',
+                'subject' => 'Subscription Success',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your subscription has been successfully completed .</p>
+                <p>Subscription Start Date:{{subscription_start_date}},</p>
+                <p>Subscription End Date:{{subscription_end_date}},</p>
+                <p>Subscription Name : {{subscription_name}},</p>
+                <p>Subscription Price : {{subscription_price}},</p>',
+            ],
+
+            // trial Subscription
+
+            [
+                'name' => 'Trial Subscription',
+                'subject' => 'Trial Subscription',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your trial subscription has been Started.</p>
+                <p>Trial Start Date:{{subscription_start_date}},</p>
+                <p>Trial End Date:{{subscription_end_date}}</p>',
+            ],
+
+            // assign locker
+            [
+                'name' => 'Assign Locker',
+                'subject' => 'Assign Locker',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your locker has been successfully assigned.</p>
+                <p>Locker ID : {{locker_no}},</p>',
+            ],
+
+            // locker status change
+            [
+                'name' => 'Locker Status Change',
+                'subject' => 'Locker Status Change',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your locker status has been successfully changed.</p>
+                <p>Locker ID : {{locker_no}},</p>',
+            ],
+
+            // remove assign locker
+            [
+                'name' => 'Remove Assign Locker',
+                'subject' => 'Remove Assign Locker',
+                'message' => '<p>Hi {{user_name}},</p>
+                <p> Your locker has been successfully removed.</p>
+                <p>Locker ID : {{locker_no}},</p>',
+            ],
         ];
 
         foreach ($templates as $index => $template) {

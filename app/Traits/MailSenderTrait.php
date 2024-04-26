@@ -13,7 +13,13 @@ use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Modules\ContactMessage\app\Emails\ContactMessageMail;
+use Modules\ContactMessage\app\Jobs\ContactMessageSendJob;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
+use Modules\Order\app\Emails\OrderSuccessfulMail;
+use Modules\Order\app\Emails\PaymentRejectMail;
+use Modules\Order\app\Jobs\OrderSuccessfulMailJob;
+use Modules\Order\app\Jobs\PaymentRejectJob;
 
 trait MailSenderTrait
 {
@@ -119,6 +125,101 @@ trait MailSenderTrait
                 } else {
                     try {
                         Mail::to($this->user->email)->send(new SocialLoginDefaultPasswordMail($user, $password));
+                    } catch (Exception $ex) {
+                        if (app()->isLocal()) {
+                            Log::error($ex->getMessage());
+                        }
+                    }
+                }
+
+                return true;
+            } catch (Exception $th) {
+                if (app()->isLocal()) {
+                    Log::error($th->getMessage());
+                }
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private function sendPaymentRejectMailFromTrait($subject, $description, $user)
+    {
+        if (self::setMailConfig()) {
+            try {
+                if (self::isQueable()) {
+                    dispatch(new PaymentRejectJob($subject, $description, $user));
+                } else {
+                    try {
+                        Mail::to($user->email)->send(new PaymentRejectMail($subject, $description, $user));
+                    } catch (Exception $ex) {
+                        if (app()->isLocal()) {
+                            Log::error($ex->getMessage());
+                        }
+                    }
+                }
+
+                return true;
+            } catch (Exception $th) {
+                if (app()->isLocal()) {
+                    Log::error($th->getMessage());
+                }
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private function sendOrderSuccessMailFromTrait($subject, $description, $user)
+    {
+        if (self::setMailConfig()) {
+            try {
+                if (self::isQueable()) {
+                    dispatch(new OrderSuccessfulMailJob($subject, $description, $user));
+                } else {
+                    try {
+                        Mail::to($user->email)->send(new OrderSuccessfulMail($subject, $this->message));
+                    } catch (Exception $ex) {
+                        if (app()->isLocal()) {
+                            Log::error($ex->getMessage());
+                        }
+                        return false;
+                    }
+                }
+            } catch (Exception $ex) {
+                if (app()->isLocal()) {
+                    Log::error($ex->getMessage());
+                }
+                return false;
+            }
+        }
+    }
+
+    private function sendContactMessageMailFromTrait($message)
+    {
+        if (self::setMailConfig()) {
+            try {
+                if (self::isQueable()) {
+                    dispatch(new ContactMessageSendJob($message));
+                } else {
+                    try {
+                        $template = EmailTemplate::where('name', 'contact_mail')->first();
+                        $subject = $template->subject;
+
+                        $templateMessage = $template->message;
+                        $templateMessage = str_replace('{{name}}', $message->name, $templateMessage);
+                        $templateMessage = str_replace('{{email}}', $message->email, $templateMessage);
+                        $templateMessage = str_replace('{{phone}}', $message->phone, $templateMessage);
+                        $templateMessage = str_replace('{{subject}}', $message->subject, $templateMessage);
+                        $templateMessage = str_replace('{{message}}', $message->message, $templateMessage);
+
+                        $email_setting = Cache::get('setting');
+
+                        Mail::to($email_setting->contact_message_receiver_mail)->send(new ContactMessageMail($subject, $message));
                     } catch (Exception $ex) {
                         if (app()->isLocal()) {
                             Log::error($ex->getMessage());
