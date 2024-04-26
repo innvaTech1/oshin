@@ -8,8 +8,32 @@
         <li class="{{ Route::is('admin.orders') ? 'active' : '' }}"><a class="nav-link"
                 href="{{ route('admin.orders') }}">{{ __('Order History') }}</a></li>
 
-        <li class="{{ Route::is('admin.pending-orders') ? 'active' : '' }}"><a class="nav-link"
-                href="{{ route('admin.pending-orders') }}">{{ __('Pending Order') }}</a></li>
+        <li class="{{ Route::is('admin.pending-orders') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.pending-orders') }}">{{ __('Pending Orders') }}
+            </a>
+        </li>
+        <li class="{{ Route::is('admin.progress-order') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.progress-order') }}">{{ __('Progress Orders') }}
+            </a>
+        </li>
+
+        <li class="{{ Route::is('admin.order.on-the-way') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.on-the-way') }}">{{ __('On The Way Orders') }}
+            </a>
+        </li>
+
+        <li class="{{ Route::is('admin.order.delivered') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.delivered') }}">{{ __('Delivered Orders') }}
+            </a>
+        </li>
+        <li class="{{ Route::is('admin.order.declined') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.declined') }}">{{ __('Declined Orders') }}
+            </a>
+        </li>
+        <li class="{{ Route::is('admin.order.cash-on-delivery') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.cash-on-delivery') }}">{{ __('Cash On Delivery') }}
+            </a>
+        </li>
 
 
         <li class="{{ Route::is('admin.pending-payment') ? 'active' : '' }}"><a class="nav-link"

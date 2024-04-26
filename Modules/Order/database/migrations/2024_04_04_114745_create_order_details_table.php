@@ -17,14 +17,11 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('product_name');
             $table->string('product_sku');
+            $table->string('variant_id')->nullable();
             $table->decimal('price', 15, 4);
             $table->integer('quantity');
-            $table->decimal('discount', 15, 4)->default(0);
-            $table->enum('discount_type', ['fixed', 'percent'])->default('fixed');
-            $table->decimal('tax', 15, 4)->default(0);
-            $table->enum('tax_type', ['fixed', 'percent'])->default('fixed');
             $table->decimal('total', 15, 4);
-            $table->json('attributes')->nullable();
+            $table->string('attributes')->nullable();
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

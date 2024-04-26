@@ -18,12 +18,21 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
 
     Route::controller(OrderController::class)->group(function () {
         Route::get('/orders', 'index')->name('orders');
-        Route::get('/pending-orders', 'pending_order')->name('pending-orders');
-        Route::get('/order/{id}', 'show')->name('order');
+        Route::get('orders/pending', 'pending_order')->name('pending-orders');
         Route::post('/order-payment-reject/{id}', 'order_payment_reject')->name('order-payment-reject');
         Route::post('/order-payment-approved/{id}', 'order_payment_approved')->name('order-payment-approved');
         Route::delete('/order-delete/{id}', 'destroy')->name('order-delete');
-        Route::get('/pending-payment', 'pending_payment')->name('pending-payment');
-        Route::get('/rejected-payment', 'rejected_payment')->name('rejected-payment');
+        Route::get('order/payment/pending', 'pending_payment')->name('pending-payment');
+        Route::get('order/payment/rejected', 'rejected_payment')->name('rejected-payment');
+        Route::post('order/status/', 'orderStatus')->name('order.status');
+        Route::get('/order-reject/{id}', 'orderReject')->name('order.reject');
+        Route::get('/order-accepted/{id}', 'orderAccepted')->name('order.accepted');
+
+        Route::get('orders/progress', 'progressOrder')->name('progress-order');
+        Route::get('orders/on-the-way', 'onTheWay')->name('order.on-the-way');
+        Route::get('orders/delivered', 'deliveredOrder')->name('order.delivered');
+        Route::get('orders/declined', 'declinedOrder')->name('order.declined');
+        Route::get('orders/cash-on-delivery', 'cashOnDelivery')->name('order.cash-on-delivery');
+        Route::get('orders/show/{id}', 'show')->name('order.show');
     });
 });

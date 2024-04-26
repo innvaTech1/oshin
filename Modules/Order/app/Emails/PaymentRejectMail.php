@@ -25,6 +25,6 @@ class PaymentRejectMail extends Mailable
      */
     public function build(): self
     {
-        return $this->subject($this->mail_subject)->view('order::payment_reject_mail', ['mail_template' => $this->mail_template]);
+        return $this->subject($this->mail_subject)->view('order::mail', ['mail_template' => $this->mail_template]);
     }
 }

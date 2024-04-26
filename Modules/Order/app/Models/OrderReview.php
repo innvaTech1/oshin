@@ -3,32 +3,29 @@
 namespace Modules\Order\app\Models;
 
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Order\Database\factories\OrderDetailsFactory;
+use Modules\Order\Database\factories\OrderReviewFactory;
 
-class OrderDetails extends Model
+class OrderReview extends Model
 {
     use HasFactory;
-
-    protected $table = 'order_details';
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
         'order_id',
+        'user_id',
         'product_id',
-        'product_name',
-        'product_sku',
-        'variant_id',
-        'price',
-        'quantity',
-        'total',
-        'attributes',
+        'seller_id',
+        'rating',
+        'comment',
         'status',
     ];
+
+    protected $table = 'order_reviews';
 
     public function order()
     {
@@ -40,8 +37,10 @@ class OrderDetails extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function variant()
+    public function user()
     {
-        return $this->belongsTo(Variant::class);
+        return $this->belongsTo(User::class);
     }
+
+    
 }
