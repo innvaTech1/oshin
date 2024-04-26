@@ -179,7 +179,7 @@
                         variationTableHTML +=
                             `<td >
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <input type="text" class="form-control selling-price w-75" name="selling_price[]" placeholder="Enter Selling Price">
+                                <input type="text" class="form-control selling-price w-75" name="selling_price[]" placeholder="Enter Selling Price" value="{{$product->actual_price}}">
                             </div>
                         </td>
 

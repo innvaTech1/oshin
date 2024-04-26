@@ -117,6 +117,28 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="min_delivery_time">{{ __('Min Delivery Time') }} ({{__('Days')}})<span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="number" name="min_delivery_time" value="{{$product->min_delivery_time}}">
+                                                        @error('min_delivery_time')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="max_delivery_time">{{ __('Max Delivery Time') }} ({{__('Days')}})<span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="number" name="max_delivery_time" value="{{$product->max_delivery_time}}">
+                                                        @error('max_delivery_time')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>{{ __('Stock Quantity') }} <span

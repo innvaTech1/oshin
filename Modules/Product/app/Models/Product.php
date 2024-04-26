@@ -17,7 +17,7 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'brand_id', 'slug', 'image', 'images', 'price', 'discount', 'discount_type', 'cost_per_item', 'stock', 'stock_status', 'tags', 'attributes', 'sku', 'status', 'has_variant', 'is_featured', 'is_bestseller', 'is_new', 'is_top', 'is_hot', 'is_warranty', 'warranty_duration', 'is_return', 'is_exchangeable', 'is_refundable', 'is_cod', 'is_emi', 'is_guest_checkout', 'badge', 'unit_id', 'qty', 'video_link', 'meta_title', 'meta_description', 'created_by', 'updated_by', 'deleted_by', 'viewed', 'is_partial', 'partial_amount', 'delivery_location', 'buyone_getone', 'is_wholesale', 'is_pre_order', 'release_date', 'max_product', 'is_undefine', 'is_flash_deal', 'offer_start_date', 'offer_end_date', 'is_verified', 'return_policy_id', 'show_homepage',
+        'brand_id', 'slug', 'image', 'images', 'price', 'discount', 'discount_type', 'cost_per_item', 'stock', 'stock_status', 'tags', 'attributes', 'sku', 'status', 'has_variant', 'is_featured', 'is_bestseller', 'is_new', 'is_top', 'is_hot', 'is_warranty', 'warranty_duration', 'is_return', 'is_exchangeable', 'is_refundable', 'is_cod', 'is_emi', 'is_guest_checkout', 'badge', 'unit_id', 'qty', 'video_link', 'meta_title', 'meta_description', 'created_by', 'updated_by', 'deleted_by', 'viewed', 'is_partial', 'partial_amount', 'delivery_location', 'buyone_getone', 'is_wholesale', 'is_pre_order', 'release_date', 'max_product', 'is_undefine', 'is_flash_deal', 'offer_start_date', 'offer_end_date', 'is_verified', 'return_policy_id', 'show_homepage', 'min_delivery_time','max_delivery_time'
     ];
 
 
