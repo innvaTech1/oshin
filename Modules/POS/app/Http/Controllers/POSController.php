@@ -4,13 +4,9 @@ namespace Modules\POS\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\OrderSuccessfulMailJob;
-use App\Models\Address;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\User;
 use App\Models\Variant;
 use Modules\Order\app\Services\OrderService;
-use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +16,9 @@ use Illuminate\Support\Facades\Validator;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
+use Modules\Product\app\Models\Category;
+use Modules\Product\app\Models\Product;
+use Modules\Product\app\Services\ProductService;
 
 class POSController extends Controller
 {

@@ -31,6 +31,26 @@ if (!function_exists('allLanguages')) {
         return Language::all();
     }
 }
+// all payment methods
+if (!function_exists('allPaymentMethods')) {
+    function allPaymentMethods($key = null)
+    {
+        $methods = [
+            'stripe' => 'Stripe',
+            'paypal' => 'Paypal',
+            'bank_transfer' => 'Bank Transfer',
+            'hand_cash' => 'Hand Cash',
+            'cod' => 'Cash On Delivery',
+            'check' => 'Bank Check',
+        ];
+
+        if ($key) {
+            return $methods[$key];
+        }
+
+        return $methods;
+    }
+}
 
 if (!function_exists('getSessionLanguage')) {
     function getSessionLanguage(): string
@@ -92,9 +112,37 @@ function currency($price = '')
 
         return $price;
     } else {
-        return $currency_icon;
+        return $currency_icon . '0.00';
     }
 }
+
+
+// get currency icon
+function currency_icon()
+{
+    $currencySetting = Cache::rememberForever('currency', function () {
+        $siteCurrencyId = Session::get('site_currency');
+
+        $currency = MultiCurrency::when($siteCurrencyId, function ($query) use ($siteCurrencyId) {
+            return $query->where('id', $siteCurrencyId);
+        })->when(!$siteCurrencyId, function ($query) {
+            return $query->where('is_default', 'yes');
+        })->first();
+
+        return $currency;
+    });
+
+    return $currencySetting->currency_icon;
+}
+
+// remove currency icon using regular expression
+function remove_icon($price)
+{
+    $price = preg_replace('/[^0-9,.]/', '', $price);
+
+    return $price;
+}
+
 
 
 // calculate currency

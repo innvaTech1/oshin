@@ -5,8 +5,10 @@
 
     </a>
     <ul class="dropdown-menu">
-        <li class="{{ Route::is('admin.orders') ? 'active' : '' }}"><a class="nav-link"
-                href="{{ route('admin.orders') }}">{{ __('Order History') }}</a></li>
+        <li class="{{ Route::is('admin.orders') ? 'active' : '' }}">
+            <a class="nav-link"
+                href="{{ route('admin.orders') }}">{{ __('Order History') }}</a>
+            </li>
 
         <li class="{{ Route::is('admin.pending-orders') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.pending-orders') }}">{{ __('Pending Orders') }}

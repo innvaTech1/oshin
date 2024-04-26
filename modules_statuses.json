@@ -20,5 +20,6 @@
     "Faq": true,
     "Media": true,
     "Product": true,
-    "Slider": true
+    "Slider": true,
+    "POS": true
 }
