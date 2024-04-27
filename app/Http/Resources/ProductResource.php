@@ -41,6 +41,7 @@ class ProductResource extends JsonResource
             'related_products' => $this->relatedProducts? ProductResource::collection($this->relatedProduct) : [],
             "images_url" => $this->images_url,
             'is_cod' => $this->is_cod ? 'Yes' : 'No',
+            'is_verified' => $this->is_verified ? 'Yes' : 'No',
             'unit' => $this->unit?->name,
             'unit_id' => $this->unit_id,
             'partial_amount' => $this->partial_amount,
