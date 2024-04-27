@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\CouponController;
+use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductCategoryController;
 use App\Http\Controllers\API\ProductController;
@@ -38,6 +39,11 @@ Route::post('refresh', [UserAuthController::class, 'refresh']);
 Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
 Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
 
+
+// get all districts
+Route::get('/districts', [LocationController::class, 'getDistricts']);
+// get all thanas
+Route::get('/thanas/{district_id}', [LocationController::class, 'getThanas']);
 
 // get category list
 Route::get('/categories', [ProductCategoryController::class, 'index']);
