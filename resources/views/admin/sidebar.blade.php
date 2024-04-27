@@ -28,6 +28,20 @@
                 </a>
             </li>
 
+            <li class="nav-item dropdown {{ Route::is('admin.state.*') | Route::is('admin.city.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown"><i
+                        class="fas fa-map-marker-alt"></i><span>{{ __('Location') }}</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ Route::is('admin.state.index') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.state.index') }}">{{ __('District') }}</a>
+                    </li>
+                    <li class="{{ Route::is('admin.city.index') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.city.index') }}">{{ __('Thana') }}</a>
+                    </li>
+                </ul>
+            </li>
+
+
             <li class="menu-header">{{ __('Manage Contents') }}</li>
 
             @if (Module::isEnabled('Media') && checkAdminHasPermission('media.view'))
@@ -41,7 +55,7 @@
 
             <li class="menu-header">{{ __('Manage Website') }}</li>
 
-            @if(Module::isEnabled('Slider'))
+            @if (Module::isEnabled('Slider'))
                 @include('slider::sidebar')
             @endif
             @if (Module::isEnabled('Faq') && checkAdminHasPermission('faq.view'))

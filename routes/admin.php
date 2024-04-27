@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShippingMethodController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\StateController;
 use Illuminate\Support\Facades\Route;
 use Modules\Product\app\Http\Controllers\ProductController;
 
@@ -41,6 +43,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
         Route::get('product/bulk-import', [ProductController::class,'bulkImport'])->name('product.import');
 
+
+        // locations
+
+        Route::resource('city', CityController::class);
+        Route::resource('state', StateController::class);
+
+        Route::get('/all-cities-by-state/{id}', [CityController::class, 'getAllCitiesByState'])->name('get.all.cities.by.state');
         // sellers routes
         Route::resource('sellers', SellerController::class);
         Route::resource('shipping', ShippingMethodController::class);

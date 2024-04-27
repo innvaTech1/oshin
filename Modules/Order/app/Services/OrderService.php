@@ -143,4 +143,10 @@ class OrderService
 
         $this->sendOrderSuccessMailFromTrait($subject,$message,$user);
     }
+
+
+    public function getUserOrders($user)
+    {
+        return $this->order->where('user_id', $user->id)->with('orderDetails')->orderBy('id', 'desc')->get();
+    }
 }
