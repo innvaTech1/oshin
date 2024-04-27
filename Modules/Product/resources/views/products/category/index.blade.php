@@ -10,6 +10,23 @@
             </div>
 
             <div class="section-body">
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="product_search_form" class="pos_pro_search_form w-100">
+                                    <div class="row">
+                                        <div class="col-md-5 d-flex align-items-center  mx-auto">
+                                            <input type="text" class="form-control" name="search"
+                                                placeholder="{{ __('Search here..') }}" autocomplete="off"
+                                                value="{{ request()->get('search') }}">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
@@ -84,7 +101,9 @@
                 var url = $(this).data('url');
                 $('#deleteForm').attr('action', url);
             });
-
+            $('[name="search"]').on('change', function() {
+                $('#product_search_form').submit();
+            })
         });
     </script>
 @endpush

@@ -21,7 +21,13 @@ class ProductCategoryService
 
     public function getAllProductCategories()
     {
-        return $this->category->paginate(20);
+        $category = $this->category->with('translations');
+        if (request()->search) {
+            $category = $category->whereHas('translation', function($q){
+                $q->where('name', 'like', '%' . request()->search . '%');
+            });
+        }
+        return $category->paginate(20);
     }
 
     // Get all active product categories

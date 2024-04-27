@@ -112,5 +112,9 @@
                 }
             })
         }
+
+        $('[name="search"]').on('change',function(){
+            $('#product_search_form').submit();
+        })
     </script>
 @endsection
