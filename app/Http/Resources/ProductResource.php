@@ -44,10 +44,10 @@ class ProductResource extends JsonResource
             'unit' => $this->unit?->name,
             'unit_id' => $this->unit_id,
             'partial_amount' => $this->partial_amount,
-            'min_delivery_days' => $this->min_delivery_days,
-            'max_delivery_days' => $this->max_delivery_days,
-            'min_delivery_date' => now()->addDays($this->min_delivery_days)->format('d F'),
-            'max_delivery_date' => now()->addDays($this->max_delivery_days)->format('d F'),
+            'min_delivery_days' => $this->min_delivery_time,
+            'max_delivery_days' => $this->max_delivery_time,
+            'min_delivery_date' => now()->addDays($this->min_delivery_time)->format('d F'),
+            'max_delivery_date' => now()->addDays($this->max_delivery_time)->format('d F'),
         ];
     }
     public function singleProduct(): array
