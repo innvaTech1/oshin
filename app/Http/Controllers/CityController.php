@@ -20,7 +20,13 @@ class CityController extends Controller
     public function index()
     {
         // abort_unless(checkAdminHasPermission('city.list'), 403);
-        $thanas = Thana::with(['district'])->paginate(50);
+        $thanas = Thana::with(['district']);
+
+        if(request()->search)
+        {
+            $thanas = $thanas->where('name', 'like', '%'.request()->search.'%');
+        }
+        $thanas = $thanas->paginate(10);
 
         return view('admin.locations.cities.index',compact('thanas'));
     }

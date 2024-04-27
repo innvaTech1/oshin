@@ -15,7 +15,12 @@ class StateController extends Controller
     public function index()
     {
         // abort_unless(checkAdminHasPermission('state.list'), 403);
-        $states = District::paginate(50);
+        $states = District::query();
+        if(request()->search)
+        {
+            $states = $states->where('name', 'like', '%'.request()->search.'%');
+        }
+        $states = $states->paginate(10);
         return view('admin.locations.states.index', compact('states'));
     }
 
