@@ -31,31 +31,31 @@ class ProductService
     public function allActiveProducts($request): Collection
     {
         $products = $this->product->where('status', 1)->with('categories');
-        if($request->has('category')){
-            $products = $products->whereHas('categories', function($query) use ($request){
+        if ($request->has('category')) {
+            $products = $products->whereHas('categories', function ($query) use ($request) {
                 $query->where('slug', $request->category);
             });
         }
-        if($request->has('brand')){
-            $products = $products->where('brand', function ($query) use ($request){
+        if ($request->has('brand')) {
+            $products = $products->where('brand', function ($query) use ($request) {
                 $query->where('slug', $request->brand);
             });
         }
-        if($request->has('min_price')){
+        if ($request->has('min_price')) {
             $products = $products->where('price', '>=', $request->min_price);
         }
 
-        if($request->has('max_price')){
+        if ($request->has('max_price')) {
             $products = $products->where('price', '<=', $request->max_price);
         }
 
-        if($request->has('search')){
-            $products = $products->whereHas('translation', function($query) use ($request){
-                $query->where('name', 'like', '%'.$request->search.'%');
+        if ($request->has('search')) {
+            $products = $products->whereHas('translation', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
             });
         }
 
-        if($request->has('sort')){
+        if ($request->has('sort')) {
             $products = $products->orderBy('price', $request->sort);
         }
 
@@ -281,6 +281,7 @@ class ProductService
                 'id' => $variant->id,
                 'sku' => $variant->sku,
                 'price' => $variant->price,
+                'attribute' => $variant->attributes(),
                 'attributes' => $variant->options->map(function ($option) {
                     return [
                         'attribute_id' => $option->attribute_id,
