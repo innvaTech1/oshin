@@ -36,7 +36,7 @@ class CouponController extends Controller
         if ($coupon) {
             $discount = 0;
             if ($coupon->offer_type == 1) {
-                $coupon_price = $coupon->offer_percentage;
+                $coupon_price = $coupon->discount;
                 $discountAmount = ($coupon_price / 100) * $request->amount;
                 $discount = $discountAmount;
             } else {
