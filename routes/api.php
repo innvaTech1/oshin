@@ -28,84 +28,82 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Authentication
-Route::post('register', [UserAuthController::class, 'register']);
-Route::post('login', [UserAuthController::class, 'login']);
-Route::post('logout', [UserAuthController::class, 'logout']);
-Route::post('refresh', [UserAuthController::class, 'refresh']);
+Route::group(['middleware' => 'cors'], function () {
+    // Authentication
+    Route::post('register', [UserAuthController::class, 'register']);
+    Route::post('login', [UserAuthController::class, 'login']);
+    Route::post('logout', [UserAuthController::class, 'logout']);
+    Route::post('refresh', [UserAuthController::class, 'refresh']);
 
 
-// Reset password
-Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
-Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
+    // Reset password
+    Route::post('password/email', [UserAuthController::class, 'forgotPassword']);
+    Route::post('password/reset', [UserAuthController::class, 'resetPassword']);
 
 
-// get all districts
-Route::get('/districts', [LocationController::class, 'getDistricts']);
-// get all thanas
-Route::get('/thanas/{district_id}', [LocationController::class, 'getThanas']);
+    // get all districts
+    Route::get('/districts', [LocationController::class, 'getDistricts']);
+    // get all thanas
+    Route::get('/thanas/{district_id}', [LocationController::class, 'getThanas']);
 
-// get category list
-Route::get('/categories', [ProductCategoryController::class, 'index']);
-Route::get('/categories/top', [ProductCategoryController::class, 'topCategories']);
-// get category by id
-Route::get('/categories/{slug}', [ProductCategoryController::class, 'show']);
-// get products by category
-Route::get('/categories/{slug}/products', [ProductCategoryController::class, 'products']);
+    // get category list
+    Route::get('/categories', [ProductCategoryController::class, 'index']);
+    Route::get('/categories/top', [ProductCategoryController::class, 'topCategories']);
+    // get category by id
+    Route::get('/categories/{slug}', [ProductCategoryController::class, 'show']);
+    // get products by category
+    Route::get('/categories/{slug}/products', [ProductCategoryController::class, 'products']);
 
-// get brands lists
-Route::get('/brands', [BrandController::class, 'brands']);
-Route::get('/brands/{slug}', [BrandController::class, 'show']);
-// get products by brand
-Route::get('/brands/{slug}/products', [BrandController::class, 'products']);
+    // get brands lists
+    Route::get('/brands', [BrandController::class, 'brands']);
+    Route::get('/brands/{slug}', [BrandController::class, 'show']);
+    // get products by brand
+    Route::get('/brands/{slug}/products', [BrandController::class, 'products']);
 
-// get products
-Route::get('/products', [ProductController::class, 'products']);
-Route::get('/products/featured', [ProductController::class, 'featuredProducts']);
-Route::get('/products/best-seller', [ProductController::class, 'bestSellerProducts']);
-Route::get('/products/homepage', [ProductController::class, 'homepageProducts']);
-Route::get('/products/{slug}', [ProductController::class, 'show']);
+    // get products
+    Route::get('/products', [ProductController::class, 'products']);
+    Route::get('/products/featured', [ProductController::class, 'featuredProducts']);
+    Route::get('/products/best-seller', [ProductController::class, 'bestSellerProducts']);
+    Route::get('/products/homepage', [ProductController::class, 'homepageProducts']);
+    Route::get('/products/{slug}', [ProductController::class, 'show']);
 
 
-// shipping methods routes
-Route::get('/shipping-methods', [ShippingMethodController::class, 'index']);
-Route::get('/shipping-methods/{id}', [ShippingMethodController::class, 'show']);
+    // shipping methods routes
+    Route::get('/shipping-methods', [ShippingMethodController::class, 'index']);
+    Route::get('/shipping-methods/{id}', [ShippingMethodController::class, 'show']);
 
-// coupon
-Route::get('/coupon', [CouponController::class, 'index']);
+    // coupon
+    Route::get('/coupon', [CouponController::class, 'index']);
 
-// get wishlists
-Route::middleware('auth:api')->group(function () {
-    Route::get('/wishlists', [WishlistController::class, 'index']);
-    // add wishlist
-    Route::post('/wishlists', [WishlistController::class, 'store']);
-    // remove wishlist
-    Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
+    // get wishlists
+    Route::middleware('auth:api')->group(function () {
+        Route::get('/wishlists', [WishlistController::class, 'index']);
+        // add wishlist
+        Route::post('/wishlists', [WishlistController::class, 'store']);
+        // remove wishlist
+        Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
 
-    // Create Address
-    Route::post('addresses', [AddressController::class, 'createAddress']);
+        // Create Address
+        Route::post('addresses', [AddressController::class, 'createAddress']);
 
-    // Get Addresses
-    Route::get('addresses', [AddressController::class, 'getAddresses']);
+        // Get Addresses
+        Route::get('addresses', [AddressController::class, 'getAddresses']);
 
-    // Update Address
-    Route::put('addresses/{id}', [AddressController::class, 'updateAddress']);
+        // Update Address
+        Route::put('addresses/{id}', [AddressController::class, 'updateAddress']);
 
-    // Delete Address
-    Route::delete('addresses/{id}', [AddressController::class, 'deleteAddress']);
+        // Delete Address
+        Route::delete('addresses/{id}', [AddressController::class, 'deleteAddress']);
 
-    // Get user profile (requires authentication)
-    Route::get('profile', [UserAuthController::class, 'profile']);
+        // Get user profile (requires authentication)
+        Route::get('profile', [UserAuthController::class, 'profile']);
 
-    // Update user profile (requires authentication)
-    Route::put('profile', [UserAuthController::class, 'updateProfile']);
+        // Update user profile (requires authentication)
+        Route::put('profile', [UserAuthController::class, 'updateProfile']);
 
-    // get user orders
+        // get user orders
 
-    Route::get('orders', [OrderController::class, 'index']);
-
+        Route::get('orders', [OrderController::class, 'index']);
+    });
 });
-
-
 // create order
-
