@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function products(Request $request)
     {
-        $products = $this->productService->allActiveProducts($request);
+        $products = $this->productService->allActiveProducts($request)->get();
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -30,7 +30,7 @@ class ProductController extends Controller
 
     public function featuredProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts($request)->where('is_featured', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('is_featured', 1)->get();
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -39,7 +39,7 @@ class ProductController extends Controller
     }
     public function bestSellerProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts($request)->where('is_bestseller', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('is_bestseller', 1)->get();
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -48,7 +48,7 @@ class ProductController extends Controller
     }
     public function homepageProducts(Request $request)
     {
-        $products = $this->productService->allActiveProducts($request)->where('show_homepage', 1)->paginate(12);
+        $products = $this->productService->allActiveProducts($request)->where('show_homepage', 1)->get();
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {
@@ -60,7 +60,7 @@ class ProductController extends Controller
             $product = $this->productService->getProductBySlug($slug);
 
             $productResource = new ProductResource($product);
-            
+
             $data['product'] = $productResource;
             $prodVar = $this->productService->getProductVariants($product);
             $data['variants'] = $prodVar;

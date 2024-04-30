@@ -28,7 +28,7 @@ class ProductService
     }
 
     // get all active products
-    public function allActiveProducts($request): Collection
+    public function allActiveProducts($request)
     {
         $products = $this->product->where('status', 1)->with('categories');
         if ($request->has('category')) {
@@ -37,7 +37,7 @@ class ProductService
             });
         }
         if ($request->has('brand')) {
-            $products = $products->where('brand', function ($query) use ($request) {
+            $products = $products->whereHas('brand', function ($query) use ($request) {
                 $query->where('slug', $request->brand);
             });
         }
@@ -59,7 +59,7 @@ class ProductService
             $products = $products->orderBy('price', $request->sort);
         }
 
-        return $products->get();
+        return $products;
     }
 
     public function getProduct($id): ?Product
