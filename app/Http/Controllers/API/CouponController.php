@@ -18,6 +18,10 @@ class CouponController extends Controller
 
         $coupon = Coupon::where(['coupon_code' => $request->coupon, 'status' => 'active'])->first();
 
+        if (!$coupon) {
+            $notification = trans('Invalid Code');
+            return responseFail($notification, 403);
+        }
         if ($coupon->expired_date < date('Y-m-d')) {
             $notification = trans('Coupon already expired');
             return responseFail($notification, 403);
@@ -43,7 +47,7 @@ class CouponController extends Controller
                 $discount = $coupon->discount;
             }
 
-            return responseSuccess(['discount' => $discount, 'coupon' => $coupon]);
+            return responseSuccess(['discount' => $discount, 'coupon' => $coupon],'Coupon Applied Successfully');
 
         } else {
             $notification = trans('Invalid Coupon');
