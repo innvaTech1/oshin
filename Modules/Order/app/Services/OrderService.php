@@ -7,6 +7,7 @@ use App\Models\User;
 
 use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
+use Modules\Coupon\app\Models\CouponHistory;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
 use Modules\GlobalSetting\app\Models\Setting;
 use Modules\Order\app\Models\Order;
@@ -148,5 +149,27 @@ class OrderService
     public function getUserOrders($user)
     {
         return $this->order->where('user_id', $user->id)->with('orderDetails')->orderBy('id', 'desc')->get();
+    }
+
+
+    public function coupon($coupon, $user)
+    {
+
+            if (Session::get('coupon_code') && Session::get('offer_percentage')) {
+
+                if ($coupon) {
+                    $offer_percentage = Session::get('offer_percentage');
+                    $coupon_discount = Session::get('coupon_price');
+
+                    $history = new CouponHistory();
+                    $history->user_id = $user->id;
+                    $history->author_id = $coupon->author_id;
+                    $history->coupon_code = $coupon->coupon_code;
+                    $history->coupon_id = $coupon->id;
+                    $history->discount_amount = $coupon_discount;
+                    $history->save();
+                }
+            }
+
     }
 }

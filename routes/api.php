@@ -72,11 +72,15 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/shipping-methods', [ShippingMethodController::class, 'index']);
     Route::get('/shipping-methods/{id}', [ShippingMethodController::class, 'show']);
 
+    // Order
+    Route::post('/order/guest/create', [OrderController::class, 'createGuest']);
     // coupon
     Route::get('/coupon', [CouponController::class, 'index']);
 
     // get wishlists
     Route::middleware('auth:api')->group(function () {
+        Route::post('/order/create', [OrderController::class, 'create']);
+        Route::get('/order/{id}', [OrderController::class, 'show']);
         Route::get('/wishlists', [WishlistController::class, 'index']);
         // add wishlist
         Route::post('/wishlists', [WishlistController::class, 'store']);

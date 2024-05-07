@@ -20,7 +20,15 @@ class ProductController extends Controller
 
     public function products(Request $request)
     {
-        $products = $this->productService->allActiveProducts($request)->get();
+        $products = $this->productService->allActiveProducts($request);
+
+        if($request->limit){
+            $products = $products->limit($request->limit);
+        }
+        else{
+            $products = $products->limit(18);
+        }
+        $products = $products->get();
         if (count($products) > 0) {
             return responseSuccess(ProductResource::collection($products));
         } else {

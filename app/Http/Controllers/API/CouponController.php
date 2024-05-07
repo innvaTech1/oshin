@@ -32,10 +32,8 @@ class CouponController extends Controller
             return responseFail($notification, 403);
         }
         if($coupon->min_price && $request->amount < $coupon->min_price){
-            return responseFail('Minimum purchase amount should be '.$coupon->min_price,403);
+            return responseFail('Minimum purchase amount should be '.currency($coupon->min_price),403);
         }
-
-
 
         if ($coupon) {
             $discount = 0;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Modules\Order\app\Services\OrderService;
 
@@ -51,5 +52,40 @@ class OrderController extends Controller
         {
             return responseFail('Order Not Placed', 400);
         }
+    }
+
+    public function createGuest(Request $request)
+    {
+        $shippingAddress = $this->createAddress($request->shippingAddress);
+
+        $billingAddress = $request->billingAddress? $this->createAddress($request->billingAddress) : $shippingAddress;
+        $coupon = $request->coupon;
+        $payment = $request->payment;
+        $cart = $request->cart;
+
+        $request->merge('address_id',$shippingAddress);
+        $order = $this->orderService->storeGuestOrder($request, $cart);
+
+        if ($order) {
+            return responseSuccess($order, 'Order Placed Successfully', 200);
+        }else
+        {
+            return responseFail('Order Not Placed', 400);
+        }
+    }
+
+
+    private function createAddress($address)
+    {
+        $address = Address::create([
+            "name" => $address['fullName'],
+            "address" => $address['address'],
+            "phone" => $address['mobileNumber'],
+            "email" => $address['email'],
+            "state" => $address['district'],
+            "city" => $address['upzila'],
+        ]);
+
+        return $address;
     }
 }
