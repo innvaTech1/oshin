@@ -6,15 +6,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Product\app\Models\ProductStock;
+use Modules\Product\app\Services\ProductService;
 
 class ProductStockController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('product::index');
+        $products = $this->productService->getProducts()->paginate(20);
+        return view('product::products.stock.index',compact('products'));
     }
 
     /**
@@ -52,9 +62,27 @@ class ProductStockController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'sku' => 'required',
+            'quantity' => 'required',
+        ]);
+
+        $stock = ProductStock::where('sku',$request->sku);
+
+        if($stock->exists()){
+            $stock->update([
+                'quantity' => $request->quantity
+            ]);
+        }else{
+
+            ProductStock::create([
+                'product_id' => $request->product_id,
+                'sku' => $request->sku,
+                'quantity' => $request->quantity
+            ]);
+        }
     }
 
     /**

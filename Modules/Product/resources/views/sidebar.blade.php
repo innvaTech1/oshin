@@ -35,6 +35,12 @@
                 {{ __('Add Product') }}
             </a>
         </li>
+
+        <li class="{{ Route::is('admin.product.inventory') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.product.inventory') }}">
+                {{ __('Product Inventory') }}
+            </a>
+        </li>
         <li class="{{ Route::is('admin.product.import') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.product.import') }}">
                 {{ __('Bulk Product Import') }}

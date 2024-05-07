@@ -71,4 +71,9 @@ class Variant extends Model
         });
     }
 
+    public function stock()
+    {
+        return $this->hasOne(ProductStock::class, 'sku', 'sku');
+    }
+
 }

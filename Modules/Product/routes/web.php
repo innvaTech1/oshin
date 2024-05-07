@@ -5,6 +5,7 @@ use Modules\Product\app\Http\Controllers\BrandController;
 use Modules\Product\app\Http\Controllers\ProductAttributeController;
 use Modules\Product\app\Http\Controllers\ProductCategoryController;
 use Modules\Product\app\Http\Controllers\ProductController;
+use Modules\Product\app\Http\Controllers\ProductStockController;
 use Modules\Product\app\Http\Controllers\UnitTypeController;
 
 /*
@@ -53,6 +54,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
     Route::post('wholesale-modal', [ProductController::class, 'productWholesaleModal'])->name('wholesale.modal');
    
    
+    // product stock
+    Route::get('stock',[ProductStockController::class,'index'])->name('product.inventory');
+
+    // update stock
+    Route::post('product/inventory/update',[ProductStockController::class,'update'])->name('product.inventory.update');
+
     // Categories Routes
 
 

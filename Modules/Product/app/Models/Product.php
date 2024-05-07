@@ -289,4 +289,9 @@ class Product extends Model
         $resource = new ProductResource($this);
         return $resource->singleProduct();
     }
+
+    public function stock()
+    {
+        return $this->hasOne(ProductStock::class, 'sku', 'sku');
+    }
 }
