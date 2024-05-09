@@ -19,7 +19,7 @@ class ProductCategoryController extends Controller
     }
     public function index()
     {
-        $categories = $this->categoryService->getActiveProductCategories();
+        $categories = $this->categoryService->getParentCategory();
         if (count($categories) > 0) {
             return responseSuccess(CategoryResource::collection($categories));
         } else {

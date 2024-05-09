@@ -36,6 +36,10 @@ class ProductCategoryService
     {
         return $this->category->where('status', '1')->get();
     }
+    
+    public function getParentCategory(){
+    	return $this->category->where('status', '1')->where('parent_id',null)->get();
+    }
 
     public function getTopProductCategories()
     {
