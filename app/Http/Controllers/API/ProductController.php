@@ -22,10 +22,9 @@ class ProductController extends Controller
     {
         $products = $this->productService->allActiveProducts($request);
 
-        if($request->limit){
+        if ($request->limit) {
             $products = $products->limit($request->limit);
-        }
-        else{
+        } else {
             $products = $products->limit(18);
         }
         $products = $products->get();
@@ -63,7 +62,8 @@ class ProductController extends Controller
             return responseFail('Products not found', 404);
         }
     }
-    public function show(string $slug){
+    public function show(string $slug)
+    {
         try {
             $product = $this->productService->getProductBySlug($slug);
 

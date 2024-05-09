@@ -40,13 +40,14 @@
                                                             alt="" width="100px" height="100px"></td>
                                                     <td class="text-left">{{ $product->name }}
                                                     </td>
-                                                    
+
                                                     <td>
                                                         @if (!$product->has_variant)
-                                                        <input type="number" name="quantity" value="{{ $item?->stock?->quantity }}"
-                                                            class="form-control" data-sku="{{ $item->sku }}">
+                                                            <input type="number" name="quantity"
+                                                                value="{{ $item?->stock?->quantity }}" class="form-control"
+                                                                data-sku="{{ $item->sku }}">
                                                         @endif
-                                                        
+
                                                     </td>
                                                 </tr>
                                                 @foreach ($product->variants as $item)
@@ -58,12 +59,14 @@
                                                                 ↳ {{ $item->attributes() }}
                                                             </span>
                                                             <small>
-                                                                {{$item->sku}}
+                                                                {{ $item->sku }}
                                                             </small>
                                                         </td>
                                                         <td>
-                                                            <input type="number" name="quantity" value="{{$item?->stock?->quantity}}"
-                                                                class="form-control" data-sku="{{ $item->sku }}" data-product_id="{{$product->id}}">
+                                                            <input type="number" name="quantity"
+                                                                value="{{ $item?->stock?->quantity }}" class="form-control"
+                                                                data-sku="{{ $item->sku }}"
+                                                                data-product_id="{{ $product->id }}">
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -90,7 +93,7 @@
     <script>
         "use strict";
 
-        $("[name='quantity']").on('blur',function(){
+        $("[name='quantity']").on('blur', function() {
             $('.preloader_area').removeClass('d-none');
             let quantity = $(this).val();
             let sku = $(this).data('sku');
@@ -102,7 +105,7 @@
                     _token: "{{ csrf_token() }}",
                     sku: sku,
                     quantity: quantity,
-                    product_id : product_id,
+                    product_id: product_id,
                 },
                 success: function(response) {
                     iziToast.success({

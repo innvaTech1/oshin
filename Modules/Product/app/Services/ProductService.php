@@ -38,7 +38,7 @@ class ProductService
         }
         if ($request->has('brand')) {
             $products = $products->whereHas('brand', function ($query) use ($request) {
-                $query->where('slug', $request->brand);
+                $query->whereIn('slug', explode(',', $request->brand));
             });
         }
         if ($request->has('min_price')) {
