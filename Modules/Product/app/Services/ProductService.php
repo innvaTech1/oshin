@@ -55,9 +55,28 @@ class ProductService
             });
         }
 
-        if ($request->has('sort')) {
-            $products = $products->orderBy('price', $request->sort);
+        if ($request->has('sorting')) {
+            $sorting = $request->has('sorting');
+
+            switch ($sorting) {
+                case 'latest':
+                    $products = $products->orderBy('created_at', 'desc');
+                    break;
+
+                case 'low-price':
+                    $products = $products->orderBy('price', 'asc');
+                    break;
+
+                case 'high-price':
+                    $products = $products->orderBy('price', 'desc');
+                    break;
+
+                default:
+                    $products = $products->orderBy('created_at', 'desc');
+                    break;
+            }
         }
+
 
         return $products;
     }
