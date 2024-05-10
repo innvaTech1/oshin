@@ -1,6 +1,6 @@
 <li class="menu-header">{{ __('Manage Product') }}</li>
 
-<li class="nav-item dropdown {{ Route::is('admin.products.*') ? 'active' : '' }}">
+<li class="nav-item dropdown {{ Route::is('admin.product.*') ? 'active' : '' }}">
     <a href="javascript:void()" class="nav-link has-dropdown"><i
             class="fas fa-newspaper"></i><span>{{ __('Manage Products') }}</span></a>
 

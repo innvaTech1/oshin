@@ -11,6 +11,79 @@
 
             <div class="section-body">
                 <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="{{ route('admin.product.index') }}" method="GET" onchange="this.submit()"
+                                    class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2 form-group">
+                                            <input type="text" name="keyword" value="{{ request()->get('keyword') }}"
+                                                class="form-control" placeholder="{{ __('Search') }}">
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="brand" id="brand" class="form-control">
+                                                <option value="">{{ __('Brands') }}</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="is_popular" id="is_popular" class="form-control">
+                                                <option value="">{{ __('Select Popular') }}</option>
+                                                <option value="1" {{ request('is_popular') == '1' ? 'selected' : '' }}>
+                                                    {{ __('Yes') }}
+                                                </option>
+                                                <option value="0" {{ request('is_popular') == '0' ? 'selected' : '' }}>
+                                                    {{ __('No') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="">{{ __('Select Status') }}</option>
+                                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>
+                                                    {{ __('Active') }}
+                                                </option>
+                                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
+                                                    {{ __('In-Active') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="order_by" id="order_by" class="form-control">
+                                                <option value="">{{ __('Order By') }}</option>
+                                                <option value="1" {{ request('order_by') == '1' ? 'selected' : '' }}>
+                                                    {{ __('ASC') }}
+                                                </option>
+                                                <option value="0" {{ request('order_by') == '0' ? 'selected' : '' }}>
+                                                    {{ __('DESC') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="par-page" id="par-page" class="form-control">
+                                                <option value="">{{ __('Per Page') }}</option>
+                                                <option value="10" {{ '10' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('10') }}
+                                                </option>
+                                                <option value="50" {{ '50' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('50') }}
+                                                </option>
+                                                <option value="100"
+                                                    {{ '100' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('100') }}
+                                                </option>
+                                                <option value="all"
+                                                    {{ 'all' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('All') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
@@ -27,10 +100,11 @@
 
                                             <tr>
                                                 <th width="5%">{{ __('SN') }}</th>
+                                                <th width="15%">{{ __('Photo') }}</th>
                                                 <th width="30%">{{ __('Name') }}</th>
                                                 <th width="10%">{{ __('Price') }}</th>
-                                                <th width="15%">{{ __('Photo') }}</th>
-                                                <th width="15%">{{ __('Type') }}</th>
+                                                <th width="15%">{{ __('Sku') }}</th>
+                                                <th width="15%">{{ __('Quantity') }}</th>
                                                 <th width="10%">{{ __('Status') }}</th>
                                                 <th width="15%">{{ __('Action') }}</th>
                                             </tr>
@@ -40,20 +114,15 @@
                                             @foreach ($products as $index => $product)
                                                 <tr>
                                                     <td>{{ ++$index }}</td>
+                                                    <td>
+                                                        <img class="rounded-circle" src="{{ asset($product->image_url) }}"
+                                                            alt="" width="100px" height="100px">
+                                                    </td>
                                                     <td>{{ $product->name }}
                                                     </td>
                                                     <td>{{ currency($product->actual_price) }}</td>
-                                                    <td> <img class="rounded-circle" src="{{ asset($product->image_url) }}"
-                                                            alt="" width="100px" height="100px"></td>
-                                                    <td>
-                                                        @if ($product->is_new == 1)
-                                                            {{ __('New Arrival') }}
-                                                        @elseif ($product->is_featured == 1)
-                                                            {{ __('Featured Product') }}
-                                                        @elseif ($product->is_bestseller == 1)
-                                                            {{ __('Best Selling Product') }}
-                                                        @endif
-                                                    </td>
+                                                    <td>{{ $product->sku }}</td>
+                                                    <td>{{ $product->stock_qty }}</td>
                                                     <td>
                                                         @if ($product->status == 1)
                                                             <a href="javascript:;"

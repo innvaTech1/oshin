@@ -29,7 +29,6 @@ class ProductController extends Controller
         $this->attributeService = $attributeService;
         $this->brandService = $brandService;
         $this->middleware('auth:admin');
-
     }
     /**
      * Display a listing of the resource.
@@ -37,8 +36,16 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $products = $this->productService->getProducts()->paginate(20);
-            return view('product::products.index', compact('products'));
+            $products = $this->productService->getProducts();
+
+            if (request()->has('par-page') && !empty(request()->get('par-page'))) {
+                $products = $products->paginate(request()->get('par-page'));
+            } else {
+                $products = $products->paginate(20);
+            }
+            $categories = $this->categoryService->getAllProductCategoriesForSelect();
+            $brands = $this->brandService->getActiveBrands();
+            return view('product::products.index', compact('products', 'categories', 'brands'));
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             abort(500);
@@ -53,7 +60,7 @@ class ProductController extends Controller
         $categories = $this->categoryService->getAllProductCategoriesForSelect();
         $brands = $this->brandService->getActiveBrands();
         $units = $unitService->getActiveAll();
-        return view('product::products.create', compact('categories', 'brands','units'));
+        return view('product::products.create', compact('categories', 'brands', 'units'));
     }
 
     /**
@@ -76,7 +83,6 @@ class ProductController extends Controller
                     'alert-type' => 'error',
                 ]);
             }
-
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             DB::rollBack();
@@ -98,7 +104,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id,UnitTypeService $unitService)
+    public function edit(string $id, UnitTypeService $unitService)
     {
         try {
             $product = $this->productService->getProduct($id);
@@ -107,8 +113,7 @@ class ProductController extends Controller
             $categories = $this->categoryService->getAllProductCategoriesForSelect();
             $brands = $this->brandService->getActiveBrands();
             $units = $unitService->getActiveAll();
-            return view('product::products.edit', compact('categories', 'brands', 'product', 'productCategories','units'));
-
+            return view('product::products.edit', compact('categories', 'brands', 'product', 'productCategories', 'units'));
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             abort(500);
@@ -311,7 +316,6 @@ class ProductController extends Controller
                 'messege' => 'Product Variant created successfully',
                 'alert-type' => 'success',
             ]);
-
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             DB::rollBack();
@@ -361,7 +365,6 @@ class ProductController extends Controller
                 'messege' => 'Product Variant updated successfully',
                 'alert-type' => 'success',
             ]);
-
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             DB::rollBack();
@@ -389,7 +392,6 @@ class ProductController extends Controller
                 'messege' => 'Product Variant deleted successfully',
                 'alert-type' => 'success',
             ]);
-
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             DB::rollBack();
@@ -409,9 +411,9 @@ class ProductController extends Controller
     // store bulk product
     public function bulkImportStore(Request $request)
     {
-        
 
-        
+
+
         try {
             $this->productService->bulkImport($request);
             return back()->with([
@@ -464,7 +466,6 @@ class ProductController extends Controller
                 'messege' => 'Product Gallery updated successfully',
                 'alert-type' => 'success',
             ]);
-
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             DB::rollBack();

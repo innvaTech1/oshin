@@ -22,9 +22,19 @@ class ProductService
     {
         $this->product = $product;
     }
-    public function getProducts(): Product
+    public function getProducts()
     {
-        return $this->product;
+        $products = $this->product;
+
+        if (request()->has('keyword') && request()->keyword != null) {
+            $products = $products->whereHas('translation', function ($query) {
+                $query->where('name', 'like', '%' . request()->keyword . '%');
+            });
+        }
+        if (request()->has('order_by') && request()->order_by != null) {
+            $products = $products->orderBy('id', request()->order_by);
+        }
+        return $products;
     }
 
     // get all active products
