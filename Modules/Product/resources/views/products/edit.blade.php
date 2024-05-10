@@ -120,9 +120,10 @@
                                             <div class="col-md-12 row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="min_delivery_time">{{ __('Min Delivery Time') }} ({{__('Days')}})<span
-                                                                class="text-danger">*</span></label>
-                                                        <input class="form-control" type="number" name="min_delivery_time" value="{{$product->min_delivery_time}}">
+                                                        <label for="min_delivery_time">{{ __('Min Delivery Time') }}
+                                                            ({{ __('Days') }})<span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="number" name="min_delivery_time"
+                                                            value="{{ $product->min_delivery_time }}">
                                                         @error('min_delivery_time')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -130,9 +131,10 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="max_delivery_time">{{ __('Max Delivery Time') }} ({{__('Days')}})<span
-                                                                class="text-danger">*</span></label>
-                                                        <input class="form-control" type="number" name="max_delivery_time" value="{{$product->max_delivery_time}}">
+                                                        <label for="max_delivery_time">{{ __('Max Delivery Time') }}
+                                                            ({{ __('Days') }})<span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="number" name="max_delivery_time"
+                                                            value="{{ $product->max_delivery_time }}">
                                                         @error('max_delivery_time')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -197,14 +199,14 @@
                                             <div class="card">
                                                 <div class="card-body">
                                                     @if (Module::isEnabled('Media'))
-                                                    @php
-                                                        $img=[$product->image]; 
-                                                    @endphp
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <x-media::media-input name="image" :dataImages="$img" />
+                                                        @php
+                                                            $img = [$product->image];
+                                                        @endphp
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <x-media::media-input name="image" :dataImages="$img" />
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     @endif
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -268,9 +270,11 @@
                                                                     class="text-danger">*</span></label>
                                                             <select name="unit_id" id="unit_id"
                                                                 class="form-control select2">
-                                                                <option value="">{{ __('Select Unit Type') }}</option>
+                                                                <option value="">{{ __('Select Unit Type') }}
+                                                                </option>
                                                                 @foreach ($units as $unit)
-                                                                    <option value="{{ $unit->id }}" @if ($product->unit_id == $unit->id) selected @endif>
+                                                                    <option value="{{ $unit->id }}"
+                                                                        @if ($product->unit_id == $unit->id) selected @endif>
                                                                         {{ $unit->name }}
                                                                     </option>
                                                                 @endforeach
@@ -299,7 +303,8 @@
                                                     </div>
                                                     <div class="col-md-12 d-none warranty_duration">
                                                         <div class="form-group">
-                                                            <label>{{ __('Warranty Duration') }} ({{__('Month')}})<span
+                                                            <label>{{ __('Warranty Duration') }}
+                                                                ({{ __('Month') }})<span
                                                                     class="text-danger">*</span></label>
                                                             <input type="number" name="warranty_duration"
                                                                 class="form-control"
@@ -365,23 +370,7 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>{{ __('Is New') }} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <select name="is_new" class="form-control" id="is_new">
-                                                                <option value="0"
-                                                                    @if ($product->is_new == 0) selected @endif>
-                                                                    {{ __('No') }}</option>
-                                                                <option value="1"
-                                                                    @if ($product->is_new == 1) selected @endif>
-                                                                    {{ __('Yes') }}</option>
-                                                            </select>
-                                                            @error('is_new')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
+
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="badge">{{ __('Badge') }}</label>
@@ -399,10 +388,10 @@
                                                             <select name="show_homepage" class="form-control"
                                                                 id="show_homepage">
                                                                 <option value="0"
-                                                                    @if (old('show_homepage') == 0|| $product->show_homepage == 0) selected @endif>
+                                                                    @if (old('show_homepage') == 0 || $product->show_homepage == 0) selected @endif>
                                                                     {{ __('No') }}</option>
                                                                 <option
-                                                                    value="1"@if (old('show_homepage') == 1|| $product->show_homepage == 1) selected @endif>
+                                                                    value="1"@if (old('show_homepage') == 1 || $product->show_homepage == 1) selected @endif>
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('show_homepage')
@@ -416,10 +405,10 @@
                                                             <select name="is_flash_deal" class="form-control"
                                                                 id="is_flash_deal">
                                                                 <option value="0"
-                                                                    @if (old('is_flash_deal') == 0|| $product->is_flash_deal == 0) selected @endif>
+                                                                    @if (old('is_flash_deal') == 0 || $product->is_flash_deal == 0) selected @endif>
                                                                     {{ __('No') }}</option>
                                                                 <option value="1"
-                                                                    @if (old('is_flash_deal') == 1|| $product->is_flash_deal == 1) selected @endif>
+                                                                    @if (old('is_flash_deal') == 1 || $product->is_flash_deal == 1) selected @endif>
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('is_flash_deal')
@@ -427,32 +416,17 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>{{ __('Is Top Selling ?') }} </label>
-                                                            <select name="is_top" class="form-control" id="is_top">
-                                                                <option value="0"
-                                                                    @if (old('is_top') == 0|| $product->is_top == 0) selected @endif>
-                                                                    {{ __('No') }}</option>
-                                                                <option value="1"
-                                                                    @if (old('is_top') == 1|| $product->is_top == 1) selected @endif>
-                                                                    {{ __('Yes') }}</option>
-                                                            </select>
-                                                            @error('is_top')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
+
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label>{{ __('Is Verified') }} </label>
                                                             <select name="is_verified" class="form-control"
                                                                 id="is_verified">
                                                                 <option value="0"
-                                                                    @if (old('is_verified') == 0|| $product->is_verified == 0) selected @endif>
+                                                                    @if (old('is_verified') == 0 || $product->is_verified == 0) selected @endif>
                                                                     {{ __('No') }}</option>
                                                                 <option value="1"
-                                                                    @if (old('is_verified') == 1|| $product->is_verified == 1) selected @endif>
+                                                                    @if (old('is_verified') == 1 || $product->is_verified == 1) selected @endif>
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('is_verified')
@@ -465,10 +439,10 @@
                                                             <label>{{ __('Allow Cash On Delivery?') }} </span></label>
                                                             <select name="is_cod" class="form-control" id="is_cod">
                                                                 <option value="0"
-                                                                    @if (old('is_cod') == 0|| $product->is_cod == 0) selected @endif>
+                                                                    @if (old('is_cod') == 0 || $product->is_cod == 0) selected @endif>
                                                                     {{ __('No') }}</option>
                                                                 <option value="1"
-                                                                    @if (old('is_cod') == 1|| $product->is_cod == 1) selected @endif>
+                                                                    @if (old('is_cod') == 1 || $product->is_cod == 1) selected @endif>
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('is_cod')
@@ -482,10 +456,10 @@
                                                             <select name="is_pre_order" class="form-control"
                                                                 id="is_pre_order">
                                                                 <option value="0"
-                                                                    @if (old('is_pre_order') == 0|| $product->is_pre_order == 0) selected @endif>
+                                                                    @if (old('is_pre_order') == 0 || $product->is_pre_order == 0) selected @endif>
                                                                     {{ __('No') }}</option>
                                                                 <option value="1"
-                                                                    @if (old('is_pre_order') == 1|| $product->is_pre_order == 1) selected @endif>
+                                                                    @if (old('is_pre_order') == 1 || $product->is_pre_order == 1) selected @endif>
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('is_pre_order')
@@ -494,23 +468,28 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 {{$product->is_pre_order? '' :'d-none'}} release_date">
+                                                    <div
+                                                        class="col-md-12 {{ $product->is_pre_order ? '' : 'd-none' }} release_date">
                                                         <div class="form-group">
                                                             <label>{{ __('Release Date') }} </label>
                                                             <input type="text" name="release_date"
-                                                                class="form-control datepicker" @if(!$product->is_pre_order) disabled @endif value="{{$product->release_date}}" />
+                                                                class="form-control datepicker"
+                                                                @if (!$product->is_pre_order) disabled @endif
+                                                                value="{{ $product->release_date }}" />
                                                             @error('release_date')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 {{$product->is_pre_order? '' :'d-none'}} max_product">
+                                                    <div
+                                                        class="col-md-12 {{ $product->is_pre_order ? '' : 'd-none' }} max_product">
                                                         <div class="form-group">
                                                             <label>{{ __('Max Quantity') }} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="number" name="max_product" class="form-control"
-                                                                @if(!$product->is_pre_order) disabled @endif  value="{{$product->max_product}}"/>
+                                                                @if (!$product->is_pre_order) disabled @endif
+                                                                value="{{ $product->max_product }}" />
                                                             @error('max_product')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
@@ -535,12 +514,14 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 {{!$product->partial_amount? 'd-none' : ''}} partial_amount">
+                                                    <div
+                                                        class="col-md-12 {{ !$product->partial_amount ? 'd-none' : '' }} partial_amount">
                                                         <div class="form-group">
                                                             <label>{{ __('Partial Amount') }} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" name="partial_amount"
-                                                                class="form-control" @if(!$product->partial_amount) disabled @endif />
+                                                                class="form-control"
+                                                                @if (!$product->partial_amount) disabled @endif />
                                                             @error('partial_amount')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
@@ -563,7 +544,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="meta_title">{{ __('Meta Title') }}</label>
-                                                            <input type="text" class="form-control" name="meta_title" value="{{$product->meta_title}}">
+                                                            <input type="text" class="form-control" name="meta_title"
+                                                                value="{{ $product->meta_title }}">
                                                             @error('meta_title')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
@@ -573,13 +555,13 @@
                                                         <div class="form-group">
                                                             <label
                                                                 for="meta_description">{{ __('Meta Description') }}</label>
-                                                            <textarea type="text" class="form-control" name="meta_description" style="height: 80px">{{ old('meta_description',$product->meta_description) }}</textarea>
+                                                            <textarea type="text" class="form-control" name="meta_description" style="height: 80px">{{ old('meta_description', $product->meta_description) }}</textarea>
                                                             @error('meta_description')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -628,7 +610,7 @@
                     changeAttr(is_pre_order, 'release_date')
                     changeAttr(is_pre_order, 'max_product')
                 })
-                
+
             });
 
             function changeAttr(val, selectorName) {

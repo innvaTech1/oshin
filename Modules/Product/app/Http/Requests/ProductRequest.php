@@ -35,7 +35,6 @@ class ProductRequest extends FormRequest
             'status' => 'required',
             'is_featured' => 'required',
             'is_bestseller' => 'required',
-            'is_new' => 'required',
             'is_warranty' => 'required',
             'warranty_duration' => 'required_if:is_warranty,=,1',
             'lang_code' => 'nullable',

@@ -114,8 +114,8 @@
                                             <div class="col-md-12 row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="min_delivery_time">{{ __('Min Delivery Time') }} ({{__('Days')}})<span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="min_delivery_time">{{ __('Min Delivery Time') }}
+                                                            ({{ __('Days') }})<span class="text-danger">*</span></label>
                                                         <input class="form-control" type="number" name="min_delivery_time">
                                                         @error('min_delivery_time')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -124,8 +124,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="max_delivery_time">{{ __('Max Delivery Time') }} ({{__('Days')}})<span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="max_delivery_time">{{ __('Max Delivery Time') }}
+                                                            ({{ __('Days') }})<span class="text-danger">*</span></label>
                                                         <input class="form-control" type="number" name="max_delivery_time">
                                                         @error('max_delivery_time')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -341,19 +341,6 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label>{{ __('Is New') }} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <select name="is_new" class="form-control" id="is_new">
-                                                                <option value="0">{{ __('No') }}</option>
-                                                                <option value="1">{{ __('Yes') }}</option>
-                                                            </select>
-                                                            @error('is_new')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label for="badge">{{ __('Badge') }}</label>
                                                             <input type="text" class="form-control inputtags"
                                                                 name="badge">
@@ -376,39 +363,6 @@
                                                                     {{ __('Yes') }}</option>
                                                             </select>
                                                             @error('show_homepage')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>{{ __('Is Flash Deal ?') }} </label>
-                                                            <select name="is_flash_deal" class="form-control"
-                                                                id="is_flash_deal">
-                                                                <option value="0"
-                                                                    @if (old('is_flash_deal') == 0) selected @endif>
-                                                                    {{ __('No') }}</option>
-                                                                <option value="1"
-                                                                    @if (old('is_flash_deal') == 1) selected @endif>
-                                                                    {{ __('Yes') }}</option>
-                                                            </select>
-                                                            @error('is_flash_deal')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>{{ __('Is Top Selling ?') }} </label>
-                                                            <select name="is_top" class="form-control" id="is_top">
-                                                                <option value="0"
-                                                                    @if (old('is_top') == 0) selected @endif>
-                                                                    {{ __('No') }}</option>
-                                                                <option value="1"
-                                                                    @if (old('is_top') == 1) selected @endif>
-                                                                    {{ __('Yes') }}</option>
-                                                            </select>
-                                                            @error('is_top')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
                                                         </div>
