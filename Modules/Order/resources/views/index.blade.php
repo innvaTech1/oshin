@@ -11,6 +11,50 @@
 
             <div class="section-body">
                 <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="" method="GET" onchange="this.submit()" class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <input type="text" name="search" value="{{ request()->get('search') }}"
+                                                class="form-control" placeholder="{{ __('Search') }}">
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="order_by" id="order_by" class="form-control">
+                                                <option value="">{{ __('Order By') }}</option>
+                                                <option value="1" {{ request('order_by') == '1' ? 'selected' : '' }}>
+                                                    {{ __('ASC') }}
+                                                </option>
+                                                <option value="0" {{ request('order_by') == '0' ? 'selected' : '' }}>
+                                                    {{ __('DESC') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <select name="par-page" id="par-page" class="form-control">
+                                                <option value="">{{ __('Per Page') }}</option>
+                                                <option value="10" {{ '10' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('10') }}
+                                                </option>
+                                                <option value="50" {{ '50' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('50') }}
+                                                </option>
+                                                <option value="100"
+                                                    {{ '100' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('100') }}
+                                                </option>
+                                                <option value="all"
+                                                    {{ 'all' == request('par-page') ? 'selected' : '' }}>
+                                                    {{ __('All') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-body text-center">
@@ -63,13 +107,13 @@
                                                         {{ __('Customer') }}
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td class="d-flex justify-content-center align-items-center">
                                                     <a href="{{ route('admin.order.show', $order->id) }}"
-                                                        class="btn btn-primary btn-sm"><i class="fa fa-eye"
+                                                        class="btn btn-primary btn-sm mr-2"><i class="fa fa-eye"
                                                             aria-hidden="true"></i></a>
 
                                                     <a href="javascript:;" data-toggle="modal" {{-- data-target="#deleteModal" --}}
-                                                        class="btn btn-danger btn-sm"
+                                                        class="btn btn-danger btn-sm mr-2"
                                                         onclick="deleteData({{ $order->order_id }})"><i class="fa fa-trash"
                                                             aria-hidden="true"></i></a>
 

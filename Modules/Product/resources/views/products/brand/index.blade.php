@@ -17,7 +17,7 @@
                                 <form action="{{ route('admin.brand.index') }}" method="GET" onchange="this.submit()"
                                     class="card-body">
                                     <div class="row">
-                                        <div class="col-md-2 form-group">
+                                        <div class="col-md-6 form-group">
                                             <input type="text" name="search" value="{{ request()->get('search') }}"
                                                 class="form-control" placeholder="{{ __('Search') }}">
                                         </div>

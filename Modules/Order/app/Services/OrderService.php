@@ -26,7 +26,17 @@ class OrderService
     }
     public function getOrders()
     {
-        return $this->order->with('user');
+        $orders = $this->order->with('user');
+
+        if (request()->has('search') && request()->search != null) {
+            $search = request()->search;
+            $orders = $orders->where(fn ($q) => $q->where('order_id', request()->search)->orWhereHas('user', fn ($user) => $user->where('name', $search)));
+        }
+        if (request()->has('order_by') && request()->order_by != null) {
+            $orderBy = request()->order_by == 1 ? 'asc' : 'desc';
+            $orders = $orders->orderBy('id', $orderBy);
+        }
+        return $orders;
     }
 
     public function getOrder($id): ?Order
@@ -53,12 +63,12 @@ class OrderService
         $order->payment_method = $request->order_payment_method;
         $order->delivery_method = $request->order_delivery_method;
 
-        if($placeFrom == 'pos'){
-            $order->payment_status = $order->payment_method == 'cod' ? 'pending': 'success';
+        if ($placeFrom == 'pos') {
+            $order->payment_status = $order->payment_method == 'cod' ? 'pending' : 'success';
             $order->order_status = 'success';
             $order->delivery_status = 2;
             $order->created_by = auth('admin')->user()->id;
-        }else{
+        } else {
             $order->order_status = 'pending';
             $order->delivery_status = 1;
         }
@@ -77,8 +87,8 @@ class OrderService
 
         $order->save();
 
-        if($user != null){
-            $this->sendOrderSuccessMail($user,$order,);
+        if ($user != null) {
+            $this->sendOrderSuccessMail($user, $order,);
         }
         foreach ($cart as $item) {
             $variant = isset($item['variant']) ?  Variant::where('sku', $item['sku'])->first() : null;
@@ -99,7 +109,8 @@ class OrderService
         return $order;
     }
 
-    public function orderStatus(Request $request, Order $order){
+    public function orderStatus(Request $request, Order $order)
+    {
 
         $order->delivery_status = $request->status;
 
@@ -120,7 +131,8 @@ class OrderService
         $order->save();
     }
 
-    public function destroy(Order $order){
+    public function destroy(Order $order)
+    {
 
         $orderProducts = $order->orderDetails;
         foreach ($orderProducts as $orderProduct) {
@@ -142,7 +154,7 @@ class OrderService
         $message = str_replace('{{order_status}}', 'Pending', $message);
         $message = str_replace('{{order_date}}', $order->created_at->format('d F, Y'), $message);
 
-        $this->sendOrderSuccessMailFromTrait($subject,$message,$user);
+        $this->sendOrderSuccessMailFromTrait($subject, $message, $user);
     }
 
 
@@ -155,21 +167,20 @@ class OrderService
     public function coupon($coupon, $user)
     {
 
-            if (Session::get('coupon_code') && Session::get('offer_percentage')) {
+        if (Session::get('coupon_code') && Session::get('offer_percentage')) {
 
-                if ($coupon) {
-                    $offer_percentage = Session::get('offer_percentage');
-                    $coupon_discount = Session::get('coupon_price');
+            if ($coupon) {
+                $offer_percentage = Session::get('offer_percentage');
+                $coupon_discount = Session::get('coupon_price');
 
-                    $history = new CouponHistory();
-                    $history->user_id = $user->id;
-                    $history->author_id = $coupon->author_id;
-                    $history->coupon_code = $coupon->coupon_code;
-                    $history->coupon_id = $coupon->id;
-                    $history->discount_amount = $coupon_discount;
-                    $history->save();
-                }
+                $history = new CouponHistory();
+                $history->user_id = $user->id;
+                $history->author_id = $coupon->author_id;
+                $history->coupon_code = $coupon->coupon_code;
+                $history->coupon_id = $coupon->id;
+                $history->discount_amount = $coupon_discount;
+                $history->save();
             }
-
+        }
     }
 }
