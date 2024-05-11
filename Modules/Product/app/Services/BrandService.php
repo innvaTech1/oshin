@@ -25,14 +25,23 @@ class BrandService
     // get product paginate
     public function getPaginateBrands()
     {
-        return $this->brand;
+        $brands = $this->brand;
+        if (request()->search) {
+            $brands = $brands->whereHas('translation', function ($q) {
+                $q->where('name', 'like', '%' . request()->search . '%');
+            });
+        }
+        if (request()->has('order_by') && request()->order_by != null) {
+
+            $brands = $brands->orderBy('id', request()->order_by == 1 ? 'asc' : 'desc');
+        }
+        return $brands;
     }
 
     // store product brand
 
     public function store($request)
     {
-
         $brand = $this->brand->create($request->all());
         $this->generateTranslations(
             TranslationModels::ProductBrand,
@@ -41,7 +50,6 @@ class BrandService
             $request,
         );
         return $brand;
-
     }
 
     public function find($id)
@@ -89,5 +97,4 @@ class BrandService
         }
         return [];
     }
-
 }

@@ -26,8 +26,12 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = $this->brandService->getPaginateBrands()->paginate(2);
-
+        $brands = $this->brandService->getPaginateBrands();
+        if (request()->has('par-page') && !empty(request()->get('par-page'))) {
+            $brands = $brands->paginate(request()->get('par-page'));
+        } else {
+            $brands = $brands->paginate(20);
+        }
         return view('product::products.brand.index', compact('brands'));
     }
 
@@ -40,7 +44,7 @@ class BrandController extends Controller
             return view('product::products.brand.create');
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
-            return back()->with(['messege'=> 'Something Went Wrong','alert-type' => 'error']);
+            return back()->with(['messege' => 'Something Went Wrong', 'alert-type' => 'error']);
         }
     }
 
@@ -49,7 +53,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        
+
         try {
             $brand = $this->brandService->store($request);
 
@@ -88,10 +92,10 @@ class BrandController extends Controller
     {
         $brand = $this->brandService->find($id);
         try {
-            return view('product::products.brand.edit',compact('brand'));
+            return view('product::products.brand.edit', compact('brand'));
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
-            return back()->with(['messege'=> 'Something Went Wrong','alert-type' => 'error']);
+            return back()->with(['messege' => 'Something Went Wrong', 'alert-type' => 'error']);
         }
     }
 
