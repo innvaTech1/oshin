@@ -23,7 +23,16 @@ class OrderController extends Controller
     }
     public function index()
     {
-        $orders = $this->orderService->getOrders()->latest()->paginate(20);
+
+        $orders = $this->orderService->getOrders();
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
 
         $title = __('Order History');
 
@@ -32,8 +41,16 @@ class OrderController extends Controller
 
     public function pending_order()
     {
-        $orders = $this->orderService->getOrders()->where('delivery_status', 1)->latest()->paginate(20);
+        $orders = $this->orderService->getOrders()->where('delivery_status', 1);
 
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('Pending Order');
 
         return view('order::index', ['orders' => $orders, 'title' => $title]);
@@ -41,32 +58,73 @@ class OrderController extends Controller
 
     public function progressOrder()
     {
-        $orders = $this->orderService->getOrders()->where('delivery_status', 3)->latest()->paginate(20);
+        $orders = $this->orderService->getOrders()->where('delivery_status', 3);
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('Progress Orders');
         return view('order::index', compact('orders', 'title'));
     }
-    public function onTheWay(){
-        $orders = $this->orderService->getOrders()->where('delivery_status',4)->latest()->paginate(20);
+    public function onTheWay()
+    {
+        $orders = $this->orderService->getOrders()->where('delivery_status', 4);
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('On The Way');
         return view('order::index', compact('orders', 'title'));
     }
     public function deliveredOrder()
     {
-        $orders = $this->orderService->getOrders()->where('delivery_status',5)->latest()->paginate(20);
+        $orders = $this->orderService->getOrders()->where('delivery_status', 5);
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('Delivered Orders');
         return view('order::index', compact('orders', 'title'));
     }
 
     public function declinedOrder()
     {
-        $orders = $this->orderService->getOrders()->where('delivery_status', 6)->latest()->paginate(20);
+        $orders = $this->orderService->getOrders()->where('delivery_status', 6);
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('Rejected Orders');
         return view('order::index', compact('orders', 'title'));
     }
 
     public function cashOnDelivery()
     {
-        $orders = $this->orderService->getOrders()->where('payment_method', 'cod')->latest()->paginate(20);
+        $orders = $this->orderService->getOrders()->where('payment_method', 'cod');
+        if (request()->has('par-page') && request()->get('par-page') != null) {
+            if (request()->get('par-page') == 'all') {
+                $orders = $orders->paginate($orders->count());
+            }
+            $orders = $orders->paginate(request()->get('par-page'));
+        } else {
+            $orders = $orders->paginate(20);
+        }
         $title = __('Cash On Delivery');
         return view('order::index', compact('orders', 'title'));
     }
@@ -159,13 +217,15 @@ class OrderController extends Controller
             return back()->with(array('messege' => __('Something Went Wrong'), 'alert-type' => 'error'));
         }
     }
-    public function pending_payment(){
+    public function pending_payment()
+    {
         $orders = $this->orderService->getOrders()->where('payment_status', 'pending')->latest()->paginate(20);
         $title = __('Pending Payment');
         return view('order::index', compact('orders', 'title'));
     }
 
-    public function rejected_payment(){
+    public function rejected_payment()
+    {
         $orders = $this->orderService->getOrders()->where('payment_status', 'rejected')->latest()->paginate(20);
         $title = __('Rejected Payment');
         return view('order::index', compact('orders', 'title'));
