@@ -45,7 +45,10 @@
         });
         $(".datepicker").datepicker({
             format: "yyyy-mm-dd",
-            startDate: "-Infinity",
+            startDate: -Infinity,
+            todayHighlight: true,
+            autoclose: true,
+            orientation: 'bottom'
         });
         $(".clockpicker").clockpicker();
     });

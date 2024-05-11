@@ -16,7 +16,7 @@
                             <div class="card-body">
                                 <form action="" method="GET" onchange="this.submit()" class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-4 form-group">
                                             <input type="text" name="search" value="{{ request()->get('search') }}"
                                                 class="form-control" placeholder="{{ __('Search') }}">
                                         </div>
@@ -49,6 +49,14 @@
                                                     {{ __('All') }}
                                                 </option>
                                             </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input type="text" name="from" class="form-control datepicker"
+                                                placeholder="From" value="{{ request()->from }}">
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input type="text" name="to" class="form-control datepicker"
+                                                placeholder="To" value="{{ request()->to }}">
                                         </div>
                                     </div>
                                 </form>

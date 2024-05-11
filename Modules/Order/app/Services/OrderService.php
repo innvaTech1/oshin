@@ -36,6 +36,12 @@ class OrderService
             $orderBy = request()->order_by == 1 ? 'asc' : 'desc';
             $orders = $orders->orderBy('id', $orderBy);
         }
+        if (request()->has('from') && request()->from != null) {
+            $orders = $orders->where('created_at', '>=', request()->from);
+        }
+        if (request()->has('to') && request()->to != null) {
+            $orders = $orders->where('created_at', '<=', request()->to);
+        }
         return $orders;
     }
 
