@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\app\Models\Order;
@@ -14,6 +15,7 @@ use Modules\Product\app\Models\Variant;
 
 class OrderController extends Controller
 {
+    use MailSenderTrait;
     protected $orderService;
     public function __construct(OrderService $orderService)
     {
@@ -56,7 +58,13 @@ class OrderController extends Controller
         }
     }
 
-    public function createGuest(Request $request)
+    public function create(Request $request)
+    {
+        $user = $request->user();
+
+        return $this->createGuest($request, $user);
+    }
+    public function createGuest(Request $request, $user = null)
     {
         if ($request->cart == null) {
             return responseFail('cart can\'t be empty');
@@ -112,7 +120,7 @@ class OrderController extends Controller
             'order_delivery_method' => $request->shipping['shippingArea'],
         ];
 
-        $order = $this->storeOrder($data, null, $cart);
+        $order = $this->storeOrder($data, $user, $cart);
 
         if ($order) {
             DB::commit();
@@ -164,9 +172,9 @@ class OrderController extends Controller
 
         $order->save();
 
-        if ($user != null) {
-            $this->sendOrderSuccessMail($user, $order);
-        }
+        // if ($user != null) {
+        //     $this->sendOrderSuccessMail($user, $order);
+        // }
 
         $maxDeliveryDate = [];
         foreach ($cart as $item) {
