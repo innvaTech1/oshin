@@ -5,7 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Modules\Order\app\Models\Order;
+use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Services\OrderService;
+use Modules\Product\app\Models\Product;
+use Modules\Product\app\Models\Variant;
 
 class OrderController extends Controller
 {
@@ -21,9 +25,8 @@ class OrderController extends Controller
         $orders = $this->orderService->getUserOrders($user);
 
         if ($orders->count() > 0) {
-            return responseSuccess($orders, 'All Orders',200);
-        }else
-        {
+            return responseSuccess($orders, 'All Orders', 200);
+        } else {
             return responseFail('No Orders Found', 404);
         }
     }
@@ -34,8 +37,7 @@ class OrderController extends Controller
 
         if ($order) {
             return responseSuccess($order, 'Order Details', 200);
-        }else
-        {
+        } else {
             return responseFail('Order Not Found', 404);
         }
     }
@@ -48,28 +50,72 @@ class OrderController extends Controller
 
         if ($order) {
             return responseSuccess($order, 'Order Placed Successfully', 200);
-        }else
-        {
+        } else {
             return responseFail('Order Not Placed', 400);
         }
     }
 
     public function createGuest(Request $request)
     {
-        $shippingAddress = $this->createAddress($request->shippingAddress);
+        if ($request->cart == null) {
+            return responseFail('cart can\'t be empty');
+        }
+        if ($request->shipping == null) {
+            return responseFail('Shipping Address Required');
+        }
 
-        $billingAddress = $request->billingAddress? $this->createAddress($request->billingAddress) : $shippingAddress;
-        $coupon = $request->coupon;
+
+        // return $coupon;
+        $address_id = null;
+        if ($request->shipping['shippingAddress'] != null) {
+            $shippingAddress = $this->createAddress([
+                'address' => $request->shipping['shippingAddress'],
+                'fullName' => $request->shipping['shippingFullName'],
+                'phone' => $request->shipping['shippingMobileNumber'],
+                'district' => $request->shipping['shippingDistrict'],
+                'city' => $request->shipping['shippingThana'],
+                'email' => $request->shipping['shippingEmail'],
+            ]);
+            $address_id = $shippingAddress->id;
+        }
+
+        $billing_id = null;
+
+        if ($request->shipping['sameAsShipping'] == false) {
+            $billingAddress = $this->createAddress([
+                'address' => $request->shipping['billingAddress'],
+                'fullName' => $request->shipping['billingFullName'],
+                'phone' => $request->shipping['billingMobileNumber'],
+                'district' => $request->shipping['billingDistrict'],
+                'city' => $request->shipping['billingThana'],
+                'email' => $request->shipping['billingEmail'],
+            ]);
+            $billing_id = $billingAddress->id;
+        }
+
+
+        $coupon = json_decode($request->coupon)->data;
         $payment = $request->payment;
         $cart = $request->cart;
 
-        $request->merge('address_id',$shippingAddress);
-        $order = $this->orderService->storeGuestOrder($request, $cart);
+        $data = [
+            'address_id' => $address_id,
+            'billing_address_id' => $billing_id,
+            'delivery_fee' => $request->shippingFee,
+            'tax' => isset($request->shipping['tax']) ? $request->shipping['tax'] : 0,
+            'discount' => $coupon->discount,
+            'order_total_fee' => $request->total,
+            'order_sub_total' => $request->subTotal,
+            'order_payment_details' => $payment ? $payment['paymentDetails'] : null,
+            'order_payment_method' => $request->shipping['paymentMethod'],
+            'order_delivery_method' => $request->shipping['shippingArea'],
+        ];
+
+        $order = $this->storeOrder($data, null, $cart);
 
         if ($order) {
             return responseSuccess($order, 'Order Placed Successfully', 200);
-        }else
-        {
+        } else {
             return responseFail('Order Not Placed', 400);
         }
     }
@@ -80,12 +126,73 @@ class OrderController extends Controller
         $address = Address::create([
             "name" => $address['fullName'],
             "address" => $address['address'],
-            "phone" => $address['mobileNumber'],
+            "phone" => $address['phone'],
             "email" => $address['email'],
             "state" => $address['district'],
-            "city" => $address['upzila'],
+            "city" => $address['city'],
         ]);
 
         return $address;
+    }
+
+    public function storeOrder(array $data, $user, $cart)
+    {
+        $order = new Order();
+        $order->order_id = substr(rand(0, time()), 0, 10);
+        $order->user_id = $user != null ?  $user->id : null;
+        $order->walk_in_customer = $user != null ?  0 : 1;
+        $order->address_id = $data['address_id'];
+        $order->billing_address_id = $data['billing_address_id'];
+        $order->delivery_fee = $data['delivery_fee'];
+        $order->tax = isset($data['tax']) ? $data['tax'] : 0;
+        $order->discount = isset($data['discount']) ? $data['discount'] : 0;
+        $order->order_delivery_date = null;
+        $order->total_amount = $data['order_total_fee'];
+        $order->currency_rate = cache()->get('currency')->currency_rate;
+        $order->currency_name = cache()->get('currency')->currency_name;
+        $order->currency_icon = cache()->get('currency')->currency_icon;
+        $order->order_amount = $data['order_sub_total'];
+        $order->payment_details = $data['order_payment_details'];
+        $order->payment_method = $data['order_payment_method'];
+        $order->delivery_method = $data['order_delivery_method'];
+        $order->payment_status = 'pending';
+        $order->order_status = 'pending';
+        $order->delivery_status = 1;
+
+        $order->save();
+
+        if ($user != null) {
+            $this->sendOrderSuccessMail($user, $order);
+        }
+
+        $maxDeliveryDate = [];
+        foreach ($cart as $item) {
+            $product = Product::find($item['product_id']);
+            if ($product->max_delivery_time > 0) {
+                $maxDeliveryDate[] = $product->delivery_time;
+            }
+
+            $variant = isset($item['variant']) ?  Variant::where('sku', $item['sku'])->first() : null;
+            $orderDetails = new OrderDetails();
+            $orderDetails->order_id = $order->id;
+            $orderDetails->product_id = $item['product_id'];
+            $orderDetails->product_name = $item['name'];
+            $orderDetails->product_sku = $item['sku'];
+            $orderDetails->variant_id = $variant != null ? $variant->id : null;
+            $orderDetails->price = $item['price'];
+            $orderDetails->quantity = $item['quantity'];
+            $orderDetails->total = $item['totalPrice'];
+            $orderDetails->attributes = $variant != null ? $item['variant']['attribute'] : null;
+            $orderDetails->status = 1;
+            $orderDetails->save();
+        }
+
+        if (count($maxDeliveryDate) > 0) {
+            $maxDeliveryDate = max($maxDeliveryDate);
+            $order->order_delivery_date = now()->addDays($maxDeliveryDate);
+            $order->save();
+        }
+
+        return $order;
     }
 }
