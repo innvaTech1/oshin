@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Services\OrderService;
@@ -65,7 +66,7 @@ class OrderController extends Controller
         }
 
 
-        // return $coupon;
+        DB::beginTransaction();
         $address_id = null;
         if ($request->shipping['shippingAddress'] != null) {
             $shippingAddress = $this->createAddress([
@@ -114,8 +115,10 @@ class OrderController extends Controller
         $order = $this->storeOrder($data, null, $cart);
 
         if ($order) {
+            DB::commit();
             return responseSuccess($order, 'Order Placed Successfully', 200);
         } else {
+            DB::rollBack();
             return responseFail('Order Not Placed', 400);
         }
     }
