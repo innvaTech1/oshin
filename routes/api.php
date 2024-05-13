@@ -80,12 +80,13 @@ Route::group(['middleware' => 'cors'], function () {
     // get wishlists
     Route::middleware('auth:api')->group(function () {
         Route::post('/order/create', [OrderController::class, 'create']);
+        Route::post('/wishlist/store', [WishlistController::class, 'store']);
+
         Route::get('/order/{id}', [OrderController::class, 'show']);
         Route::get('/wishlists', [WishlistController::class, 'index']);
         // add wishlist
-        Route::post('/wishlists', [WishlistController::class, 'store']);
         // remove wishlist
-        Route::delete('/wishlists/{id}', [WishlistController::class, 'destroy']);
+        Route::post('/wishlists/{id}', [WishlistController::class, 'destroy']);
 
         // Create Address
         Route::post('addresses', [AddressController::class, 'createAddress']);

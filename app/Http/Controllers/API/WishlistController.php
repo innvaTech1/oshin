@@ -23,7 +23,6 @@ class WishlistController extends Controller
 
     public function store(Request $request)
     {
-        // return $request->all();
         $validator = Validator::make(
             $request->all(),
             [
@@ -37,7 +36,7 @@ class WishlistController extends Controller
 
         $user = $request->user();
 
-        if(!$user){
+        if (!$user) {
             return responseFail('User not found', 404);
         }
         $wishlist = $user->wishlistItems()->where('product_id', $request->product_id)->first();
@@ -49,8 +48,8 @@ class WishlistController extends Controller
             'product_id' => $request->product_id,
         ]);
 
-        
-        return responseSuccess(WishListResource::collection($user->wishlistItems),'Product added to wishlist', 200);
+
+        return responseSuccess(WishListResource::collection($user->wishlistItems), 'Product added to wishlist', 200);
     }
 
     // remove wishlist
