@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Media\app\Models\Media;
 use Modules\Order\app\Models\OrderDetails;
+use Modules\Order\app\Models\OrderReview;
 
 class Product extends Model
 {
@@ -298,5 +299,22 @@ class Product extends Model
     public function getStockQtyAttribute()
     {
         return $this->hasMany(ProductStock::class, 'product_id', 'id')->sum('quantity');
+    }
+
+    // reviews
+
+    public function reviews()
+    {
+        return $this->hasMany(OrderReview::class, 'product_id', 'id');
+    }
+    public function getAvgReviewAttribute()
+    {
+        // Return the average review for the menu item
+        return $this->reviews->avg('rating');
+    }
+    public function totalReviews()
+    {
+        // Return the total number of reviews for the menu item
+        return $this->reviews->count();
     }
 }
