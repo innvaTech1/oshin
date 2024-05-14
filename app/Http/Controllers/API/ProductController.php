@@ -68,6 +68,7 @@ class ProductController extends Controller
     }
     public function show(Request $request, string $slug)
     {
+
         try {
             $product = $this->productService->getProductBySlug($slug);
 
@@ -78,11 +79,11 @@ class ProductController extends Controller
             $data['variants'] = $prodVar;
 
 
-            $user = auth('web')->user();
+            $user = $request->id;
             // can give reviews
             $canGiveReview = false;
             if ($user) {
-                $orderDetails = Order::where('user_id', $user->id)->where('order_status', 'success')
+                $orderDetails = Order::where('user_id', $user)->where('order_status', 'success')
                     ->pluck('id')
                     ->flatMap(function ($orderId) use ($product) {
                         return OrderDetails::where('order_id', $orderId)
@@ -95,8 +96,10 @@ class ProductController extends Controller
                 }
             }
 
-            $reviews = OrderReview::where('product_id', $product->id)->all();
+            $reviews = OrderReview::where('product_id', $product->id)->get();
+
             $data['reviews'] = $reviews;
+            $data['canGiveReview'] = $canGiveReview;
             if ($product) {
                 return responseSuccess($data);
             } else {

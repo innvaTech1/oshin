@@ -77,7 +77,9 @@ Route::group(['middleware' => 'cors'], function () {
     // coupon
     Route::get('/coupon', [CouponController::class, 'index']);
 
+
     // get wishlists
+
     Route::middleware('auth:api')->group(function () {
         Route::post('/order/create', [OrderController::class, 'create']);
         Route::post('/review/store', [ProductController::class, 'postReview']);
