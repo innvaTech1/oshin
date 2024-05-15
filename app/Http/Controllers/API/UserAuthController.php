@@ -160,8 +160,13 @@ class UserAuthController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'token' => $token,
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
         ]);
+        
+        
     }
     /**
      * Handle forgot password request.
