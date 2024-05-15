@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('payment_method');
             $table->string('created_by')->nullable();
             $table->enum('payment_status', ['pending', 'success', 'rejected'])->default('pending');
-            $table->enum('order_status', ['pending', 'success', 'rejected', 'cancelled'])->default('pending');
+            $table->enum('order_status', ['pending', 'success', 'rejected', 'cancelled','return'])->default('pending');
             $table->integer('delivery_method')->default(1)->comment('1- Delivery, 2- Pickup');
             $table->integer('delivery_status')->default(1)->comment('1- Pending, 2- Accept, 3- Progress, 4- On the way, 5- Delivered, 6- Cancelled');
             $table->timestamps();

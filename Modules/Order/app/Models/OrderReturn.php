@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Product\app\Models;
+namespace Modules\Order\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Product\Database\factories\ProductReturnFactory;
 
-class ProductReturn extends Model
+class OrderReturn extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_returns';
+    protected $table = 'order_returns';
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +20,7 @@ class ProductReturn extends Model
         'user_id',
         'reason',
         'status',
+        'payment_status',
         'approved_at',
         'rejected_at',
         'canceled_at',

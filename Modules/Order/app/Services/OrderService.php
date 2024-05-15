@@ -7,11 +7,14 @@ use App\Models\User;
 
 use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Modules\Coupon\app\Models\CouponHistory;
 use Modules\GlobalSetting\app\Models\EmailTemplate;
 use Modules\GlobalSetting\app\Models\Setting;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
+use Modules\Order\app\Models\OrderReturn;
+use Modules\Product\app\Models\ProductReturn;
 use Modules\Product\app\Models\Variant;
 
 class OrderService
@@ -187,6 +190,49 @@ class OrderService
                 $history->discount_amount = $coupon_discount;
                 $history->save();
             }
+        }
+    }
+
+    public function orderReturn($data)
+    {
+        $return = OrderReturn::where('order_id', $data['order_id'])->first();
+
+        
+        if (isset($data['return_status']) && $data['return_status'] == 'approved') {
+            $order = $this->order->where('order_id',$data['order_id'])->first();
+            $order->order_status = 'return';
+            $order->save();
+
+            if ($return) {
+                $return->approved_at = now();
+                $return->save();
+            }
+        }
+        $order = $this->order->where('order_id', $data['order_id'])->first();
+
+        if ($return) {
+            $return->status = $data['return_status'];
+            $return->payment_status = $data['payment_status'];
+            if ($data['payment_status'] == 'approved') {
+                $return->refunded_at = now();
+            }
+            $return->save();
+        } else {
+            
+            $return = new OrderReturn();
+            $return->order_id = $data['order_id'];
+            $return->user_id = $order->user_id;
+            $return->reason = $data['reason'];
+            $return->status = $data['return_status'];
+            if ($data['return_status'] == 'approved') {
+                $return->approved_at = now();
+                $return->save();
+            }
+            $return->payment_status = $data['payment_status'];
+            if ($data['payment_status'] == 'approved') {
+                $return->refunded_at = now();
+            }
+            $return->save();
         }
     }
 }

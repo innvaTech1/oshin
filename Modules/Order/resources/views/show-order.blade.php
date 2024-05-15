@@ -227,6 +227,8 @@
 
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <button type="button" class="btn btn-warning"
+                                                        id="return_btn" data-toggle="modal" data-target="#return">{{ __('Return') }}</button>
                                                     <button type="button" class="btn btn-success"
                                                         id="update">{{ __('Update') }}</button>
                                                 </div>
@@ -278,15 +280,61 @@
         </section>
     </div>
     @include('components.admin.preloader')
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="return">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ route('admin.order.return') }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ __('Status') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="order_id" value="{{ $order->order_id }}">
+                        <div class="form-group">
+                            <label for="return_status">{{ __('Return Status') }}</label>
+                            <select name="return_status" class="form-control" id="return_status">
+                                <option value="pending" @if($order->returnOrder->return_status == 'pending' ) selected @endif >{{ __('Pending') }}</option>
+                                <option value="approved" @if($order->returnOrder->return_status == 'approved' ) selected @endif>{{ __('Approved') }}</option>
+                                <option value="rejected" @if($order->returnOrder->return_status == 'rejected' ) selected @endif>{{ __('Rejected') }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_status">{{ __('Payment Status') }}</label>
+                            <select name="payment_status" class="form-control" id="payment_status">
+                                <option value="pending" @if($order?->returnOrder?->payment_status == 'rejected' ) selected @endif>{{ __('Pending') }}</option>
+                                <option value="approved" @if($order?->returnOrder?->payment_status == 'approved' ) selected @endif>{{ __('Re Funded') }}</option>
+                                <option value="rejected" @if($order?->returnOrder?->payment_status == 'rejected' ) selected @endif>{{ __('Rejected') }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">{{ __('Return Reason') }}<span class="text-danger">*</span></label>
+                            <textarea name="reason" class="form-control height_50" id="reason" required>{{ $order?->returnOrder?->reason }}</textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ __('Close') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('Update') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+
+@push('js')
     <script>
         function deleteData(id) {
             $("#deleteForm").attr("action", "{{ route('admin.order-delete','') }}" + "/" + id)
         }
     </script>
-@endsection
-
-
-@push('js')
     <script>
         'use strict';
 

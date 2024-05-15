@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Services\OrderService;
+use Modules\Product\app\Models\ProductReturn;
 
 class OrderController extends Controller
 {
@@ -131,7 +132,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with('orderDetails', 'user')->find($id);
+        $order = Order::with('orderDetails', 'user', 'returnOrder')->find($id);
         return view('order::show-order', compact('order'));
     }
 
@@ -278,5 +279,33 @@ class OrderController extends Controller
         $notification = ['messege' => $notification, 'alert-type' => 'success'];
 
         return redirect()->back()->with($notification);
+    }
+
+    public function orderReturn(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required',
+            'reason' => 'required',
+            'return_status' => 'required'
+        ]);
+        DB::beginTransaction();
+        try {
+
+            $data = $request->except('_token');
+            $this->orderService->orderReturn($data);
+
+            DB::commit();
+
+            $notification = __('Order return successfully');
+            $notification = ['messege' => $notification, 'alert-type' => 'success'];
+
+            return redirect()->back()->with($notification);
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+            DB::rollback();
+            $notification = __('Something went wrong');
+            $notification = ['messege' => $notification, 'alert-type' => 'error'];
+            return redirect()->back()->with($notification);
+        }
     }
 }

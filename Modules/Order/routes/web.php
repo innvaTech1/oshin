@@ -34,5 +34,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
         Route::get('orders/declined', 'declinedOrder')->name('order.declined');
         Route::get('orders/cash-on-delivery', 'cashOnDelivery')->name('order.cash-on-delivery');
         Route::get('orders/show/{id}', 'show')->name('order.show');
+
+
+        Route::post('/order/return','orderReturn')->name('order.return');
     });
 });

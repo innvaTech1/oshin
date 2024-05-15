@@ -58,4 +58,9 @@ class Order extends Model
 
         return $this->currency_icon. $total;
     }
+
+    public function returnOrder()
+    {
+        return $this->hasOne(OrderReturn::class, 'order_id', 'order_id');
+    }
 }
