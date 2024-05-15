@@ -26,4 +26,8 @@ class OrderReturn extends Model
         'canceled_at',
         'refunded_at',
     ];
+
+    public function order(){
+        return $this->belongsTo(Order::class,'order_id','order_id');
+    }
 }

@@ -37,5 +37,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth:admi
 
 
         Route::post('/order/return','orderReturn')->name('order.return');
+
+        Route::get('pending-return','pendingReturn')->name('pending-return');
+        Route::get('approved-return','approvedReturn')->name('approved-return');
     });
 });

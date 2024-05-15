@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Order\app\Models\Order;
+use Modules\Order\app\Models\OrderReturn;
 use Modules\Order\app\Services\OrderService;
 use Modules\Product\app\Models\ProductReturn;
 
@@ -307,5 +308,13 @@ class OrderController extends Controller
             $notification = ['messege' => $notification, 'alert-type' => 'error'];
             return redirect()->back()->with($notification);
         }
+    }
+
+    public function pendingReturn()
+    {
+        $returns = OrderReturn::with('order')->where('status', 'pending')->paginate(20);
+
+        $title = __('Order Return');
+        return view('order::order-return', compact('returns', 'title'));
     }
 }

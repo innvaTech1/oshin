@@ -135,7 +135,7 @@
                                                 </td>
                                             </tr>
                                         @empty
-                                            <x-empty-table :name="__('Customer')" route="" create="no" :message="__('No data found!')"
+                                            <x-empty-table :name="__('Order')" route="" create="no" :message="__('No data found!')"
                                                 colspan="7"></x-empty-table>
                                         @endforelse
                                     </table>

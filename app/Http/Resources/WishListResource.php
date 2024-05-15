@@ -17,7 +17,7 @@ class WishListResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'product' => $this->product,
+            'product' => ProductResource::make($this->product),
         ];
     }
 }

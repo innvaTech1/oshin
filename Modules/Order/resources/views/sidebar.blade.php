@@ -45,6 +45,11 @@
                 href="{{ route('admin.rejected-payment') }}">{{ __('Rejected Payment') }}</a></li>
 
 
+        <li class="{{ Route::is('admin.pending-return') ? 'active' : '' }}"><a class="nav-link"
+                href="{{ route('admin.pending-return') }}">{{ __('Return Order Request') }}</a></li>
+
+        <li class="{{ Route::is('admin.approved-return') ? 'active' : '' }}"><a class="nav-link"
+                href="{{ route('admin.approved-return') }}">{{ __('Approved Return Order') }}</a></li>
 
     </ul>
 </li>

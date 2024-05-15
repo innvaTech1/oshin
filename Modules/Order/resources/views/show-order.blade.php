@@ -323,11 +323,11 @@
                         <div class="form-group">
                             <label for="return_status">{{ __('Return Status') }}</label>
                             <select name="return_status" class="form-control" id="return_status">
-                                <option value="pending" @if ($order->returnOrder?->return_status == 'pending') selected @endif>
+                                <option value="pending" @if ($order->returnOrder?->status == 'pending') selected @endif>
                                     {{ __('Pending') }}</option>
-                                <option value="approved" @if ($order->returnOrder?->return_status == 'approved') selected @endif>
+                                <option value="approved" @if ($order->returnOrder?->status == 'approved') selected @endif>
                                     {{ __('Approved') }}</option>
-                                <option value="rejected" @if ($order->returnOrder?->return_status == 'rejected') selected @endif>
+                                <option value="rejected" @if ($order->returnOrder?->status == 'rejected') selected @endif>
                                     {{ __('Rejected') }}</option>
                             </select>
                         </div>
