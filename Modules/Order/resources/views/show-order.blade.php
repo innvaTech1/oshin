@@ -73,13 +73,23 @@
                                             <strong>{{ __('Payment Information') }}:</strong><br>
                                             {{ __('Method') }}: {{ allPaymentMethods($order->payment_method) }}<br>
                                             {{ __('Status') }} :
+
+                                            @if($order->order_status != 'return')
                                             @if ($order->payment_status == 'success')
                                                 <span class="badge badge-success">{{ __('Success') }}</span>
                                             @elseif($order->payment_status == 'pending')
                                                 <span class="badge badge-warning">{{ __('Pending') }}</span>
                                             @else
                                                 <span class="badge badge-warning">{{ __('Cancelled') }}</span>
-                                            @endif <br>
+                                            @endif 
+                                            @else
+                                                @if ($order?->returnOrder?->payment_status == 'approved')
+                                                    <span class="badge badge-danger">{{ __('Re Funded') }}</span>
+                                                @elseif($order?->returnOrder?->payment_status == 'pending')
+                                                    <span class="badge badge-warning">{{ __('Not Funded') }}</span>
+                                                @endif
+                                            @endif
+                                            <br>
 
                                             @if (!$order->created_by)
                                                 {{ __('Transaction') }}: {!! clean(nl2br($order->transection_id)) !!}
@@ -95,9 +105,15 @@
                                             {{ __('Shipping') }}:
                                             {{ $order->delivery_method == 1 ? __('Delivery') : __('Pick up') }}<br>
                                             {{ __('Status') }} :
+                                            @if($order->order_status != 'return')
                                             <span
                                                 class="badge badge-{{ statusColor($order->delivery_status) }}">{{ getOrderStatus($order->delivery_status) }}
                                             </span>
+                                            @else
+                                            <span class="badge badge-danger">
+                                                {{ __('Order Returned') }}
+                                            </span>
+                                            @endif
                                         </address>
                                     </div>
                                 </div>
@@ -151,89 +167,98 @@
                                 <div class="row mt-3">
                                     <div class="col-lg-6 order-status">
                                         <div class="section-title">{{ __('Order Status') }}</div>
+                                        @if ($order->order_status != 'return')
+                                            @php
+                                                $status = [
+                                                    1 => 'Pending',
+                                                    2 => 'Accepted',
+                                                    3 => 'Progress',
+                                                    4 => 'On the way',
+                                                    5 => 'Delivered',
+                                                    6 => 'Cancelled',
+                                                ];
+                                                if ($order->delivery_method == 2) {
+                                                    $status[4] = 'Ready for Pickup';
+                                                    $status[5] = 'Picked Up';
+                                                }
 
-                                        @php
-                                            $status = [
-                                                1 => 'Pending',
-                                                2 => 'Accepted',
-                                                3 => 'Progress',
-                                                4 => 'On the way',
-                                                5 => 'Delivered',
-                                                6 => 'Cancelled',
-                                            ];
-                                            if ($order->delivery_method == 2) {
-                                                $status[4] = 'Ready for Pickup';
-                                                $status[5] = 'Picked Up';
-                                            }
+                                                if ($order->delivery_status == 5) {
+                                                    // remove last item
+                                                    array_pop($status);
+                                                }
 
-                                            if ($order->delivery_status == 5) {
-                                                // remove last item
-                                                array_pop($status);
-                                            }
+                                                // payment status
+                                                $paymentStatus = ['pending', 'success', 'rejected'];
 
-                                            // payment status
-                                            $paymentStatus = ['pending', 'success', 'rejected'];
+                                                if ($order->payment_status == 'success') {
+                                                    $paymentStatus = ['success'];
+                                                }
+                                                if (
+                                                    $order->payment_status == 'rejected' ||
+                                                    $order->payment_status == 'cancelled'
+                                                ) {
+                                                    $paymentStatus = [$order->payment_status];
+                                                }
 
-                                            if ($order->payment_status == 'success') {
-                                                $paymentStatus = ['success'];
-                                            }
-                                            if (
-                                                $order->payment_status == 'rejected' ||
-                                                $order->payment_status == 'cancelled'
-                                            ) {
-                                                $paymentStatus = [$order->payment_status];
-                                            }
+                                            @endphp
+                                            <form action="javascript:;" method="POST">
+                                                @csrf
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
 
-                                        @endphp
-                                        <form action="javascript:;" method="POST">
-                                            @csrf
-                                            <div class="modal-content">
-                                                <div class="modal-body">
+                                                        <input type="hidden" name="order_id"
+                                                            value="{{ $order->order_id }}">
+                                                        <div class="form-group">
+                                                            <label for="delivery_status">{{ __('Order Status') }}</label>
 
-                                                    <input type="hidden" name="order_id" value="{{ $order->order_id }}">
-                                                    <div class="form-group">
-                                                        <label for="delivery_status">{{ __('Order Status') }}</label>
+                                                            <select name="delivery_status" class="form-control"
+                                                                id="delivery_status">
 
-                                                        <select name="delivery_status" class="form-control"
-                                                            id="delivery_status">
+                                                                @foreach ($status as $key => $sta)
+                                                                    @php
+                                                                        if ($key < $order->delivery_status) {
+                                                                            continue;
+                                                                        }
+                                                                    @endphp
 
-                                                            @foreach ($status as $key => $sta)
-                                                                @php
-                                                                    if ($key < $order->delivery_status) {
-                                                                        continue;
-                                                                    }
-                                                                @endphp
+                                                                    <option value="{{ $key }}">
+                                                                        {{ $sta }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="payment_status">{{ __('Payment Status') }}</label>
+                                                            <select name="payment_status" class="form-control"
+                                                                id="payment_status">
+                                                                @foreach ($paymentStatus as $payment)
+                                                                    <option class="text-capitalize"
+                                                                        value="{{ $payment }}">
+                                                                        {{ ucfirst($payment) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group d-none cancel_note">
+                                                            <label for="cancel_note">{{ __('Cancel Note') }}<span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea name="cancel_note" class="form-control height_50" id="cancel_note"></textarea>
+                                                        </div>
 
-                                                                <option value="{{ $key }}">{{ $sta }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="payment_status">{{ __('Payment Status') }}</label>
-                                                        <select name="payment_status" class="form-control"
-                                                            id="payment_status">
-                                                            @foreach($paymentStatus as $payment)
-                                                                <option class="text-capitalize"
-                                                                    value="{{ $payment }}">{{ ucfirst($payment) }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-warning" id="return_btn"
+                                                            data-toggle="modal"
+                                                            data-target="#return">{{ __('Return') }}</button>
+                                                        <button type="button" class="btn btn-success"
+                                                            id="update">{{ __('Update') }}</button>
                                                     </div>
-                                                    <div class="form-group d-none cancel_note">
-                                                        <label for="cancel_note">{{ __('Cancel Note') }}<span
-                                                                class="text-danger">*</span></label>
-                                                        <textarea name="cancel_note" class="form-control height_50" id="cancel_note"></textarea>
-                                                    </div>
-
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-warning"
-                                                        id="return_btn" data-toggle="modal" data-target="#return">{{ __('Return') }}</button>
-                                                    <button type="button" class="btn btn-success"
-                                                        id="update">{{ __('Update') }}</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        @else
+                                            <span class="alert alert-danger">
+                                                {{ __('Order Returned') }}
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-lg-6 text-right">
@@ -298,17 +323,23 @@
                         <div class="form-group">
                             <label for="return_status">{{ __('Return Status') }}</label>
                             <select name="return_status" class="form-control" id="return_status">
-                                <option value="pending" @if($order->returnOrder->return_status == 'pending' ) selected @endif >{{ __('Pending') }}</option>
-                                <option value="approved" @if($order->returnOrder->return_status == 'approved' ) selected @endif>{{ __('Approved') }}</option>
-                                <option value="rejected" @if($order->returnOrder->return_status == 'rejected' ) selected @endif>{{ __('Rejected') }}</option>
+                                <option value="pending" @if ($order->returnOrder?->return_status == 'pending') selected @endif>
+                                    {{ __('Pending') }}</option>
+                                <option value="approved" @if ($order->returnOrder?->return_status == 'approved') selected @endif>
+                                    {{ __('Approved') }}</option>
+                                <option value="rejected" @if ($order->returnOrder?->return_status == 'rejected') selected @endif>
+                                    {{ __('Rejected') }}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="payment_status">{{ __('Payment Status') }}</label>
                             <select name="payment_status" class="form-control" id="payment_status">
-                                <option value="pending" @if($order?->returnOrder?->payment_status == 'rejected' ) selected @endif>{{ __('Pending') }}</option>
-                                <option value="approved" @if($order?->returnOrder?->payment_status == 'approved' ) selected @endif>{{ __('Re Funded') }}</option>
-                                <option value="rejected" @if($order?->returnOrder?->payment_status == 'rejected' ) selected @endif>{{ __('Rejected') }}</option>
+                                <option value="pending" @if ($order?->returnOrder?->payment_status == 'rejected') selected @endif>
+                                    {{ __('Pending') }}</option>
+                                <option value="approved" @if ($order?->returnOrder?->payment_status == 'approved') selected @endif>
+                                    {{ __('Re Funded') }}</option>
+                                <option value="rejected" @if ($order?->returnOrder?->payment_status == 'rejected') selected @endif>
+                                    {{ __('Rejected') }}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -332,7 +363,7 @@
 @push('js')
     <script>
         function deleteData(id) {
-            $("#deleteForm").attr("action", "{{ route('admin.order-delete','') }}" + "/" + id)
+            $("#deleteForm").attr("action", "{{ route('admin.order-delete', '') }}" + "/" + id)
         }
     </script>
     <script>
@@ -348,45 +379,45 @@
             })
 
             $("#update").on('click', function(e) {
-                    $('.preloader_area').removeClass('d-none');
-                    e.preventDefault()
-                    var status = $('#delivery_status').val();
-                    if (status == 6) {
-                        var cancel_note = $('#cancel_note').val();
-                        if (cancel_note == '') {
-                            toastr.error('Cancel note is required');
+                $('.preloader_area').removeClass('d-none');
+                e.preventDefault()
+                var status = $('#delivery_status').val();
+                if (status == 6) {
+                    var cancel_note = $('#cancel_note').val();
+                    if (cancel_note == '') {
+                        toastr.error('Cancel note is required');
+                        $('.preloader_area').addClass('d-none');
+                        return;
+                    }
+                }
+                var orderId = $('[name="order_id"]').val();
+                const payment = $('#payment_status').val();
+                $.ajax({
+                    url: "{{ route('admin.order.status') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        status: status,
+                        orderId: orderId,
+                        payment: payment,
+                        cancel_note: cancel_note
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            toastr.error(response.error);
                             $('.preloader_area').addClass('d-none');
                             return;
                         }
+                        toastr.success(response.success);
+                        $('.preloader_area').addClass('d-none');
+                        location.reload()
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        $('.preloader_area').addClass('d-none');
                     }
-                    var orderId = $('[name="order_id"]').val();
-                    const payment = $('#payment_status').val();
-                    $.ajax({
-                        url: "{{ route('admin.order.status') }}",
-                        type: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            status: status,
-                            orderId: orderId,
-                            payment: payment,
-                            cancel_note: cancel_note
-                        },
-                        success: function(response) {
-                            if (response.error) {
-                                toastr.error(response.error);
-                                $('.preloader_area').addClass('d-none');
-                                return;
-                            }
-                            toastr.success(response.success);
-                            $('.preloader_area').addClass('d-none');
-                            location.reload()
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                            $('.preloader_area').addClass('d-none');
-                        }
-                    });
                 });
+            });
         })
     </script>
 @endpush
