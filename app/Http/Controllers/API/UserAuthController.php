@@ -270,8 +270,16 @@ class UserAuthController extends Controller
      */
 
     public function refresh(Request $request)
-
     {
+        // $token = $request->token;
+        // if (!$token) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Token not provided',
+        //     ], 401);
+        // }
+
+        // $token = Auth::guard('api')->refresh();
         return response()->json([
             'status' => 'success',
             'user' => Auth::guard('api')->user(),

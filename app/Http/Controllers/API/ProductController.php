@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Models\OrderReview;
+use Modules\Order\app\Models\ReviewImage;
 use Modules\Product\app\Services\ProductService;
 
 class ProductController extends Controller
@@ -124,6 +125,8 @@ class ProductController extends Controller
             'comment' => 'required|string',
         ]);
 
+
+
         if ($validation->fails()) {
             return responseFail($validation->errors()->first(), 400);
         }
@@ -138,7 +141,7 @@ class ProductController extends Controller
             ->first();
 
         if ($orderDetails && !(OrderReview::where('product_id', $request->product_id)->exists())) {
-            OrderReview::create([
+            $review = OrderReview::create([
                 'order_id' => $orderDetails->order_id,
                 'product_id' => $request->product_id,
                 'rating' => $request->rating,
@@ -146,6 +149,19 @@ class ProductController extends Controller
                 'user_id' => $userId,
                 'status' => 1,
             ]);
+
+
+            if ($request->customer_review_img) {
+                foreach ($request->customer_review_img as $img) {
+                    $image = file_upload($img, null, 'uploads/custom_images/customer_review_img/');
+
+                    ReviewImage::create([
+                        'review_id' => $review->id,
+                        'image' => $image,
+                    ]);
+                }
+            }
+
             return responseSuccess('Review added successfully');
         }
         return responseFail('You can not review this product', 400);

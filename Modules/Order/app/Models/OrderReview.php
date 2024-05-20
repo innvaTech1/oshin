@@ -2,11 +2,10 @@
 
 namespace Modules\Order\app\Models;
 
-use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Order\Database\factories\OrderReviewFactory;
+use Modules\Product\app\Models\Product;
 
 class OrderReview extends Model
 {
@@ -42,5 +41,8 @@ class OrderReview extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class, 'review_id');
+    }
 }
