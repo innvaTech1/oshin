@@ -186,7 +186,7 @@ class OrderController extends Controller
         $maxDeliveryDate = [];
         foreach ($cart as $item) {
             $product = Product::find($item['product_id']);
-            if ($product->max_delivery_time > 0) {
+            if ($product->max_delivery_time != null) {
                 $maxDeliveryDate[] = $product->delivery_time;
             }
 
@@ -205,9 +205,13 @@ class OrderController extends Controller
             $orderDetails->save();
         }
 
-        dd($maxDeliveryDate);
         if (count($maxDeliveryDate) > 0) {
+
+            // get the max delivery date
+
             $maxDeliveryDate = max($maxDeliveryDate);
+
+            // add the max delivery date to the order delivery date
             $order->order_delivery_date = now()->addDays($maxDeliveryDate);
             $order->save();
         }
