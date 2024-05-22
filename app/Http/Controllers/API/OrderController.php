@@ -103,7 +103,7 @@ class OrderController extends Controller
         }
 
 
-        $coupon = json_decode($request->coupon)->data;
+        $coupon = json_decode($request->coupon)?->data;
         $payment = $request->payment;
         $cart = $request->cart;
 
