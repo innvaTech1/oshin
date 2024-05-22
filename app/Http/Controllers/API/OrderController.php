@@ -13,6 +13,7 @@ use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Services\OrderService;
 use Modules\Product\app\Models\Product;
 use Modules\Product\app\Models\Variant;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
@@ -59,14 +60,14 @@ class OrderController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function createGuest(Request $request)
     {
-        $user = $request->user();
+        $token = $request->bearerToken();
+        $user = null;
+        if ($token) {
+            $user = JWTAuth::parseToken()->authenticate();
+        }
 
-        return $this->createGuest($request, $user);
-    }
-    public function createGuest(Request $request, $user = null)
-    {
         try {
             if ($request->cart == null) {
                 return responseFail('cart can\'t be empty');

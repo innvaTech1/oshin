@@ -73,7 +73,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/shipping-methods/{id}', [ShippingMethodController::class, 'show']);
 
     // Order
-    Route::post('/order/guest/create', [OrderController::class, 'createGuest']);
+    Route::post('/order/create', [OrderController::class, 'createGuest']);
     // coupon
     Route::get('/coupon', [CouponController::class, 'index']);
 
@@ -82,7 +82,6 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::post('/review/store', [ProductController::class, 'postReview']);
-        Route::post('/order/create', [OrderController::class, 'create']);
 
         Route::post('/wishlist/store', [WishlistController::class, 'store']);
 
