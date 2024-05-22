@@ -13,6 +13,7 @@ use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Models\OrderReview;
 use Modules\Order\app\Models\ReviewImage;
 use Modules\Product\app\Services\ProductService;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends Controller
 {
@@ -79,8 +80,12 @@ class ProductController extends Controller
             $prodVar = $this->productService->getProductVariants($product);
             $data['variants'] = $prodVar;
 
+            $token = $request->bearerToken();
+            $user = null;
+            if ($token) {
+                $user = JWTAuth::parseToken()->authenticate();
+            }
 
-            $user = $request->id;
             // can give reviews
             $canGiveReview = false;
             if ($user) {
