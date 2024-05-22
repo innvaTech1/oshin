@@ -205,6 +205,7 @@ class OrderController extends Controller
             $orderDetails->save();
         }
 
+        dd(max($maxDeliveryDate));
         if (count($maxDeliveryDate) > 0) {
             $maxDeliveryDate = max($maxDeliveryDate);
             $order->order_delivery_date = now()->addDays($maxDeliveryDate);
