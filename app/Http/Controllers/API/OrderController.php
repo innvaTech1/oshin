@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Modules\Order\app\Models\Order;
 use Modules\Order\app\Models\OrderDetails;
 use Modules\Order\app\Services\OrderService;
@@ -66,67 +67,73 @@ class OrderController extends Controller
     }
     public function createGuest(Request $request, $user = null)
     {
-        if ($request->cart == null) {
-            return responseFail('cart can\'t be empty');
-        }
-        if ($request->shipping == null) {
-            return responseFail('Shipping Address Required');
-        }
+        try {
+            if ($request->cart == null) {
+                return responseFail('cart can\'t be empty');
+            }
+            if ($request->shipping == null) {
+                return responseFail('Shipping Address Required');
+            }
 
 
-        DB::beginTransaction();
-        $address_id = null;
-        if ($request->shipping['shippingAddress'] != null) {
-            $shippingAddress = $this->createAddress([
-                'address' => $request->shipping['shippingAddress'],
-                'fullName' => $request->shipping['shippingFullName'],
-                'phone' => $request->shipping['shippingMobileNumber'],
-                'district' => $request->shipping['shippingDistrict'],
-                'city' => $request->shipping['shippingThana'],
-                'email' => $request->shipping['shippingEmail'],
-            ]);
-            $address_id = $shippingAddress->id;
-        }
+            DB::beginTransaction();
+            $address_id = null;
+            if ($request->shipping['shippingAddress'] != null) {
+                $shippingAddress = $this->createAddress([
+                    'address' => $request->shipping['shippingAddress'],
+                    'fullName' => $request->shipping['shippingFullName'],
+                    'phone' => $request->shipping['shippingMobileNumber'],
+                    'district' => $request->shipping['shippingDistrict'],
+                    'city' => $request->shipping['shippingThana'],
+                    'email' => $request->shipping['shippingEmail'],
+                ]);
+                $address_id = $shippingAddress->id;
+            }
 
-        $billing_id = null;
+            $billing_id = null;
 
-        if ($request->shipping['sameAsShipping'] == false) {
-            $billingAddress = $this->createAddress([
-                'address' => $request->shipping['billingAddress'],
-                'fullName' => $request->shipping['billingFullName'],
-                'phone' => $request->shipping['billingMobileNumber'],
-                'district' => $request->shipping['billingDistrict'],
-                'city' => $request->shipping['billingThana'],
-                'email' => $request->shipping['billingEmail'],
-            ]);
-            $billing_id = $billingAddress->id;
-        }
+            if ($request->shipping['sameAsShipping'] == false) {
+                $billingAddress = $this->createAddress([
+                    'address' => $request->shipping['billingAddress'],
+                    'fullName' => $request->shipping['billingFullName'],
+                    'phone' => $request->shipping['billingMobileNumber'],
+                    'district' => $request->shipping['billingDistrict'],
+                    'city' => $request->shipping['billingThana'],
+                    'email' => $request->shipping['billingEmail'],
+                ]);
+                $billing_id = $billingAddress->id;
+            }
 
 
-        $coupon = json_decode($request->coupon)?->data;
-        $payment = $request->payment;
-        $cart = $request->cart;
+            $coupon = json_decode($request->coupon)?->data;
+            $payment = $request->payment;
+            $cart = $request->cart;
 
-        $data = [
-            'address_id' => $address_id,
-            'billing_address_id' => $billing_id,
-            'delivery_fee' => $request->shippingFee,
-            'tax' => isset($request->shipping['tax']) ? $request->shipping['tax'] : 0,
-            'discount' => isset($coupon?->discount) ? $coupon->discount : 0,
-            'order_total_fee' => $request->total,
-            'order_sub_total' => $request->subTotal,
-            'order_payment_details' => $payment ? $payment['paymentDetails'] : null,
-            'order_payment_method' => $request->shipping['paymentMethod'],
-            'order_delivery_method' => $request->shipping['shippingArea'],
-        ];
+            $data = [
+                'address_id' => $address_id,
+                'billing_address_id' => $billing_id,
+                'delivery_fee' => $request->shippingFee,
+                'tax' => isset($request->shipping['tax']) ? $request->shipping['tax'] : 0,
+                'discount' => isset($coupon?->discount) ? $coupon->discount : 0,
+                'order_total_fee' => $request->total,
+                'order_sub_total' => $request->subTotal,
+                'order_payment_details' => $payment ? $payment['paymentDetails'] : null,
+                'order_payment_method' => $request->shipping['paymentMethod'],
+                'order_delivery_method' => $request->shipping['shippingArea'],
+            ];
 
-        $order = $this->storeOrder($data, $user, $cart);
+            $order = $this->storeOrder($data, $user, $cart);
 
-        if ($order) {
-            DB::commit();
-            return responseSuccess($order, 'Order Placed Successfully', 200);
-        } else {
+            if ($order) {
+                DB::commit();
+                return responseSuccess($order, 'Order Placed Successfully', 200);
+            } else {
+                DB::rollBack();
+                return responseFail('Order Not Placed', 400);
+            }
+        } catch (\Exception $e) {
             DB::rollBack();
+            Log::error($e->getMessage());
             return responseFail('Order Not Placed', 400);
         }
     }
