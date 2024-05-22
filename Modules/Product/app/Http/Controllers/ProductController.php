@@ -45,6 +45,7 @@ class ProductController extends Controller
             }
             $categories = $this->categoryService->getAllProductCategoriesForSelect();
             $brands = $this->brandService->getActiveBrands();
+
             return view('product::products.index', compact('products', 'categories', 'brands'));
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
