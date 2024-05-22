@@ -112,7 +112,7 @@ class OrderController extends Controller
             'billing_address_id' => $billing_id,
             'delivery_fee' => $request->shippingFee,
             'tax' => isset($request->shipping['tax']) ? $request->shipping['tax'] : 0,
-            'discount' => $coupon->discount,
+            'discount' => isset($coupon?->discount) ? $coupon->discount : 0,
             'order_total_fee' => $request->total,
             'order_sub_total' => $request->subTotal,
             'order_payment_details' => $payment ? $payment['paymentDetails'] : null,
