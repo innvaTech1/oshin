@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Models\Address;
 use App\Traits\MailSenderTrait;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class OrderController extends Controller
         $orders = $this->orderService->getUserOrders($user);
 
         if ($orders->count() > 0) {
+            $orders = OrderResource::collection($orders);
             return responseSuccess($orders, 'All Orders', 200);
         } else {
             return responseFail('No Orders Found', 404);
@@ -41,6 +43,7 @@ class OrderController extends Controller
         $order = $this->orderService->getOrder($id);
 
         if ($order) {
+            $order = OrderResource::make($order);
             return responseSuccess($order, 'Order Details', 200);
         } else {
             return responseFail('Order Not Found', 404);

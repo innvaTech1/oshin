@@ -2,6 +2,7 @@
 
 namespace Modules\Order\app\Models;
 
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,21 +47,34 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetails::class);
     }
-    public function getQuantityAttribute(){
+    public function getQuantityAttribute()
+    {
         return $this->orderDetails->sum('quantity');
     }
-    public function createdBy(){
-        return $this->belongsTo(User::class,'created_by','id');
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function getAmountAttribute(){
+    public function getAmountAttribute()
+    {
         $total = $this->total_amount * $this->currency_rate;
 
-        return $this->currency_icon. $total;
+        return $this->currency_icon . $total;
     }
 
     public function returnOrder()
     {
         return $this->hasOne(OrderReturn::class, 'order_id', 'order_id');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function billingAddress()
+    {
+        return $this->belongsTo(Address::class, 'id');
     }
 }
