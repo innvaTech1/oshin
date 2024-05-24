@@ -31,6 +31,9 @@ class OrderResource extends JsonResource
             'payment_status' => $this->payment_status,
             'order_status' => $this->order_status,
             'delivery_status' => getOrderStatus($this->delivery_status),
+            'created_at' => $this->created_at->format('d M Y H:i A'),
+            'order_details' => OrderDetailsResource::collection($this->orderDetails),
+            'order_delivery_date' => $this->order_delivery_date,
         ];
     }
 }

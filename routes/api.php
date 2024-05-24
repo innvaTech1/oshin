@@ -80,12 +80,18 @@ Route::group(['middleware' => 'cors'], function () {
 
     // get wishlists
 
+
+    Route::get(
+        '/order/{id}',
+        [OrderController::class, 'show']
+    );
+
     Route::middleware('auth:api')->group(function () {
         Route::post('/review/store', [ProductController::class, 'postReview']);
 
         Route::post('/wishlist/store', [WishlistController::class, 'store']);
 
-        Route::get('/order/{id}', [OrderController::class, 'show']);
+
         Route::get('/wishlists', [WishlistController::class, 'index']);
         // add wishlist
         // remove wishlist
