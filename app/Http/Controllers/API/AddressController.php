@@ -13,7 +13,7 @@ class AddressController extends Controller
         $user->addresses()->create([
             "name" => $request->billingFullName,
             "address" => $request->billingAddress,
-            "phone" => $request->billingPhone,
+            "phone" => $request->billingMobileNumber,
             "email" => $request->billingEmail,
             "state" => $request->billingDistrict,
             "city" => $request->billingThana,
