@@ -30,18 +30,25 @@ class AddressController extends Controller
         $addresses = $user->addresses;
         return responseSuccess(AddressResource::collection($addresses), 'All Addresses', 200);
     }
+
+    public function getAddress(Request $request, $id)
+    {
+        $user = $request->user();
+        $address = $user->addresses()->findOrFail($id);
+        return responseSuccess(new AddressResource($address), 'Address Details', 200);
+    }
     public function updateAddress(Request $request, $id)
     {
         $user = $request->user();
         $address = $user->addresses()->findOrFail($id);
         $address->update($request->all());
-        return response()->json(['message' => 'Address updated successfully']);
+        return responseSuccess(new AddressResource($address), 'Address updated successfully', 200);
     }
     public function deleteAddress(Request $request, $id)
     {
         $user = $request->user();
         $address = $user->addresses()->findOrFail($id);
         $address->delete();
-        return response()->json(['message' => 'Address deleted successfully']);
+        return responseSuccess(AddressResource::collection($user->addresses), 'Address deleted successfully', 200);
     }
 }
