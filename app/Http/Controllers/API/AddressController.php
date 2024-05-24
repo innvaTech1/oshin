@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AddressResouce;
+use App\Http\Resources\AddressResource;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -19,14 +21,14 @@ class AddressController extends Controller
             "city" => $request['billingThana'],
             'is_default' => $request['default_address'] == 'true' ? 1 : 0,
         ]);
-        return responseSuccess($user->addresses, 'Address created successfully', 201);
+        return responseSuccess(AddressResource::collection($user->addresses), 'Address created successfully', 201);
     }
 
     public function getAddresses(Request $request)
     {
         $user = $request->user();
         $addresses = $user->addresses;
-        return response()->json(['addresses' => $addresses]);
+        return responseSuccess(AddressResource::collection($addresses), 'All Addresses', 200);
     }
     public function updateAddress(Request $request, $id)
     {

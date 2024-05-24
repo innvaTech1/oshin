@@ -22,4 +22,19 @@ class Address extends Model
         'type',
         'note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'state', 'id');
+    }
+
+    public function thana()
+    {
+        return $this->belongsTo(Thana::class, 'city', 'id');
+    }
 }
