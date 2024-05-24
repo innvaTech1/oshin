@@ -120,4 +120,3 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('orders', [OrderController::class, 'index']);
     });
 });
-// create order
