@@ -28,6 +28,10 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
         $orders = $this->orderService->getUserOrders($user);
 
         if ($orders->count() > 0) {
