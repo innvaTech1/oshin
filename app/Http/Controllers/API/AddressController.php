@@ -9,15 +9,16 @@ class AddressController extends Controller
 {
     public function createAddress(Request $request)
     {
+        return $request->all();
         $user = $request->user();
         $user->addresses()->create([
-            "name" => $request->billingFullName,
-            "address" => $request->billingAddress,
-            "phone" => $request->billingMobileNumber,
-            "email" => $request->billingEmail,
-            "state" => $request->billingDistrict,
-            "city" => $request->billingThana,
-            'is_default' => $request->default_address == 'true' ? 1 : 0,
+            "name" => $request['billingFullName'],
+            "address" => $request['billingAddress'],
+            "phone" => $request['billingMobileNumber'],
+            "email" => $request['billingEmail'],
+            "state" => $request['billingDistrict'],
+            "city" => $request['billingThana'],
+            'is_default' => $request['default_address'] == 'true' ? 1 : 0,
         ]);
         return responseSuccess($user->addresses, 'Address created successfully', 201);
     }
