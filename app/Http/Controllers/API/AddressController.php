@@ -9,7 +9,6 @@ class AddressController extends Controller
 {
     public function createAddress(Request $request)
     {
-        return $request->all();
         $user = $request->user();
         $user->addresses()->create([
             "name" => $request['billingFullName'],
