@@ -101,10 +101,10 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('addresses', [AddressController::class, 'createAddress']);
 
         // Get Addresses
-        Route::get('addresses', [AddressController::class, 'getAddresses']);
+        Route::get('addresses/all', [AddressController::class, 'getAddresses']);
 
         // single address
-        Route::get('addresses/{id}', [AddressController::class, 'getAddress']);
+        Route::get('address/{id}', [AddressController::class, 'getAddress']);
 
         // Update Address
         Route::put('addresses/{id}', [AddressController::class, 'updateAddress']);
