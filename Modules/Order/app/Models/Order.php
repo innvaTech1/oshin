@@ -70,11 +70,11 @@ class Order extends Model
 
     public function address()
     {
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
     public function billingAddress()
     {
-        return $this->belongsTo(Address::class, 'id');
+        return $this->belongsTo(Address::class, 'billing_address_id', 'id');
     }
 }
