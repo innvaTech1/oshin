@@ -20,10 +20,10 @@ class AddressResource extends JsonResource
             'address' => $this->address,
             'phone' => $this->phone,
             'email' => $this->email,
-            'district' => $this->district->name,
+            'district' => $this->district?->name,
             'district_id' => $this->state,
             'thana_id' => $this->city,
-            'thana' => $this->thana->name,
+            'thana' => $this->thana?->name,
             'is_default' => $this->is_default,
             'type' => $this->type,
         ];
