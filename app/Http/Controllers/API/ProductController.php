@@ -74,6 +74,9 @@ class ProductController extends Controller
         try {
             $product = $this->productService->getProductBySlug($slug);
 
+            if (!$product) {
+                return responseFail('Product not found', 404);
+            }
             $productResource = new ProductResource($product);
 
             $data['product'] = $productResource;
@@ -86,10 +89,11 @@ class ProductController extends Controller
                 $user = JWTAuth::parseToken()->authenticate();
             }
 
+
             // can give reviews
             $canGiveReview = false;
             if ($user) {
-                $orderDetails = Order::where('user_id', $user)->where('order_status', 'success')
+                $orderDetails = Order::where('user_id', $user->id)->where('order_status', 'success')
                     ->pluck('id')
                     ->flatMap(function ($orderId) use ($product) {
                         return OrderDetails::where('order_id', $orderId)
@@ -97,10 +101,14 @@ class ProductController extends Controller
                             ->get();
                     })
                     ->first();
+                // return responseSuccess($orderDetails, 'data found');
                 if ($orderDetails && !(OrderReview::where('product_id', $product->id)->exists())) {
                     $canGiveReview = true;
                 }
             }
+
+
+            // return $canGiveReview;
 
             $reviews = OrderReview::where('product_id', $product->id)->get();
 

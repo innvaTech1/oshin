@@ -62,6 +62,7 @@ class OrderController extends Controller
 
     public function createGuest(Request $request)
     {
+        // return $request->all();
         $token = $request->bearerToken();
         $user = null;
         if ($token) {
@@ -91,7 +92,7 @@ class OrderController extends Controller
                 $address_id = $shippingAddress->id;
             }
 
-            $billing_id = null;
+            $billing_id = $address_id;
 
             if ($request->shipping['sameAsShipping'] == false) {
                 $billingAddress = $this->createAddress([
@@ -121,6 +122,8 @@ class OrderController extends Controller
                 'order_payment_details' => $payment ? $payment['paymentDetails'] : null,
                 'order_payment_method' => $request->shipping['paymentMethod'],
                 'order_delivery_method' => $request->shipping['shippingArea'],
+                'transaction_id' => isset($request->shipping['transaction_id']) ? $request->shipping['transaction_id'] : null,
+                'order_note' => isset($request->shipping['orderNote']) ? $request->shipping['orderNote'] : null,
             ];
 
             $order = $this->storeOrder($data, $user, $cart);
@@ -173,22 +176,21 @@ class OrderController extends Controller
         $order->order_amount = $data['order_sub_total'];
         $order->payment_details = $data['order_payment_details'];
         $order->payment_method = $data['order_payment_method'];
-        $order->delivery_method = $data['order_delivery_method'];
+        $order->delivery_method = 1;
         $order->payment_status = 'pending';
         $order->order_status = 'pending';
+        $order->order_note = $data['order_note'];
         $order->delivery_status = 1;
-
+        $order->transaction_id = $data['transaction_id'];
         $order->save();
-
-        // if ($user != null) {
-        //     $this->sendOrderSuccessMail($user, $order);
-        // }
 
         $maxDeliveryDate = [];
         foreach ($cart as $item) {
             $product = Product::find($item['product_id']);
             if ($product->max_delivery_time != null) {
                 $maxDeliveryDate[] = $product->max_delivery_time;
+            } else {
+                $maxDeliveryDate[] = 4;
             }
 
             $variant = isset($item['variant']) ?  Variant::where('sku', $item['sku'])->first() : null;

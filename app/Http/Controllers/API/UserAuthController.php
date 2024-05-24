@@ -163,10 +163,10 @@ class UserAuthController extends Controller
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
+                'refreshToken' => Auth::guard('api')->refresh(),
+
             ]
         ]);
-        
-        
     }
     /**
      * Handle forgot password request.
@@ -271,20 +271,13 @@ class UserAuthController extends Controller
 
     public function refresh(Request $request)
     {
-        // $token = $request->token;
-        // if (!$token) {
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'Token not provided',
-        //     ], 401);
-        // }
-
-        // $token = Auth::guard('api')->refresh();
+        return ['user' => Auth::guard('api')->refresh(), 'token' => Auth::guard('api')->refresh(), 'valid_user' => $request->user()];
         return response()->json([
             'status' => 'success',
             'user' => Auth::guard('api')->user(),
             'authorisation' => [
                 'token' => Auth::guard('api')->refresh(),
+                'refresh_token' => Auth::guard('api')->refresh(),
                 'type' => 'bearer',
             ]
         ]);
