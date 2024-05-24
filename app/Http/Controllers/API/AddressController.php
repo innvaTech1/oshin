@@ -58,7 +58,17 @@ class AddressController extends Controller
             return responseFail('User Not Found', 404);
         }
         $address = $user->addresses()->findOrFail($id);
-        $address->update($request->all());
+        $address->update(
+            [
+                "name" => $request['billingFullName'],
+                "address" => $request['billingAddress'],
+                "phone" => $request['billingMobileNumber'],
+                "email" => $request['billingEmail'],
+                "state" => $request['billingDistrict'],
+                "city" => $request['billingThana'],
+                'is_default' => $request['default_address'] == 'true' ? 1 : 0,
+            ]
+        );
         return responseSuccess(new AddressResource($address), 'Address updated successfully', 200);
     }
     public function deleteAddress(Request $request, $id)
