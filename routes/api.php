@@ -116,7 +116,8 @@ Route::group(['middleware' => 'cors'], function () {
         Route::put('profile', [UserAuthController::class, 'updateProfile']);
 
         // get user orders
-
         Route::get('orders', [OrderController::class, 'index']);
+        // order cancel
+        Route::put('order/cancel/{id}', [OrderController::class, 'cancelOrder']);
     });
 });

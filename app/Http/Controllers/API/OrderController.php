@@ -226,4 +226,39 @@ class OrderController extends Controller
 
         return $order;
     }
+
+    public function cancelOrder(Request $request, string $orderId)
+    {
+
+        $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
+        $order = $this->orderService->getOrder($orderId);
+
+        if ($order->user_id != $user->id) {
+            return responseFail('Unauthorized', 401);
+        }
+
+        if ($order->order_status == 'cancelled') {
+            return responseFail('Order Already Cancelled', 400);
+        }
+
+        if ($order->order_status == 'success') {
+            return responseFail('Order Already Delivered', 400);
+        }
+        if ($order->delivery_method != 1) {
+            return responseFail('Order Can\'t be Cancelled', 400);
+        }
+        if ($order) {
+            $order->order_status = 'cancelled';
+            $order->payment_status = 'rejected';
+            $order->delivery_method = 6;
+            $order->save();
+            return responseSuccess($order, 'Order Cancelled Successfully', 200);
+        } else {
+            return responseFail('Order Not Found', 404);
+        }
+    }
 }
