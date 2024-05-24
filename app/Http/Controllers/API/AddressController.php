@@ -12,6 +12,11 @@ class AddressController extends Controller
     public function createAddress(Request $request)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
+
         $user->addresses()->create([
             "name" => $request['billingFullName'],
             "address" => $request['billingAddress'],
@@ -27,6 +32,10 @@ class AddressController extends Controller
     public function getAddresses(Request $request)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
         $addresses = $user->addresses;
         return responseSuccess(AddressResource::collection($addresses), 'All Addresses', 200);
     }
@@ -34,12 +43,20 @@ class AddressController extends Controller
     public function getAddress(Request $request, $id)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
         $address = $user->addresses()->findOrFail($id);
         return responseSuccess(new AddressResource($address), 'Address Details', 200);
     }
     public function updateAddress(Request $request, $id)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
         $address = $user->addresses()->findOrFail($id);
         $address->update($request->all());
         return responseSuccess(new AddressResource($address), 'Address updated successfully', 200);
@@ -47,6 +64,10 @@ class AddressController extends Controller
     public function deleteAddress(Request $request, $id)
     {
         $user = $request->user();
+
+        if ($user == null) {
+            return responseFail('User Not Found', 404);
+        }
         $address = $user->addresses()->findOrFail($id);
         $address->delete();
         return responseSuccess(AddressResource::collection($user->addresses), 'Address deleted successfully', 200);
