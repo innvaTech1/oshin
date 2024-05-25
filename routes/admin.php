@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\ReviewsController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\SettingController;
@@ -41,7 +42,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::put('update-password', 'update_password')->name('update-password');
         });
 
-        Route::get('product/bulk-import', [ProductController::class,'bulkImport'])->name('product.import');
+        Route::get('product/bulk-import', [ProductController::class, 'bulkImport'])->name('product.import');
 
 
         // locations
@@ -53,7 +54,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         // sellers routes
         Route::resource('sellers', SellerController::class);
         Route::resource('shipping', ShippingMethodController::class);
-        Route::put('shipping/status/{id}',[ShippingMethodController::class, 'shippingStatus'])->name('shipping.status');
+        Route::put('shipping/status/{id}', [ShippingMethodController::class, 'shippingStatus'])->name('shipping.status');
+
+        // reviews route
+        Route::get('reviews', [ReviewsController::class, 'reviews'])->name('reviews');
+        Route::delete('reviews/{id}', [ReviewsController::class, 'deleteReview'])->name('reviews.delete');
+
 
         Route::get('role/assign', [RolesController::class, 'assignRoleView'])->name('role.assign');
         Route::post('role/assign/{id}', [RolesController::class, 'getAdminRoles'])->name('role.assign.admin');

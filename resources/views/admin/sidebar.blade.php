@@ -75,6 +75,13 @@
             @if (Module::isEnabled('Refund'))
                 @include('refund::admin.sidebar')
             @endif
+            {{-- @adminCan('reviews.list') --}}
+            <li class="{{ Route::is('admin.reviews') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.reviews') }}"><i class="fas fa-comment-dots"></i>
+                    <span>{{ __('Reviews') }}</span>
+                </a>
+            </li>
+            {{-- @endadminCan --}}
 
             {{-- @if (Module::isEnabled('PaymentWithdraw'))
                 @include('paymentwithdraw::admin.sidebar')
