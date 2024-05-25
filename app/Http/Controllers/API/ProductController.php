@@ -178,7 +178,7 @@ class ProductController extends Controller
                 }
             }
 
-            return responseSuccess('Review added successfully');
+            return responseSuccess(OrderReviewResource::make($review), 'Review added successfully');
         }
         return responseFail('You can not review this product', 400);
     }
