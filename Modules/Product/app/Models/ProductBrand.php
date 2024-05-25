@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 use Modules\Media\app\Models\Media;
 
 class ProductBrand extends Model
@@ -18,11 +19,30 @@ class ProductBrand extends Model
         'slug', 'image', 'status',
     ];
 
+
     protected $appends = [
         'image_url',
         'name',
         'description',
     ];
+
+    // boot method for forget cache
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function () {
+            Cache::forget('brands');
+        });
+
+        static::updated(function () {
+            Cache::forget('brands');
+        });
+
+        static::deleted(function () {
+            Cache::forget('brands');
+        });
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'brand_id', 'id');

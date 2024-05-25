@@ -23,7 +23,7 @@ class BrandController extends Controller
         // check if in cache
         if (Cache::has('brands')) {
             $brands = Cache::get('brands');
-            return responseSuccess($brands);
+            return responseSuccess(BrandResource::collection($brands));
         } else {
             $brands = $this->brandService->getActiveBrands();
             if (count($brands) > 0) {
