@@ -17,6 +17,10 @@ class AddressController extends Controller
             return responseFail('User Not Found', 404);
         }
 
+        if ($request['default_address'] == 'true') {
+            $user->addresses()->update(['is_default' => 0]);
+        }
+
         $user->addresses()->create([
             "name" => $request['billingFullName'],
             "address" => $request['billingAddress'],
@@ -56,6 +60,9 @@ class AddressController extends Controller
 
         if ($user == null) {
             return responseFail('User Not Found', 404);
+        }
+        if ($request['default_address'] == 'true') {
+            $user->addresses()->update(['is_default' => 0]);
         }
         $address = $user->addresses()->findOrFail($id);
         $address->update(
