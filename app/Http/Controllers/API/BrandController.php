@@ -27,7 +27,7 @@ class BrandController extends Controller
         } else {
             $brands = $this->brandService->getActiveBrands();
             if (count($brands) > 0) {
-                Cache::put('brands', $brands, 60);
+                Cache::rememberForever('brands', $brands, 60);
                 return responseSuccess(BrandResource::collection($brands));
             } else {
                 return responseFail('Brands not found', 404);

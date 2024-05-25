@@ -54,7 +54,9 @@ class AddressController extends Controller
             return responseFail('User Not Found', 404);
         }
         $address = $user->addresses()->findOrFail($id);
-        return responseSuccess(new AddressResource($address), 'Address Details', 200);
+        $data = new AddressResource($address);
+        $data['thanasByDistrict'] = $address->state->thanas;
+        return responseSuccess($data, 'Address Details', 200);
     }
     public function updateAddress(Request $request, $id)
     {
