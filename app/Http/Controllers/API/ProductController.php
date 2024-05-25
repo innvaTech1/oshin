@@ -134,6 +134,8 @@ class ProductController extends Controller
         if (!$userId) {
             return responseFail('Unauthorized', 401);
         }
+
+        return $request->all();
         $validation = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'rating' => 'required|numeric|min:1|max:5',
