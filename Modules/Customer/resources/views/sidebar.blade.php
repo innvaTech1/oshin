@@ -30,13 +30,10 @@
             </a>
         </li>
 
-        <li class="{{ Route::is('admin.send-bulk-mail') ? 'active' : '' }}">
+        {{-- <li class="{{ Route::is('admin.send-bulk-mail') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.send-bulk-mail') }}">
                 {{ __('Send bulk mail') }}
             </a>
-        </li>
-
-
-
+        </li> --}}
     </ul>
 </li>

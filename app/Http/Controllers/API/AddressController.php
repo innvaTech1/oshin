@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AddressResouce;
 use App\Http\Resources\AddressResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AddressController extends Controller
 {
@@ -41,6 +42,7 @@ class AddressController extends Controller
             return responseFail('User Not Found', 404);
         }
         $addresses = $user->addresses;
+
         return responseSuccess(AddressResource::collection($addresses), 'All Addresses', 200);
     }
 

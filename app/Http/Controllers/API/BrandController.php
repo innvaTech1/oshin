@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\ProductResource;
-
+use Illuminate\Support\Facades\Cache;
 use Modules\Product\app\Services\BrandService;
 
 class BrandController extends Controller
@@ -20,11 +20,18 @@ class BrandController extends Controller
 
     public function brands()
     {
-        $brands = $this->brandService->getActiveBrands();
-        if (count($brands) > 0) {
-            return responseSuccess(BrandResource::collection($brands));
+        // check if in cache
+        if (Cache::has('brands')) {
+            $brands = Cache::get('brands');
+            return responseSuccess($brands);
         } else {
-            return responseFail('Brands not found', 404);
+            $brands = $this->brandService->getActiveBrands();
+            if (count($brands) > 0) {
+                Cache::put('brands', $brands, 60);
+                return responseSuccess(BrandResource::collection($brands));
+            } else {
+                return responseFail('Brands not found', 404);
+            }
         }
     }
 
