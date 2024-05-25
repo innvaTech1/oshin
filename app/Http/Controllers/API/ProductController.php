@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderReviewResouce;
+use App\Http\Resources\OrderReviewResource;
 use App\Http\Resources\ProductResource;
 use Exception;
 use Illuminate\Http\Request;
@@ -178,5 +180,20 @@ class ProductController extends Controller
             return responseSuccess('Review added successfully');
         }
         return responseFail('You can not review this product', 400);
+    }
+
+    public function getReviews(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return responseFail('Unauthorized', 401);
+        }
+
+        $reviews = $user->reviews;
+
+        $reviews = OrderReviewResource::collection($reviews);
+
+        return responseSuccess($reviews);
     }
 }

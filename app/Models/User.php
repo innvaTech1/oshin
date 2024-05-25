@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\LiveChat\app\Models\Message;
 use Modules\Order\app\Models\Order;
+use Modules\Order\app\Models\OrderReview;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -195,5 +196,10 @@ class User extends Authenticatable implements JWTSubject
     public function addresses()
     {
         return $this->hasMany(Address::class, 'user_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(OrderReview::class, 'user_id');
     }
 }

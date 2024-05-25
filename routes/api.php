@@ -88,7 +88,8 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::post('/review/store', [ProductController::class, 'postReview']);
-
+        Route::get('/reviews', [ProductController::class, 'getReviews']);
+        Route::get('/review/{id}', [ProductController::class, 'getReview']);
         Route::post('/wishlist/store', [WishlistController::class, 'store']);
 
 

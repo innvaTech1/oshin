@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('brand_id')->constrained('product_brands');
+            $table->foreignId('brand_id')->nullable()->constrained('product_brands');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->integer('unit_id')->nullable();
             $table->string('slug')->unique();
