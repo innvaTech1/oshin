@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="card card-large-icons">
                                 <div class="card-icon bg-primary text-white">
                                     <i class="fas fa-envelope"></i>
@@ -42,7 +42,7 @@
                                             class="fas fa-chevron-right"></i></a>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-6">
                             <div class="card card-large-icons">
                                 <div class="card-icon bg-primary text-white">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="card card-large-icons">
                                 <div class="card-icon bg-primary text-white">
                                     <i class="fas fa-language"></i>
@@ -68,8 +68,8 @@
                                             class="fas fa-chevron-right"></i></a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
+                        </div> --}}
+                        {{-- <div class="col-lg-6">
                             <div class="card card-large-icons">
                                 <div class="card-icon bg-primary text-white">
                                     <i class="fas fa-credit-card"></i>
@@ -81,7 +81,7 @@
                                             class="fas fa-chevron-right"></i></a>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     @endif
                     @adminCan(['role.view', 'admin.view'])
                         <div class="col-lg-6">

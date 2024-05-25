@@ -7,10 +7,6 @@
         aria-controls="logo-favicon" aria-selected="false">{{ __('Logo & Favicon') }}</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="cookie-consent-tab" data-toggle="tab" href="#cookie_consent_tab" role="tab"
-        aria-controls="cookie-consent" aria-selected="false">{{ __('Cookie Consent') }}</a>
-</li>
-<li class="nav-item">
     <a class="nav-link" id="custom-pagination-tab" data-toggle="tab" href="#custom_pagination_tab" role="tab"
         aria-controls="custom-pagination" aria-selected="false">{{ __('Custom Pagination') }}</a>
 </li>
@@ -26,7 +22,7 @@
     <a class="nav-link" id="copyright-text" data-toggle="tab" href="#copyright_text_tab" role="tab"
         aria-controls="copyright" aria-selected="true">{{ __('Copyright Text') }}</a>
 </li>
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a class="nav-link" id="maintenance-tab" data-toggle="tab" href="#mmaintenance_mode_tab" role="tab"
         aria-controls="maintenance" aria-selected="false">{{ __('Maintenance Mode') }}</a>
-</li>
+</li> --}}
