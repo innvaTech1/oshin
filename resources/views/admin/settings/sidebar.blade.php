@@ -2,12 +2,12 @@
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             <a href="{{ route('admin.dashboard') }}"><img class="w-75" src="{{ asset($setting->logo) ?? '' }}"
-                alt="{{ $setting->app_name ?? '' }}"></a>
+                    alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('admin.dashboard') }}"><img src="{{ asset($setting->favicon) ?? '' }}"
-                alt="{{ $setting->app_name ?? '' }}"></a>
+                    alt="{{ $setting->app_name ?? '' }}"></a>
         </div>
 
         <ul class="sidebar-menu">
@@ -23,7 +23,7 @@
                 @include('globalsetting::sidebar')
             @endif
 
-            @adminCan(['basic.payment.view', 'payment.view'])
+            {{-- @adminCan(['basic.payment.view', 'payment.view'])
                 <li
                     class="nav-item dropdown {{ Route::is('admin.basicpayment') || Route::is('admin.paymentgateway') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown"><i
@@ -41,9 +41,9 @@
 
                     </ul>
                 </li>
-            @endadminCan
+            @endadminCan --}}
 
-            @include('currency::sidebar')
+            {{-- @include('currency::sidebar') --}}
 
             @adminCan(['role.view', 'admin.view'])
                 <li class="menu-header">{{ __('Administration Settings') }}</li>

@@ -35,12 +35,12 @@
                                 <div class="tab-content" id="myTabContent2">
                                     @include('globalsetting::settings.sections.general')
                                     @include('globalsetting::settings.sections.logo-favicon')
-                                    @include('globalsetting::settings.sections.cookie')
+                                    {{-- @include('globalsetting::settings.sections.cookie') --}}
                                     @include('globalsetting::settings.sections.custom-paginate')
                                     @include('globalsetting::settings.sections.default-avatar')
                                     @include('globalsetting::settings.sections.breadcrump')
                                     @include('globalsetting::settings.sections.copyright')
-                                    @include('globalsetting::settings.sections.maintenance-mode')
+                                    {{-- @include('globalsetting::settings.sections.maintenance-mode') --}}
                                 </div>
                             </div>
                         </div>
@@ -76,11 +76,7 @@
         });
         //Maintenance mode toggler
         function changeMaintenanceModeStatus() {
-            var isDemo = "{{ strtoupper(config('app.app_mode')) ?? 'LIVE' }}"
-            if (isDemo == 'DEMO') {
-                toastr.error("{{ __('This Is Demo Version. You Can Not Change Anything') }}");
-                return;
-            }
+
             $.ajax({
                 type: "put",
                 data: {

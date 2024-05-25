@@ -90,9 +90,9 @@
                 </li>
             @endif
 
-            @if (Module::isEnabled('Wallet'))
+            {{-- @if (Module::isEnabled('Wallet'))
                 @include('wallet::admin.sidebar')
-            @endif
+            @endif --}}
 
             {{-- <li class="menu-header">{{ __('Utility') }}</li>
 
