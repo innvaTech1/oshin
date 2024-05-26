@@ -114,7 +114,7 @@ class ProductController extends Controller
 
             $reviews = OrderReview::where('product_id', $product->id)->get();
 
-            $data['reviews'] = $reviews;
+            $data['reviews'] = OrderReview::collection($reviews);
             $data['canGiveReview'] = $canGiveReview;
             if ($product) {
                 return responseSuccess($data);

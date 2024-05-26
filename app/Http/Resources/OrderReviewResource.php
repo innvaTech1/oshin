@@ -20,6 +20,14 @@ class OrderReviewResource extends JsonResource
             'rating' => $this->rating,
             'comment' => $this->comment,
             'date' => $this->created_at->format('d M Y h:i A'),
+            'time_ago' => $this->created_at->diffForHumans(),
+            'user' => UserResource::make($this->user),
+            'images' => $this->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'image' => $image->image,
+                ];
+            }),
         ];
     }
 }
